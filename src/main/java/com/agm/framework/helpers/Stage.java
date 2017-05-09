@@ -1,4 +1,4 @@
-package com.comcast.framework.helpers;
+package com.agm.framework.helpers;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
