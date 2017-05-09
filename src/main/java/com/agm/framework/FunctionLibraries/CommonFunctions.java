@@ -8,23 +8,31 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-//import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+
+
 //import javax.mail.Message;
 //import javax.mail.Session;
 //import javax.mail.Transport;
 //import javax.mail.internet.InternetAddress;
 //import javax.mail.internet.MimeMessage;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import com.comcast.framework.helpers.Initializer;
-import com.comcast.framework.helpers.Stage;
+import org.testng.Assert;
+import org.testng.ITestResult;
+
+import com.agm.framework.helpers.Initializer;
+import com.agm.framework.helpers.Stage;
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
+import com.sun.jna.platform.unix.X11.XLeaveWindowEvent;
 
 public class CommonFunctions {
 
@@ -32,7 +40,8 @@ public class CommonFunctions {
 	private static CommonFunctions objCmf = null;
 
 	public WebDriver driver = null;
-
+	
+	
 	private CommonFunctions() {
 	}
 
@@ -41,7 +50,7 @@ public class CommonFunctions {
 			objCmf = new CommonFunctions();
 		return objCmf;
 	}
-
+	
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funLaunchURL() Description : This function will launch
@@ -78,8 +87,12 @@ public class CommonFunctions {
 				driver = new FirefoxDriver();
 			}
 			driver.manage().window().maximize();
-			System.out.println(strURL);
 			driver.get(strURL);
+			Assert.assertTrue(driver.getTitle().contains("AG Mednet"));
+//			String SS_path = CommonFunctions.getInstance().funTakeScreenshot(Thread.currentThread().getStackTrace()[1].getMethodName());
+//			String image = xLogger.addScreenCapture(SS_path);
+//			xLogger.log(LogStatus.PASS, "Title Verification",image);
+		
 		} catch (Exception e) {
 			funLog("Issue on launching URL. Exception : " + e.getMessage());
 		}
@@ -330,6 +343,8 @@ public class CommonFunctions {
 			strFileName = strImgName + formatter.format(now.getTime()) + ".jpg";
 			ImageIO.write(image, "jpg", new File(Initializer.getInstance()
 					.GetValue("java.error.path") + strFileName));
+//			strFileName = Initializer.getInstance().GetValue("java.error.path")+strFileName;
+			
 		} catch (Exception e) {
 			funLog("Issue on taking snapshot. Exception : " + e.getMessage());
 		}
@@ -360,12 +375,23 @@ public class CommonFunctions {
 	 * Parameter		: sTestCaseName : Test Case name
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
-
-
 	public void funEndTestCase(String sTestCaseName) {
 
 		funLog("------------------  " + sTestCaseName+ " Execution is END   ---------------------------");
 
 	}
+//	/*
+//	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+//	 * Function Name 	: funExtentReports() 
+//	 * Description 		: This is to create Results
+//	 * Author 			: Suresh Kumar,Mylam 
+//	 * Date 			: 9 May 2017
+//	 * Parameter		: sTestCaseName : Test Case name
+//	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+//	 */
+//	public ExtentTest funExtentReports() {
+//			xReport = new ExtentReports(Initializer.getInstance().GetValue("java.results.path"));
+//			return xLogger;			
+//	}
 
 }

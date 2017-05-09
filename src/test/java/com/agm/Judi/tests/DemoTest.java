@@ -11,37 +11,40 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
 
 import com.agm.framework.FunctionLibraries.CommonFunctions;
-import com.comcast.framework.helpers.Initializer;
-import com.relevantcodes.extentreports.ExtentReports;
+import com.agm.framework.helpers.Initializer;
 
 
 public class DemoTest {
 
-  ExtentReports report;
-  ExtendedRequest xLogger;
-  ITestResult result;
-  String strLogFileName;
-  
+	String strLogFileName;
+	public String filePath = "./extentreport.html";
   @BeforeMethod
   public void beforeMethod() {
+	  //Setting the Logfile path in system variables
+	  CommonFunctions.getInstance().funStartTestCase(this.getClass().getSimpleName());
 	  strLogFileName = this.getClass().getSimpleName() + "_" +new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-	  System.out.println(strLogFileName);
-	  System.setProperty("logFileName", strLogFileName);
-	  //Pre-Conditions	  
-  }
+	  System.setProperty("logFileName", strLogFileName);  
+
+ }
+
   
   @Test
   public void Demo() {
-	  CommonFunctions.getInstance().funStartTestCase(this.getClass().getSimpleName());
+
 	  CommonFunctions.getInstance().funLaunchURL(Initializer.getInstance().GetValue("app.test.test05"));
-//	  CommonFunctions.getInstance().funSendEmail("PASS", "JUDI", "SUCCESS");
-	  CommonFunctions.getInstance().funEndTestCase(this.getClass().getSimpleName());
 	  
   }
 
   @AfterMethod
   public void afterMethod() {
-	  
+	  try {
+		CommonFunctions.getInstance().funQuitBrowser();
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		CommonFunctions.getInstance().funLog("Issue in terminating the browser");
+	}
+
+	  CommonFunctions.getInstance().funEndTestCase(this.getClass().getSimpleName()); 
   }
 
 }
