@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="0" total="0" passed="0">
+<testng-results skipped="0" failed="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="0" started-at="2017-05-09T19:19:19Z" finished-at="2017-05-09T19:19:19Z">
+  <suite name="Default suite" duration-ms="14851" started-at="2017-05-10T20:30:23Z" finished-at="2017-05-10T20:30:38Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="0" started-at="2017-05-09T19:19:19Z" finished-at="2017-05-09T19:19:19Z">
+    <test name="Default test" duration-ms="14851" started-at="2017-05-10T20:30:23Z" finished-at="2017-05-10T20:30:38Z">
+      <class name="com.agm.Judi.tests.DemoTest">
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:com.agm.Judi.tests.DemoTest@4667ae56]" name="beforeMethod" is-config="true" duration-ms="538" started-at="2017-05-10T16:30:23Z" finished-at="2017-05-10T16:30:23Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="Test()[pri:0, instance:com.agm.Judi.tests.DemoTest@4667ae56]" name="Test" duration-ms="14032" started-at="2017-05-10T16:30:23Z" finished-at="2017-05-10T16:30:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- Test -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:com.agm.Judi.tests.DemoTest@4667ae56]" name="afterMethod" is-config="true" duration-ms="268" started-at="2017-05-10T16:30:37Z" finished-at="2017-05-10T16:30:38Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+      </class> <!-- com.agm.Judi.tests.DemoTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

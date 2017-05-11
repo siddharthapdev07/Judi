@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 
+
 //import javax.mail.Message;
 //import javax.mail.Session;
 //import javax.mail.Transport;
@@ -27,22 +28,22 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.testng.Assert;
 import org.testng.ITestResult;
 
+import com.agm.Judi.tests.DemoTest2;
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
-import com.sun.jna.platform.unix.X11.XLeaveWindowEvent;
 
-public class CommonFunctions {
+public class CommonFunctions extends DemoTest2{
 
 	// Creating singleton
 	private static CommonFunctions objCmf = null;
 
 	public WebDriver driver = null;
-	
-	
+	public ExtentTest test = null;
 	private CommonFunctions() {
+		
 	}
 
 	public static CommonFunctions getInstance() {
@@ -50,7 +51,11 @@ public class CommonFunctions {
 			objCmf = new CommonFunctions();
 		return objCmf;
 	}
-	
+
+	public void init(ExtentTest test) {
+		this.test = test;
+	}
+
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funLaunchURL() Description : This function will launch
@@ -62,6 +67,7 @@ public class CommonFunctions {
 		String strBrowser = Initializer.getInstance().GetValue("gui.browser");
 
 		try {
+			//test = extent.startTest("test2-demo");
 			// Killing opened browser by process
 			funKillbyProcess(strBrowser);
 			// FirefoxProfile prof;
@@ -87,13 +93,14 @@ public class CommonFunctions {
 				driver = new FirefoxDriver();
 			}
 			driver.manage().window().maximize();
-			driver.get(strURL);
-			Assert.assertTrue(driver.getTitle().contains("AG Mednet"));
-//			String SS_path = CommonFunctions.getInstance().funTakeScreenshot(Thread.currentThread().getStackTrace()[1].getMethodName());
-//			String image = xLogger.addScreenCapture(SS_path);
-//			xLogger.log(LogStatus.PASS, "Title Verification",image);
-		
+			ApplicationFunctions applicationFunctions = ApplicationFunctions.getInstance();
+			applicationFunctions.init(driver);
+			driver.get(strURL);	
+			Assert.assertTrue(driver.getTitle().contains("AG Mednet"),"true");
+			test.log(LogStatus.PASS, "Title Verification",test.addScreenCapture(CommonFunctions.getInstance().funTakeScreenshot(Thread.currentThread().getStackTrace()[1].getMethodName())));
+			
 		} catch (Exception e) {
+			System.out.println("In Exception");
 			funLog("Issue on launching URL. Exception : " + e.getMessage());
 		}
 	}
@@ -281,45 +288,45 @@ public class CommonFunctions {
 	 * of the email
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
-//	public void funSendEmail(String strStatus, String strApplicationName,
-//			String strContent) {
-//		String to = Initializer.getInstance().GetValue("email.to");
-//		String cc = Initializer.getInstance().GetValue("email.cc");
-//		String from = Initializer.getInstance().GetValue("email.from");
-//
-//		Properties prop = System.getProperties();
-//		prop.setProperty("mail.smtp.host",
-//				Initializer.getInstance().GetValue("email.hostname"));
-//		prop.setProperty("mail.smtp.port",
-//				Initializer.getInstance().GetValue("email.port"));
-//
-//		Session sess = Session.getDefaultInstance(prop);
-//
-//		try {
-//			String strFontColor;
-//			if (strStatus.toUpperCase().contains("PASS")) {
-//				strFontColor = "Green";
-//			} else {
-//				strFontColor = "Red";
-//			}
-//			MimeMessage message = new MimeMessage(sess);
-//			message.setFrom(new InternetAddress(from));
-//			message.addRecipients(Message.RecipientType.TO, to);
-//			message.addRecipients(Message.RecipientType.CC, cc);
-//			message.setSubject("JUDI - " + strApplicationName);
-//			message.setContent("HTML Construction", "text/html"); // HTML
-//																	// structure
-//																	// need to
-//																	// construct
-//			System.out.println(message);
-//			Transport.send(message);
-//			funLog(strApplicationName + " : " + strStatus + ". " + strContent
-//					+ ". Email send successfully");
-//		} catch (Exception e) {
-//			funLog("Issue on sending email. Exception : " + e.getMessage());
-//		}
-//
-//	}
+	// public void funSendEmail(String strStatus, String strApplicationName,
+	// String strContent) {
+	// String to = Initializer.getInstance().GetValue("email.to");
+	// String cc = Initializer.getInstance().GetValue("email.cc");
+	// String from = Initializer.getInstance().GetValue("email.from");
+	//
+	// Properties prop = System.getProperties();
+	// prop.setProperty("mail.smtp.host",
+	// Initializer.getInstance().GetValue("email.hostname"));
+	// prop.setProperty("mail.smtp.port",
+	// Initializer.getInstance().GetValue("email.port"));
+	//
+	// Session sess = Session.getDefaultInstance(prop);
+	//
+	// try {
+	// String strFontColor;
+	// if (strStatus.toUpperCase().contains("PASS")) {
+	// strFontColor = "Green";
+	// } else {
+	// strFontColor = "Red";
+	// }
+	// MimeMessage message = new MimeMessage(sess);
+	// message.setFrom(new InternetAddress(from));
+	// message.addRecipients(Message.RecipientType.TO, to);
+	// message.addRecipients(Message.RecipientType.CC, cc);
+	// message.setSubject("JUDI - " + strApplicationName);
+	// message.setContent("HTML Construction", "text/html"); // HTML
+	// // structure
+	// // need to
+	// // construct
+	// System.out.println(message);
+	// Transport.send(message);
+	// funLog(strApplicationName + " : " + strStatus + ". " + strContent
+	// + ". Email send successfully");
+	// } catch (Exception e) {
+	// funLog("Issue on sending email. Exception : " + e.getMessage());
+	// }
+	//
+	// }
 
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -341,57 +348,62 @@ public class CommonFunctions {
 			BufferedImage image = robot.createScreenCapture(new Rectangle(
 					Toolkit.getDefaultToolkit().getScreenSize()));
 			strFileName = strImgName + formatter.format(now.getTime()) + ".jpg";
+			strFileName = strFileName.replace(" ", "");
 			ImageIO.write(image, "jpg", new File(Initializer.getInstance()
 					.GetValue("java.error.path") + strFileName));
-//			strFileName = Initializer.getInstance().GetValue("java.error.path")+strFileName;
-			
+			 strFileName = new File(
+			 Initializer.getInstance().GetValue("java.error.path")+strFileName).getAbsolutePath();
+
 		} catch (Exception e) {
 			funLog("Issue on taking snapshot. Exception : " + e.getMessage());
 		}
 		return strFileName;
 	}
+
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	 * Function Name 	: funStartTestCase() 
-	 * Description 		: This is to print log for the Starting of the test case
-	 * Author 			: Suresh Kumar,Mylam 
-	 * Date 			: 8 May 2017
-	 * Parameter 		: sTestCaseName : Test Case name
+	 * Function Name : funStartTestCase() Description : This is to print log for
+	 * the Starting of the test case Author : Suresh Kumar,Mylam Date : 8 May
+	 * 2017 Parameter : sTestCaseName : Test Case name
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
 	public void funStartTestCase(String sTestCaseName) {
 
 		funLog("****************************************************************************************");
-		funLog("------------------  " + sTestCaseName+ " Execution is STARTED   ------------------------");
+		funLog("------------------  " + sTestCaseName
+				+ " Execution is STARTED   ------------------------");
 		funLog("****************************************************************************************");
 
 	}
+
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	 * Function Name 	: funEndTestCase() 
-	 * Description 		: This is to print log for the ending of the test case
-	 * Author 			: Suresh Kumar,Mylam 
-	 * Date 			: 8 May 2017
-	 * Parameter		: sTestCaseName : Test Case name
+	 * Function Name : funEndTestCase() Description : This is to print log for
+	 * the ending of the test case Author : Suresh Kumar,Mylam Date : 8 May 2017
+	 * Parameter : sTestCaseName : Test Case name
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
 	public void funEndTestCase(String sTestCaseName) {
 
-		funLog("------------------  " + sTestCaseName+ " Execution is END   ---------------------------");
+		funLog("------------------  " + sTestCaseName
+				+ " Execution is END   ---------------------------");
 
 	}
-//	/*
-//	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-//	 * Function Name 	: funExtentReports() 
-//	 * Description 		: This is to create Results
-//	 * Author 			: Suresh Kumar,Mylam 
-//	 * Date 			: 9 May 2017
-//	 * Parameter		: sTestCaseName : Test Case name
-//	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-//	 */
-//	public ExtentTest funExtentReports() {
-//			xReport = new ExtentReports(Initializer.getInstance().GetValue("java.results.path"));
-//			return xLogger;			
-//	}
+	// /*
+	// *
+	// ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	// * Function Name : funExtentReports()
+	// * Description : This is to create Results
+	// * Author : Suresh Kumar,Mylam
+	// * Date : 9 May 2017
+	// * Parameter : sTestCaseName : Test Case name
+	// *
+	// ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	// */
+	// public ExtentTest funExtentReports() {
+	// xReport = new
+	// ExtentReports(Initializer.getInstance().GetValue("java.results.path"));
+	// return xLogger;
+	// }
 
 }

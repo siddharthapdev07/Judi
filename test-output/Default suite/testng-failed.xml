@@ -3,13 +3,13 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test name="Default test(failed)">
     <classes>
-      <class name="myRC.CapturingScreenshot">
+      <class name="com.agm.Judi.tests.DemoTest">
         <methods>
-          <include name="captureScreenshot"/>
-          <include name="init"/>
-          <include name="getResult"/>
+          <include name="afterMethod"/>
+          <include name="beforeMethod"/>
+          <include name="Test"/>
         </methods>
-      </class> <!-- myRC.CapturingScreenshot -->
+      </class> <!-- com.agm.Judi.tests.DemoTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

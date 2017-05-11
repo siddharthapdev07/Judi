@@ -12,7 +12,7 @@ public class Initializer {
 
 	private Initializer() {
 	}
-
+	// Creating singleton
 	public static Initializer getInstance() {
 		if (objInit == null)
 			objInit = new Initializer();
