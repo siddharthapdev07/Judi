@@ -1,5 +1,6 @@
 package com.agm.Judi.tests;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -19,7 +20,7 @@ import com.relevantcodes.extentreports.ExtentTest;
 
 public class DemoTest {
 
-	String strLogFileName;
+	public String strLogFileName;
 	public ExtentReports extent;
 	public ExtentTest test;
 	public String strSQLQuery;
@@ -27,21 +28,29 @@ public class DemoTest {
 
 	@BeforeMethod
 	public void beforeMethod() {
-		// Setting the Log file path in system variables
+		// ********************************* R-E-P-O-R-T-S STARTED    ********************************		
 		strLogFileName = this.getClass().getSimpleName()
 				+ "_"
 				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
-						.getInstance().getTime());
+						.getInstance().getTime());									// Setting the Log file path in system variables
 		System.setProperty("logFileName", strLogFileName);
 		CommonFunctions.getInstance().funStartTestCase(
 				this.getClass().getSimpleName());
-
-		// new instance for Extent Reports
+		// ********************************* R-E-P-O-R-T-S STARTED    ********************************
+		
 		extent = new ExtentReports(Initializer.getInstance().GetValue(
 				"java.results.path")
-				+ strLogFileName + ".html", true);
-		// starting test
-		test = extent.startTest("DEMO test ", "Execution Started - Demo Test");
+				+ strLogFileName + ".html", true);									// new instance for Extent Reports
+		
+		extent.loadConfig(new File(
+				"src/main/resources/Config-ExtentReports.xml"));
+		
+		test = extent.startTest("DEMO test ", "Execution Started - Demo Test");     // starting test
+	
+		test.assignAuthor("Suresh Kumar Mylam");									// Set Category and author to report
+		
+		test.assignCategory("Regression");
+		// ********************************* R-E-P-O-R-T-S STARTED   ********************************
 	}
 
 	@Test
@@ -54,23 +63,23 @@ public class DemoTest {
 		applicationFunctions.init(test);
 
 		// Actual test functionality starts from here
-		//Launch Application
-		 commonFunctions.funLaunchURL(Initializer.getInstance().GetValue(
-		 "app.test.test05"));
-		 
-		 //Login Application
+		// Launch Application
+		commonFunctions.funLaunchURL(Initializer.getInstance().GetValue(
+				"app.test.test05"));
+
+		// Login Application
 		applicationFunctions.funLoginApplication();
 	}
 
 	@AfterMethod
 	public void afterMethod() {
-		 try {
-		 CommonFunctions.getInstance().funQuitBrowser();
-		 } catch (Exception e) {
-		 // TODO Auto-generated catch block
-		 CommonFunctions.getInstance().funLog(
-		 "Issue in terminating the browser");
-		 }
+		try {
+			CommonFunctions.getInstance().funQuitBrowser();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			CommonFunctions.getInstance().funLog(
+					"Issue in terminating the browser");
+		}
 		// ending test
 		extent.endTest(test);
 		// writing everything to document
