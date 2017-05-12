@@ -12,8 +12,6 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
-
-
 //import javax.mail.Message;
 //import javax.mail.Session;
 //import javax.mail.Transport;
@@ -28,6 +26,8 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.testng.Assert;
 import org.testng.ITestResult;
 
+import autoitx4java.AutoItX;
+
 import com.agm.Judi.tests.DemoTest2;
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
@@ -35,15 +35,17 @@ import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
-public class CommonFunctions extends DemoTest2{
+public class CommonFunctions extends DemoTest2 {
 
 	// Creating singleton
 	private static CommonFunctions objCmf = null;
 
 	public WebDriver driver = null;
 	public ExtentTest test = null;
+	private AutoItX objAutoIT = null;
+
 	private CommonFunctions() {
-		
+
 	}
 
 	public static CommonFunctions getInstance() {
@@ -67,7 +69,7 @@ public class CommonFunctions extends DemoTest2{
 		String strBrowser = Initializer.getInstance().GetValue("gui.browser");
 
 		try {
-			//test = extent.startTest("test2-demo");
+			// test = extent.startTest("test2-demo");
 			// Killing opened browser by process
 			funKillbyProcess(strBrowser);
 			// FirefoxProfile prof;
@@ -93,12 +95,17 @@ public class CommonFunctions extends DemoTest2{
 				driver = new FirefoxDriver();
 			}
 			driver.manage().window().maximize();
-			ApplicationFunctions applicationFunctions = ApplicationFunctions.getInstance();
+			ApplicationFunctions applicationFunctions = ApplicationFunctions
+					.getInstance();
 			applicationFunctions.init(driver);
-			driver.get(strURL);	
-			Assert.assertTrue(driver.getTitle().contains("AG Mednet"),"true");
-			test.log(LogStatus.PASS, "Title Verification",test.addScreenCapture(CommonFunctions.getInstance().funTakeScreenshot(Thread.currentThread().getStackTrace()[1].getMethodName())));
-			
+			driver.get(strURL);
+			Assert.assertTrue(driver.getTitle().contains("AG Mednet"), "true");
+			test.log(LogStatus.PASS, "Title Verification", test
+					.addScreenCapture(CommonFunctions.getInstance()
+							.funTakeScreenshot(
+									Thread.currentThread().getStackTrace()[1]
+											.getMethodName())));
+
 		} catch (Exception e) {
 			System.out.println("In Exception");
 			funLog("Issue on launching URL. Exception : " + e.getMessage());
@@ -351,8 +358,9 @@ public class CommonFunctions extends DemoTest2{
 			strFileName = strFileName.replace(" ", "");
 			ImageIO.write(image, "jpg", new File(Initializer.getInstance()
 					.GetValue("java.error.path") + strFileName));
-			 strFileName = new File(
-			 Initializer.getInstance().GetValue("java.error.path")+strFileName).getAbsolutePath();
+			strFileName = new File(Initializer.getInstance().GetValue(
+					"java.error.path")
+					+ strFileName).getAbsolutePath();
 
 		} catch (Exception e) {
 			funLog("Issue on taking snapshot. Exception : " + e.getMessage());
@@ -389,21 +397,45 @@ public class CommonFunctions extends DemoTest2{
 				+ " Execution is END   ---------------------------");
 
 	}
-	// /*
-	// *
-	// ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	// * Function Name : funExtentReports()
-	// * Description : This is to create Results
-	// * Author : Suresh Kumar,Mylam
-	// * Date : 9 May 2017
-	// * Parameter : sTestCaseName : Test Case name
-	// *
-	// ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	// */
-	// public ExtentTest funExtentReports() {
-	// xReport = new
-	// ExtentReports(Initializer.getInstance().GetValue("java.results.path"));
-	// return xLogger;
-	// }
+
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funWaitAndAction() Description : This function will wait
+	 * for few seconds and perform action once the object is loaded. It works
+	 * only for Auto IT. Author : Suresh Kumar,Mylam Date : 12 May 2017
+	 * Parameter : strInput : Give input text for SetText, Give text to identify
+	 * object for Click
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+	public String funWaitAndAction(String objTitle, String objID,String strAction, String strInput)	{
+		boolean blnObject = false;
+		String strReturn = null;
+
+		// Activate the window based on title
+		if (objTitle.trim().length() != 0) {
+			objAutoIT.winActivate(objTitle);
+			blnObject = true;
+		}
+		try {
+			// Action
+			if (blnObject == true) {
+				if (strAction.trim().toUpperCase().contains("CLICK")) {
+					objAutoIT.controlClick(objTitle, strInput.trim(),
+							objID.trim());
+				} else if (strAction.trim().toUpperCase().contains("SETTEXT")) {
+					objAutoIT.ControlSetText(objTitle.trim(), "", objID.trim(),
+							strInput);
+				}
+			}
+			funWait(2);
+
+		} catch (Exception e) {
+			CommonFunctions.getInstance().funLog(
+					"Issue on identifying object :" + objID + "Exception : "
+							+ e.getMessage());
+		}
+
+		return strReturn;
+	}
 
 }
