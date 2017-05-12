@@ -12,6 +12,7 @@ import org.testng.annotations.AfterMethod;
 
 import com.agm.framework.FunctionLibraries.ApplicationFunctions;
 import com.agm.framework.FunctionLibraries.CommonFunctions;
+import com.agm.framework.FunctionLibraries.DB;
 import com.agm.framework.helpers.Initializer;
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
@@ -21,6 +22,8 @@ public class DemoTest {
 	String strLogFileName;
 	public ExtentReports extent;
 	public ExtentTest test;
+	public String strSQLQuery;
+	public String strField;
 
 	@BeforeMethod
 	public void beforeMethod() {
@@ -35,39 +38,45 @@ public class DemoTest {
 
 		// new instance for Extent Reports
 		extent = new ExtentReports(Initializer.getInstance().GetValue(
-				"java.results.path")+ strLogFileName + ".html" , true);
+				"java.results.path")
+				+ strLogFileName + ".html", true);
 		// starting test
 		test = extent.startTest("DEMO test ", "Execution Started - Demo Test");
 	}
 
 	@Test
 	public void Test() {
-		//to initialize Extent reports object for Libraries
+		// to initialize Extent reports object for Libraries
 		CommonFunctions commonFunctions = CommonFunctions.getInstance();
 		commonFunctions.init(test);
-		ApplicationFunctions applicationFunctions = ApplicationFunctions.getInstance();
+		ApplicationFunctions applicationFunctions = ApplicationFunctions
+				.getInstance();
 		applicationFunctions.init(test);
-		
-		// Application Library functions
-		commonFunctions.funLaunchURL(Initializer.getInstance().GetValue(
-				"app.test.test05"));
+
+		// Actual test functionality starts from here
+		//Launch Application
+		 commonFunctions.funLaunchURL(Initializer.getInstance().GetValue(
+		 "app.test.test05"));
+		 
+		 //Login Application
 		applicationFunctions.funLoginApplication();
 	}
 
 	@AfterMethod
 	public void afterMethod() {
-//		try {
-//			CommonFunctions.getInstance().funQuitBrowser();
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			CommonFunctions.getInstance().funLog(
-//					"Issue in terminating the browser");
-//		}
+		 try {
+		 CommonFunctions.getInstance().funQuitBrowser();
+		 } catch (Exception e) {
+		 // TODO Auto-generated catch block
+		 CommonFunctions.getInstance().funLog(
+		 "Issue in terminating the browser");
+		 }
 		// ending test
 		extent.endTest(test);
 		// writing everything to document
 		extent.flush();
 		CommonFunctions.getInstance().funEndTestCase(
 				this.getClass().getSimpleName());
+
 	}
 }

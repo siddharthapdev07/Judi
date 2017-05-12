@@ -1,7 +1,9 @@
 package com.agm.framework.FunctionLibraries;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 
 import com.agm.framework.helpers.Initializer;
 import com.relevantcodes.extentreports.ExtentTest;
@@ -35,21 +37,39 @@ public class ApplicationFunctions {
 	public void funLoginApplication()
 	{
 		try{
-			CommonFunctions.getInstance().getElement(driver, Initializer.getInstance().GetValue("judi.test.login.username")).sendKeys(Initializer.getInstance().GetValue("app.test.test05.username"));
-//			element.sendKeys(Initializer.getInstance().GetValue("app.test.test05.username"));
-			test.log(LogStatus.PASS, "Userid Field verification",test.addScreenCapture(CommonFunctions.getInstance().funTakeScreenshot(Thread.currentThread().getStackTrace()[1].getMethodName())));
+			CommonFunctions.getInstance().getElement(driver, "judi.test.login.username").sendKeys(Initializer.getInstance().GetValue("app.test.test05.username"));
+			test.log(LogStatus.PASS, "Userid Entered successfully","");
 		}catch(Exception e){
 			CommonFunctions.getInstance().funLog("Issue identifying the object - UserName" + e.getMessage());
-			test.log(LogStatus.FAIL, "Userid Field verification",test.addScreenCapture(CommonFunctions.getInstance().funTakeScreenshot(Thread.currentThread().getStackTrace()[1].getMethodName())));
+			test.log(LogStatus.FAIL, "Exception in identifying the UserName field","");
 		}
 		try{		
-			CommonFunctions.getInstance().getElement(driver, Initializer.getInstance().GetValue("judi.test.login.password")).sendKeys(Initializer.getInstance().GetValue("app.test.test05.password"));
-//			element.sendKeys(Initializer.getInstance().GetValue("app.test.test05.password"));
-			test.log(LogStatus.PASS, "Password field verification",test.addScreenCapture(CommonFunctions.getInstance().funTakeScreenshot(Thread.currentThread().getStackTrace()[1].getMethodName())));
+			CommonFunctions.getInstance().getElement(driver, "judi.test.login.password").sendKeys(Initializer.getInstance().GetValue("app.test.test05.password"));
+			test.log(LogStatus.PASS, "Password field verification","");
 		}catch(Exception e){
-			CommonFunctions.getInstance().funLog("Issue identifying the object - UserName" + e.getMessage());
+			CommonFunctions.getInstance().funLog("Issue identifying the object - Password" + e.getMessage());
+			test.log(LogStatus.FAIL, "Exception in identifying the password field","");
+		}
+		try{		
+			CommonFunctions.getInstance().getElement(driver, "judi.test.login.login").click();
+			test.log(LogStatus.PASS, "Login Button is clicked successfully","");
+			CommonFunctions.getInstance().funWait(15);
+		}catch(Exception e){
+			CommonFunctions.getInstance().funLog("Issue identifying the object - LoginButton" + e.getMessage());
+			test.log(LogStatus.FAIL, "Exception in clicking the Login button",test.addScreenCapture(CommonFunctions.getInstance().funTakeScreenshot(Thread.currentThread().getStackTrace()[1].getMethodName())));
+		}
+		//Login Verification
+		try{		
+			if(CommonFunctions.getInstance().getElement(driver, "judi.test.home.logout").isDisplayed()==true){
+				test.log(LogStatus.PASS, "Login to application is successful",test.addScreenCapture(CommonFunctions.getInstance().funTakeScreenshot(Thread.currentThread().getStackTrace()[1].getMethodName())));
+			}else{
+				test.log(LogStatus.FAIL, "Login to application is Failed","");
+			}
+		}catch(Exception e){
+			CommonFunctions.getInstance().funLog("Issue identifying the object - LogOut" + e.getMessage());
 			test.log(LogStatus.FAIL, "Password field verification",test.addScreenCapture(CommonFunctions.getInstance().funTakeScreenshot(Thread.currentThread().getStackTrace()[1].getMethodName())));
 		}
 	}
+	
 
 }
