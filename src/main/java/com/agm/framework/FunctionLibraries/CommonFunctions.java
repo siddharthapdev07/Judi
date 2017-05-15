@@ -44,6 +44,7 @@ public class CommonFunctions extends DemoTest2 {
 	public ExtentTest test = null;
 	private AutoItX objAutoIT = null;
 
+
 	private CommonFunctions() {
 
 	}
@@ -56,6 +57,10 @@ public class CommonFunctions extends DemoTest2 {
 
 	public void init(ExtentTest test) {
 		this.test = test;
+	}
+	
+	public void init(AutoItX objAutoIT) {
+		this.objAutoIT = objAutoIT;
 	}
 
 	/*
@@ -407,10 +412,8 @@ public class CommonFunctions extends DemoTest2 {
 	 * object for Click
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
-	public String funWaitAndAction(String objTitle, String objID,String strAction, String strInput)	{
+	public void funWaitAndAction(String objTitle, String objID,String strAction, String strInput)	{
 		boolean blnObject = false;
-		String strReturn = null;
-
 		// Activate the window based on title
 		if (objTitle.trim().length() != 0) {
 			objAutoIT.winActivate(objTitle);
@@ -435,7 +438,6 @@ public class CommonFunctions extends DemoTest2 {
 							+ e.getMessage());
 		}
 
-		return strReturn;
 	}
 
 }
