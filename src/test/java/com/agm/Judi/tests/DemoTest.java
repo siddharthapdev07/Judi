@@ -11,10 +11,13 @@ import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
 
+import autoitx4java.AutoItX;
+
 import com.agm.framework.FunctionLibraries.ApplicationFunctions;
 import com.agm.framework.FunctionLibraries.CommonFunctions;
 import com.agm.framework.FunctionLibraries.DB;
 import com.agm.framework.helpers.Initializer;
+import com.jacob.com.LibraryLoader;
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 
@@ -25,10 +28,10 @@ public class DemoTest {
 	public ExtentTest test;
 	public String strSQLQuery;
 	public String strField;
-
+	public AutoItX objAutoIT = null;
 	@BeforeMethod
 	public void beforeMethod() {
-		// ********************************* R-E-P-O-R-T-S STARTED    ********************************		
+		// ********************************* INITIAL SETUP    *****************************************	
 		strLogFileName = this.getClass().getSimpleName()
 				+ "_"
 				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
@@ -36,8 +39,8 @@ public class DemoTest {
 		System.setProperty("logFileName", strLogFileName);
 		CommonFunctions.getInstance().funStartTestCase(
 				this.getClass().getSimpleName());
-		// ********************************* R-E-P-O-R-T-S STARTED    ********************************
 		
+		// ********************************* R-E-P-O-R-T-S     ***************************************		
 		extent = new ExtentReports(Initializer.getInstance().GetValue(
 				"java.results.path")
 				+ strLogFileName + ".html", true);									// new instance for Extent Reports
@@ -45,23 +48,31 @@ public class DemoTest {
 		extent.loadConfig(new File(
 				"src/main/resources/Config-ExtentReports.xml"));
 		
-		test = extent.startTest("DEMO test ", "Execution Started - Demo Test");     // starting test
+		test = extent.startTest("Demo_test ", "Demo Test");     // starting test
 	
 		test.assignAuthor("Suresh Kumar Mylam");									// Set Category and author to report
 		
 		test.assignCategory("Regression");
-		// ********************************* R-E-P-O-R-T-S STARTED   ********************************
+		
+		// ********************************* AUTOIT SETUP   *****************************************	
+		
+		File file = new File(Initializer.getInstance().GetValue("java.autoit.jacob"));		
+		System.setProperty(LibraryLoader.JACOB_DLL_PATH, file.getAbsolutePath());
+		objAutoIT = new AutoItX();
 	}
 
 	@Test
 	public void Test() {
+		//*********************************************   Config Set Up - START ************************************* 
 		// to initialize Extent reports object for Libraries
 		CommonFunctions commonFunctions = CommonFunctions.getInstance();
 		commonFunctions.init(test);
-		ApplicationFunctions applicationFunctions = ApplicationFunctions
+		commonFunctions.init(objAutoIT);
+		ApplicationFunctions applicationFunctions = ApplicationFunctions			//This block should exist for all the test cases
 				.getInstance();
-		applicationFunctions.init(test);
-
+		applicationFunctions.init(test);		
+		//*********************************************   Config Set Up - END ************************************* 
+		
 		// Actual test functionality starts from here
 		// Launch Application
 		commonFunctions.funLaunchURL(Initializer.getInstance().GetValue(
