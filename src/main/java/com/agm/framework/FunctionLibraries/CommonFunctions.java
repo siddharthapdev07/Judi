@@ -5,13 +5,20 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
+
+import org.json.simple.JSONObject;
 //import javax.mail.Message;
 //import javax.mail.Session;
 //import javax.mail.Transport;
@@ -31,6 +38,8 @@ import autoitx4java.AutoItX;
 import com.agm.Judi.tests.DemoTest2;
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
+import com.agm.testrail.APIClient;
+import com.agm.testrail.APIException;
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
@@ -43,7 +52,9 @@ public class CommonFunctions extends DemoTest2 {
 	public WebDriver driver = null;
 	public ExtentTest test = null;
 	private AutoItX objAutoIT = null;
-
+	int iCaseID;
+	int iTestID;
+	int iRunID;
 
 	private CommonFunctions() {
 
@@ -65,6 +76,40 @@ public class CommonFunctions extends DemoTest2 {
 
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funLoadTestDetailsFromTestRail() 
+	 * Description : This function will Load the TestID,Case ID and Run ID for the test case
+	 * Author : Suresh Kumar,Mylam 
+	 * Date : 17 May 2017 Parameter : strTestCaseName : Provide the test case name
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+	public void funLoadTestDetailsFromTestRail(String strTestCaseName) {
+		try {
+			switch (strTestCaseName.toUpperCase()) {
+			case "DEMOTEST":
+				iCaseID = 541421;
+				iTestID = 1079709;
+				iRunID 	= 2081;
+				break;
+			case "DEMOTEST2":
+				iCaseID = 541421;
+				iTestID = 1079709;
+				iRunID 	= 2081;
+				break;
+			default:
+				funLog("Issue on identifying the test case - Please add New Case for the running Test");				
+				
+			}
+			Stage.getInstance().setCaseID(iCaseID);
+			Stage.getInstance().setTestID(iTestID);
+			Stage.getInstance().setRunID(iRunID);
+		} catch (Exception e) {
+			funLog("Exception occured while setting test details. Exception : " + e.getMessage());
+		}
+	}
+	
+	
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funLaunchURL() Description : This function will launch
 	 * URL Author : Suresh Kumar,Mylam Date : 03 May 2017 Parameter : strBrowser
 	 * = iexplore.exe/chrome, strURL = URL
@@ -74,7 +119,6 @@ public class CommonFunctions extends DemoTest2 {
 		String strBrowser = Initializer.getInstance().GetValue("gui.browser");
 
 		try {
-			// test = extent.startTest("test2-demo");
 			// Killing opened browser by process
 			funKillbyProcess(strBrowser);
 			// FirefoxProfile prof;
@@ -112,11 +156,13 @@ public class CommonFunctions extends DemoTest2 {
 											.getMethodName())));
 
 		} catch (Exception e) {
-			System.out.println("In Exception");
 			funLog("Issue on launching URL. Exception : " + e.getMessage());
 		}
 	}
 
+	
+	
+	
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funQuitBrowser() Description : This function will quit
@@ -438,6 +484,57 @@ public class CommonFunctions extends DemoTest2 {
 							+ e.getMessage());
 		}
 
+	}
+	
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funUpdateResultsToTestRail() Description : This function will update the Result statuus to TestRail
+	 * Author : Suresh Kumar,Mylam Date : 17 May 2017
+	 * Parameter : strResultStatus : Provide the result status
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+	
+	public void funUpdateResultsToTestRail(String strResultStatus) {
+		JSONObject r;
+		List testCases = new ArrayList();
+		Map testCasesResults = new HashMap();
+		Map data = new HashMap();
+		
+//		strResultStatus = "PASS";								//Need to pass from test case
+		
+		APIClient client = new APIClient(Initializer.getInstance().GetValue("app.test.testRailURL"));
+		client.setUser(Initializer.getInstance().GetValue("app.test.testRailUsername"));
+		client.setPassword(Initializer.getInstance().GetValue("app.test.testRailUserPassword"));
+	
+		testCases.add(Stage.getInstance().getCaseID());
+		switch (strResultStatus) {
+		case "PASS":
+			testCasesResults.put(Stage.getInstance().getTestID(), 1);
+			break;
+		case "FAIL":
+			testCasesResults.put(Stage.getInstance().getTestID(), 5);
+			break;
+		default:
+			testCasesResults.put(Stage.getInstance().getTestID(), 4);
+			break;
+		}
+		
+		for (int i = 0; i < testCasesResults.size(); i++) {
+//			iTestID = (int) testCases.get(i);
+			data.put("status_id", testCasesResults.get(Stage.getInstance().getTestID()));
+			try {
+				r = (JSONObject) client.sendPost("add_result_for_case/"+ Stage.getInstance().getRunID() +"/"+ Stage.getInstance().getCaseID(), data);
+			} catch (MalformedURLException e) {
+				CommonFunctions.getInstance().funLog("Issue on forming the API. Exception : " + e.getMessage());
+				e.printStackTrace();
+			} catch (IOException e) {
+				CommonFunctions.getInstance().funLog("Issue with Test data used in API. Exception : " + e.getMessage());
+				e.printStackTrace();
+			} catch (APIException e) {
+				CommonFunctions.getInstance().funLog("Issue on sending API. Exception : " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

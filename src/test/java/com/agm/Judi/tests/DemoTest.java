@@ -7,6 +7,7 @@ import java.util.Calendar;
 import javax.naming.ldap.ExtendedRequest;
 
 import org.testng.ITestResult;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
@@ -29,9 +30,12 @@ public class DemoTest {
 	public String strSQLQuery;
 	public String strField;
 	public AutoItX objAutoIT = null;
+	public ITestResult result;
+
 	@BeforeMethod
 	public void beforeMethod() {
 		// ********************************* INITIAL SETUP    *****************************************	
+		
 		strLogFileName = this.getClass().getSimpleName()
 				+ "_"
 				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
@@ -40,18 +44,15 @@ public class DemoTest {
 		CommonFunctions.getInstance().funStartTestCase(
 				this.getClass().getSimpleName());
 		
-		// ********************************* R-E-P-O-R-T-S     ***************************************		
+		// ********************************* R-E-P-O-R-T-S     ***************************************
+		
 		extent = new ExtentReports(Initializer.getInstance().GetValue(
 				"java.results.path")
-				+ strLogFileName + ".html", true);									// new instance for Extent Reports
-		
+				+ strLogFileName + ".html", true);								// new instance for Extent Reports		
 		extent.loadConfig(new File(
-				"src/main/resources/Config-ExtentReports.xml"));
-		
-		test = extent.startTest("Demo_test ", "Demo Test");     // starting test
-	
-		test.assignAuthor("Suresh Kumar Mylam");									// Set Category and author to report
-		
+				"src/main/resources/Config-ExtentReports.xml"));		
+		test = extent.startTest("Demo_test ", "Demo Test");     				// starting test	
+		test.assignAuthor("Suresh Kumar Mylam");								// Set Category and author to report		
 		test.assignCategory("Regression");
 		
 		// ********************************* AUTOIT SETUP   *****************************************	
@@ -59,6 +60,9 @@ public class DemoTest {
 		File file = new File(Initializer.getInstance().GetValue("java.autoit.jacob"));		
 		System.setProperty(LibraryLoader.JACOB_DLL_PATH, file.getAbsolutePath());
 		objAutoIT = new AutoItX();
+		
+		// ********************************* TestRail details -Static Data   *****************************************
+		CommonFunctions.getInstance().funLoadTestDetailsFromTestRail(this.getClass().getSimpleName());
 	}
 
 	@Test
@@ -79,11 +83,12 @@ public class DemoTest {
 				"app.test.test05"));
 
 		// Login Application
-		applicationFunctions.funLoginApplication();
+		applicationFunctions.funLoginApplication();		
 	}
 
 	@AfterMethod
 	public void afterMethod() {
+		
 		try {
 			CommonFunctions.getInstance().funQuitBrowser();
 		} catch (Exception e) {
@@ -95,8 +100,23 @@ public class DemoTest {
 		extent.endTest(test);
 		// writing everything to document
 		extent.flush();
-		CommonFunctions.getInstance().funEndTestCase(
-				this.getClass().getSimpleName());
+		result = Reporter.getCurrentTestResult();
+		try{
+	    switch (result.getStatus()) {
+	    case ITestResult.SUCCESS:
+	    	CommonFunctions.getInstance().funUpdateResultsToTestRail("PASS");
+	        break;
+
+	    case ITestResult.FAILURE:
+	    	CommonFunctions.getInstance().funUpdateResultsToTestRail("FAIL");
+	        break;
+	    default:
+	        throw new RuntimeException("Invalid status");
+	    }
+		}catch(Exception e){
+			CommonFunctions.getInstance().funLog("Invalid Result status");
+		}
+		CommonFunctions.getInstance().funEndTestCase(this.getClass().getSimpleName());
 
 	}
 }

@@ -24,21 +24,52 @@ public class Stage {
 	
 		//Log
 		private Logger log = null;		
-		private String abcd = null;
+		private int iTestID ;
+		private int iRunID;
+		private int iCaseID;
 		
 		/**
-		 * @return the StringValue
+		 * @return the IntegerValue
 		 */
-		public String getStringValueByName()
+		public int getTestID()
 		{
-			return abcd;
+			return iTestID;
 		}
 		/**
-		 * @Set the StringValue
+		 * @Set the IntegerValue
 		 */
-		public void setStringValueByName(String xyz)
+		public void setTestID(int iTestID)
 		{
-			this.abcd = xyz;
+			this.iTestID = iTestID;
+		}
+		
+		/**
+		 * @return the IntegerValue
+		 */
+		public int getCaseID()
+		{
+			return iCaseID;
+		}
+		/**
+		 * @Set the IntegerValue
+		 */
+		public void setCaseID(int iCaseID)
+		{
+			this.iCaseID = iCaseID;
+		}
+		/**
+		 * @return the IntegerValue
+		 */
+		public int getRunID()
+		{
+			return iRunID;
+		}
+		/**
+		 * @Set the IntegerValue
+		 */
+		public void setRunID(int iRunID)
+		{
+			this.iRunID = iRunID;
 		}
 
 		/**
