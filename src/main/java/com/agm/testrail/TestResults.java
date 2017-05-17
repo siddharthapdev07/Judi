@@ -9,10 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.simple.JSONObject;
 import org.testng.annotations.Test;
 
 import com.agm.framework.FunctionLibraries.CommonFunctions;
+import com.agm.simple.JSONObject;
 
 import au.com.bytecode.opencsv.CSVReader;
 

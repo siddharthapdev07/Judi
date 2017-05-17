@@ -20,8 +20,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.BufferedReader;
 import java.io.UnsupportedEncodingException;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
+
+import com.agm.simple.JSONObject;
+import com.agm.simple.JSONValue;
 
 public class APIClient
 {
