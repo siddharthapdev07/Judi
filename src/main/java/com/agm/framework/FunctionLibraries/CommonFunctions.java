@@ -17,8 +17,6 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
-
-import org.json.simple.JSONObject;
 //import javax.mail.Message;
 //import javax.mail.Session;
 //import javax.mail.Transport;
@@ -38,6 +36,7 @@ import autoitx4java.AutoItX;
 import com.agm.Judi.tests.DemoTest2;
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
+import com.agm.simple.JSONObject;
 import com.agm.testrail.APIClient;
 import com.agm.testrail.APIException;
 import com.relevantcodes.extentreports.ExtentReports;
