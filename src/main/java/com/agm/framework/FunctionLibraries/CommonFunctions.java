@@ -36,7 +36,7 @@ import autoitx4java.AutoItX;
 
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
-import com.agm.Judi.tests.DemoTest2;
+
 import com.agm.simple.JSONObject;
 import com.agm.testrail.APIClient;
 import com.agm.testrail.APIException;

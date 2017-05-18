@@ -1,10 +1,7 @@
 package com.agm.framework.FunctionLibraries;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.testng.Assert;
-
 import com.agm.framework.helpers.Initializer;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
