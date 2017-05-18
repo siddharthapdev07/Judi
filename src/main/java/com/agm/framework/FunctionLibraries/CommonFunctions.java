@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
+
 //import javax.mail.Message;
 //import javax.mail.Session;
 //import javax.mail.Transport;
@@ -33,9 +34,9 @@ import org.testng.ITestResult;
 
 import autoitx4java.AutoItX;
 
-import com.agm.Judi.tests.DemoTest2;
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
+import com.agm.Judi.tests.DemoTest2;
 import com.agm.simple.JSONObject;
 import com.agm.testrail.APIClient;
 import com.agm.testrail.APIException;
@@ -43,7 +44,7 @@ import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
-public class CommonFunctions extends DemoTest2 {
+public class CommonFunctions{
 
 	// Creating singleton
 	private static CommonFunctions objCmf = null;
