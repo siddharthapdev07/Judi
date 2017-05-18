@@ -11,9 +11,7 @@ import org.testng.Reporter;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
-
 import autoitx4java.AutoItX;
-
 import com.agm.framework.FunctionLibraries.ApplicationFunctions;
 import com.agm.framework.FunctionLibraries.CommonFunctions;
 import com.agm.framework.FunctionLibraries.DB;

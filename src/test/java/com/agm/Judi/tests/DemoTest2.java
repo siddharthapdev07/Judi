@@ -40,9 +40,9 @@ public class DemoTest2 {
 	@Test
 	public void Demo() {
 		
-		CommonFunctions.getInstance().funLoadTestDetailsFromTestRail(this.getClass().getSimpleName());
-		CommonFunctions.getInstance().funUpdateResultsToTestRail("FAIL");
-		
+//		CommonFunctions.getInstance().funLoadTestDetailsFromTestRail(this.getClass().getSimpleName());
+//		CommonFunctions.getInstance().funUpdateResultsToTestRail("FAIL");
+//		
 		
 		
 		// DB.getInstance().funConnectDB(Initializer.getInstance().GetValue("db.env"),
