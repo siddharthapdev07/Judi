@@ -6,16 +6,20 @@ import java.util.Calendar;
 
 import javax.naming.ldap.ExtendedRequest;
 
+import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
+
 import autoitx4java.AutoItX;
+
 import com.agm.framework.FunctionLibraries.ApplicationFunctions;
 import com.agm.framework.FunctionLibraries.CommonFunctions;
 import com.agm.framework.FunctionLibraries.DB;
 import com.agm.framework.helpers.Initializer;
+import com.agm.framework.helpers.Stage;
 import com.jacob.com.LibraryLoader;
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
@@ -29,11 +33,12 @@ public class DemoTest {
 	public String strField;
 	public AutoItX objAutoIT = null;
 	public ITestResult result;
+	public boolean iStatus = true;
 
 	@BeforeMethod
 	public void beforeMethod() {
 		// ********************************* INITIAL SETUP    *****************************************	
-		
+		Stage.getInstance().setStatus(iStatus);
 		strLogFileName = this.getClass().getSimpleName()
 				+ "_"
 				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
@@ -72,21 +77,23 @@ public class DemoTest {
 		commonFunctions.init(objAutoIT);
 		ApplicationFunctions applicationFunctions = ApplicationFunctions			//This block should exist for all the test cases
 				.getInstance();
-		applicationFunctions.init(test);		
-		//*********************************************   Config Set Up - END ************************************* 
+		applicationFunctions.init(test);	
 		
-		// Actual test functionality starts from here
+		//*********************************************  TEST FUNCTIONALITY START ************************************* 		
 		// Launch Application
 		commonFunctions.funLaunchURL(Initializer.getInstance().GetValue(
 				"app.test.test05"));
 
 		// Login Application
 		applicationFunctions.funLoginApplication();		
+		
+		
+		
+		//*********************************************  TEST FUNCTIONALITY END ************************************* 
 	}
 
 	@AfterMethod
-	public void afterMethod() {
-		
+	public void afterMethod(ITestResult result) {		
 		try {
 			CommonFunctions.getInstance().funQuitBrowser();
 		} catch (Exception e) {
@@ -98,22 +105,21 @@ public class DemoTest {
 		extent.endTest(test);
 		// writing everything to document
 		extent.flush();
-		result = Reporter.getCurrentTestResult();
 		try{
-	    switch (result.getStatus()) {
-	    case ITestResult.SUCCESS:
-	    	CommonFunctions.getInstance().funUpdateResultsToTestRail("PASS");
-	        break;
+		    switch (result.getStatus()) {
+		    case ITestResult.SUCCESS:
+		    	CommonFunctions.getInstance().funUpdateResultsToTestRail("PASS");
+		        break;
 
-	    case ITestResult.FAILURE:
-	    	CommonFunctions.getInstance().funUpdateResultsToTestRail("FAIL");
-	        break;
-	    default:
-	        throw new RuntimeException("Invalid status");
-	    }
-		}catch(Exception e){
-			CommonFunctions.getInstance().funLog("Invalid Result status");
-		}
+		    case ITestResult.FAILURE:
+		    	CommonFunctions.getInstance().funUpdateResultsToTestRail("FAIL");
+		        break;
+		    default:
+		        throw new RuntimeException("Invalid status");
+		    }
+			}catch(Exception e){
+				CommonFunctions.getInstance().funLog("Invalid Result status");
+			}
 		CommonFunctions.getInstance().funEndTestCase(this.getClass().getSimpleName());
 
 	}

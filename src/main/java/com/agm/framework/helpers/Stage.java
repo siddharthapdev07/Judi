@@ -27,7 +27,18 @@ public class Stage {
 		private int iTestID ;
 		private int iRunID;
 		private int iCaseID;
+		private boolean iStatus;
 		
+		
+		public boolean getStatus()
+		{
+			return iStatus;
+		}
+		
+		public void setStatus(boolean iStatus)
+		{
+			this.iStatus = iStatus;
+		}
 		/**
 		 * @return the IntegerValue
 		 */

@@ -148,13 +148,7 @@ public class CommonFunctions{
 					.getInstance();
 			applicationFunctions.init(driver);
 			driver.get(strURL);
-			Assert.assertTrue(driver.getTitle().contains("AG Mednet"), "true");
-			test.log(LogStatus.PASS, "Title Verification", test
-					.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
-
+			funStepValidate("TEXT", driver.getTitle().toString(), "AG Mednet Portal", "validate the Browser Title", true,true);
 		} catch (Exception e) {
 			funLog("Issue on launching URL. Exception : " + e.getMessage());
 		}
@@ -536,5 +530,52 @@ public class CommonFunctions{
 			}
 		}
 	}
+	public void funFinalizeResults(){
+		boolean bExpected = true;
+	    Assert.assertEquals(Stage.getInstance().getStatus(), bExpected);
 
+	}
+	public void funStepValidate(String strType,String strActual,String strExpected,String strDescription,boolean bTakeScreenShot,boolean exitHandler){
+		
+		switch(strType.toUpperCase().trim())
+		{
+		case "TEXT":
+			if(strActual.toLowerCase().trim().contains(strExpected.toLowerCase().trim())){
+				if(bTakeScreenShot){
+					test.log(LogStatus.PASS, strDescription + " : Actual : "+strActual+ " and Expected is : "+ strExpected , test
+							.addScreenCapture(CommonFunctions.getInstance()
+									.funTakeScreenshot(
+											Thread.currentThread().getStackTrace()[1]
+													.getMethodName())));
+				}else{
+					test.log(LogStatus.PASS, strDescription + " : Actual : "+strActual+ " and Expected is : "+ strExpected, "");
+				}
+				funLog(strDescription);
+			}else{
+				Stage.getInstance().setStatus(false);
+				if(bTakeScreenShot){
+					test.log(LogStatus.FAIL, strDescription + " : Actual : "+strActual+ " and Expected is : "+ strExpected, test
+							.addScreenCapture(CommonFunctions.getInstance()
+									.funTakeScreenshot(
+											Thread.currentThread().getStackTrace()[1]
+													.getMethodName())));
+				}else{
+					test.log(LogStatus.FAIL, strDescription + " : Actual : "+strActual+ " and Expected is : "+ strExpected, "");
+				}
+				funLog(strDescription);
+				if(exitHandler){
+					funFinalizeResults();
+				}
+			}				
+			break;
+		case "ELEMENT":
+			
+			break;
+		default:
+			funLog("Exception Occured in validating : " + strDescription);
+			break;
+			
+		}
+
+	}
 }
