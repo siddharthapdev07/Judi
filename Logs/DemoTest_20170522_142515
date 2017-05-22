@@ -1,0 +1,15 @@
+[INFO] 2017-05-22 14:25:16 - funStartTestCase : ****************************************************************************************
+[INFO] 2017-05-22 14:25:16 - funStartTestCase : ------------------  DemoTest Execution is STARTED   ------------------------
+[INFO] 2017-05-22 14:25:16 - funStartTestCase : ****************************************************************************************
+[INFO] 2017-05-22 14:25:29 - funStepValidate : validate the Browser Title
+[INFO] 2017-05-22 14:25:47 - funEndTestCase : ------------------  DemoTest Execution is END   ---------------------------
+[INFO] 2017-05-22 14:25:47 - funStartTestCase : ****************************************************************************************
+[INFO] 2017-05-22 14:25:47 - funStartTestCase : ------------------  DemoTest3 Execution is STARTED   ------------------------
+[INFO] 2017-05-22 14:25:47 - funStartTestCase : ****************************************************************************************
+[ERROR] 2017-05-22 14:25:57 - funLaunchURL : Issue on launching URL. Exception : Error loading page
+Build info: version: '3.0.1', revision: '1969d75', time: '2016-10-18 09:49:13 -0700'
+System info: host: 'DESKTOP-8T83S39', ip: '192.168.102.0', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_131'
+Driver info: org.openqa.selenium.firefox.FirefoxDriver
+Capabilities [{rotatable=false, raisesAccessibilityExceptions=false, marionette=true, firefoxOptions={args=[], prefs={}}, appBuildId=20161031133903, version=, platform=XP, proxy={}, command_id=1, specificationLevel=0, acceptSslCerts=false, browserVersion=47.0.2, platformVersion=10.0, XULappId={ec8030f7-c20a-464f-9b0e-13a3a9e97384}, browserName=Firefox, takesScreenshot=true, takesElementScreenshot=true, platformName=Windows_NT, device=desktop}]
+Session ID: 2c267e2e-ca0d-4b83-b2ad-1a7d86839226NULL
+[INFO] 2017-05-22 14:25:57 - funEndTestCase : ------------------  DemoTest3 Execution is END   ---------------------------
