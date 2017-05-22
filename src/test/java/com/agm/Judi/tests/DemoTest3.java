@@ -81,11 +81,11 @@ public class DemoTest3 {
 		
 		//*********************************************  TEST FUNCTIONALITY START ************************************* 		
 		// Launch Application
-		commonFunctions.funLaunchURL("www.google.com");
+		commonFunctions.funLaunchURL(Initializer.getInstance().GetValue(
+				"app.test.test05"));
 
 		// Login Application
-//		applicationFunctions.funLoginApplication();		
-		
+		applicationFunctions.funLoginApplication();		
 		
 		
 		//*********************************************  TEST FUNCTIONALITY END ************************************* 
