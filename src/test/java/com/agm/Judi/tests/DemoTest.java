@@ -54,7 +54,7 @@ public class DemoTest {
 				+ strLogFileName + ".html", true);								// new instance for Extent Reports		
 		extent.loadConfig(new File(
 				"src/main/resources/Config-ExtentReports.xml"));		
-		test = extent.startTest("Demo_test ", "Demo Test");     				// starting test	
+		test = extent.startTest(this.getClass().getSimpleName(), this.getClass().getSimpleName());     				// starting test	
 		test.assignAuthor("Suresh Kumar Mylam");								// Set Category and author to report		
 		test.assignCategory("Regression");
 		
