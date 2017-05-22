@@ -64,7 +64,7 @@ public class ApplicationFunctions {
 			}
 		}catch(Exception e){
 			CommonFunctions.getInstance().funLog("Issue identifying the object - LogOut" + e.getMessage());
-			test.log(LogStatus.FAIL, "Password field verification",test.addScreenCapture(CommonFunctions.getInstance().funTakeScreenshot(Thread.currentThread().getStackTrace()[1].getMethodName())));
+			test.log(LogStatus.FAIL, "Issue identifying the object - LogOut",test.addScreenCapture(CommonFunctions.getInstance().funTakeScreenshot(Thread.currentThread().getStackTrace()[1].getMethodName())));
 		}
 	}
 	

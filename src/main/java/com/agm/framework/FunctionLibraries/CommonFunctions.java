@@ -95,6 +95,11 @@ public class CommonFunctions{
 				iTestID = 1079709;
 				iRunID 	= 2081;
 				break;
+			case "DEMOTEST3":
+				iCaseID = 541421;
+				iTestID = 1079709;
+				iRunID 	= 2081;
+				break;
 			default:
 				funLog("Issue on identifying the test case - Please add New Case for the running Test");				
 				
@@ -148,7 +153,7 @@ public class CommonFunctions{
 					.getInstance();
 			applicationFunctions.init(driver);
 			driver.get(strURL);
-			funStepValidate("TEXT", driver.getTitle().toString(), "AG Mednet Portal", "validate the Browser Title", true,true);
+			funStepValidate("TEXT", driver.getTitle().toString(), "AG Mednet Portal", "validate the Browser Title", true,false);
 		} catch (Exception e) {
 			funLog("Issue on launching URL. Exception : " + e.getMessage());
 		}
@@ -530,11 +535,26 @@ public class CommonFunctions{
 			}
 		}
 	}
+	
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funFinalizeResults() Description : This function finalize the results on failure step and terminate the execution
+	 * Author : Suresh Kumar,Mylam Date : 19 May 2017
+	 * Parameter : none
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
 	public void funFinalizeResults(){
 		boolean bExpected = true;
 	    Assert.assertEquals(Stage.getInstance().getStatus(), bExpected);
-
 	}
+	
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funStepValidate() Description : This function will compare the actual with expected values and returns result
+	 * Author : Suresh Kumar,Mylam Date : 22 May 2017
+	 * Parameter : strType : TEXT/ELEMENT,bTakeScreenShot : true/false, exitHandler : true/false
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
 	public void funStepValidate(String strType,String strActual,String strExpected,String strDescription,boolean bTakeScreenShot,boolean exitHandler){
 		
 		switch(strType.toUpperCase().trim())
