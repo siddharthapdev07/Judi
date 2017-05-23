@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
-
 //import javax.mail.Message;
 //import javax.mail.Session;
 //import javax.mail.Transport;
@@ -44,7 +43,7 @@ import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
-public class CommonFunctions{
+public class CommonFunctions {
 
 	// Creating singleton
 	private static CommonFunctions objCmf = null;
@@ -69,17 +68,17 @@ public class CommonFunctions{
 	public void init(ExtentTest test) {
 		this.test = test;
 	}
-	
+
 	public void init(AutoItX objAutoIT) {
 		this.objAutoIT = objAutoIT;
 	}
 
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	 * Function Name : funLoadTestDetailsFromTestRail() 
-	 * Description : This function will Load the TestID,Case ID and Run ID for the test case
-	 * Author : Suresh Kumar,Mylam 
-	 * Date : 17 May 2017 Parameter : strTestCaseName : Provide the test case name
+	 * Function Name : funLoadTestDetailsFromTestRail() Description : This
+	 * function will Load the TestID,Case ID and Run ID for the test case Author
+	 * : Suresh Kumar,Mylam Date : 17 May 2017 Parameter : strTestCaseName :
+	 * Provide the test case name
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
 	public void funLoadTestDetailsFromTestRail(String strTestCaseName) {
@@ -88,31 +87,31 @@ public class CommonFunctions{
 			case "DEMOTEST":
 				iCaseID = 541421;
 				iTestID = 1079709;
-				iRunID 	= 2081;
+				iRunID = 2081;
 				break;
 			case "DEMOTEST2":
 				iCaseID = 541421;
 				iTestID = 1079709;
-				iRunID 	= 2081;
+				iRunID = 2081;
 				break;
 			case "DEMOTEST3":
 				iCaseID = 541421;
 				iTestID = 1079709;
-				iRunID 	= 2081;
+				iRunID = 2081;
 				break;
 			default:
-				funLog("Issue on identifying the test case - Please add New Case for the running Test");				
-				
+				funLog("Issue on identifying the test case - Please add New Case for the running Test");
+
 			}
 			Stage.getInstance().setCaseID(iCaseID);
 			Stage.getInstance().setTestID(iTestID);
 			Stage.getInstance().setRunID(iRunID);
 		} catch (Exception e) {
-			funLog("Exception occured while setting test details. Exception : " + e.getMessage());
+			funLog("Exception occured while setting test details. Exception : "
+					+ e.getMessage());
 		}
 	}
-	
-	
+
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funLaunchURL() Description : This function will launch
@@ -153,15 +152,14 @@ public class CommonFunctions{
 					.getInstance();
 			applicationFunctions.init(driver);
 			driver.get(strURL);
-			funStepValidate("TEXT", driver.getTitle().toString(), "AG Mednet Portal", "validate the Browser Title", true,true);
+			funStepValidate("TEXT", driver.getTitle().toString(),
+					"AG Mednet Portal", "validate the Browser Title", true,
+					true);
 		} catch (Exception e) {
 			funLog("Issue on launching URL. Exception : " + e.getMessage());
 		}
 	}
 
-	
-	
-	
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funQuitBrowser() Description : This function will quit
@@ -457,7 +455,8 @@ public class CommonFunctions{
 	 * object for Click
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
-	public void funWaitAndAction(String objTitle, String objID,String strAction, String strInput)	{
+	public void funWaitAndAction(String objTitle, String objID,
+			String strAction, String strInput) {
 		boolean blnObject = false;
 		// Activate the window based on title
 		if (objTitle.trim().length() != 0) {
@@ -484,27 +483,31 @@ public class CommonFunctions{
 		}
 
 	}
-	
+
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	 * Function Name : funUpdateResultsToTestRail() Description : This function will update the Result statuus to TestRail
-	 * Author : Suresh Kumar,Mylam Date : 17 May 2017
-	 * Parameter : strResultStatus : Provide the result status
+	 * Function Name : funUpdateResultsToTestRail() Description : This function
+	 * will update the Result statuus to TestRail Author : Suresh Kumar,Mylam
+	 * Date : 17 May 2017 Parameter : strResultStatus : Provide the result
+	 * status
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
-	
+
 	public void funUpdateResultsToTestRail(String strResultStatus) {
 		JSONObject r;
 		List testCases = new ArrayList();
 		Map testCasesResults = new HashMap();
 		Map data = new HashMap();
-		
-//		strResultStatus = "PASS";								//Need to pass from test case
-		
-		APIClient client = new APIClient(Initializer.getInstance().GetValue("app.test.testRailURL"));
-		client.setUser(Initializer.getInstance().GetValue("app.test.testRailUsername"));
-		client.setPassword(Initializer.getInstance().GetValue("app.test.testRailUserPassword"));
-	
+
+		// strResultStatus = "PASS"; //Need to pass from test case
+
+		APIClient client = new APIClient(Initializer.getInstance().GetValue(
+				"app.test.testRailURL"));
+		client.setUser(Initializer.getInstance().GetValue(
+				"app.test.testRailUsername"));
+		client.setPassword(Initializer.getInstance().GetValue(
+				"app.test.testRailUserPassword"));
+
 		testCases.add(Stage.getInstance().getCaseID());
 		switch (strResultStatus) {
 		case "PASS":
@@ -517,85 +520,258 @@ public class CommonFunctions{
 			testCasesResults.put(Stage.getInstance().getTestID(), 4);
 			break;
 		}
-		
+
 		for (int i = 0; i < testCasesResults.size(); i++) {
-//			iTestID = (int) testCases.get(i);
-			data.put("status_id", testCasesResults.get(Stage.getInstance().getTestID()));
+			// iTestID = (int) testCases.get(i);
+			data.put("status_id",
+					testCasesResults.get(Stage.getInstance().getTestID()));
 			try {
-				r = (JSONObject) client.sendPost("add_result_for_case/"+ Stage.getInstance().getRunID() +"/"+ Stage.getInstance().getCaseID(), data);
+				r = (JSONObject) client.sendPost("add_result_for_case/"
+						+ Stage.getInstance().getRunID() + "/"
+						+ Stage.getInstance().getCaseID(), data);
 			} catch (MalformedURLException e) {
-				CommonFunctions.getInstance().funLog("Issue on forming the API. Exception : " + e.getMessage());
+				CommonFunctions.getInstance().funLog(
+						"Issue on forming the API. Exception : "
+								+ e.getMessage());
 				e.printStackTrace();
 			} catch (IOException e) {
-				CommonFunctions.getInstance().funLog("Issue with Test data used in API. Exception : " + e.getMessage());
+				CommonFunctions.getInstance().funLog(
+						"Issue with Test data used in API. Exception : "
+								+ e.getMessage());
 				e.printStackTrace();
 			} catch (APIException e) {
-				CommonFunctions.getInstance().funLog("Issue on sending API. Exception : " + e.getMessage());
+				CommonFunctions.getInstance().funLog(
+						"Issue on sending API. Exception : " + e.getMessage());
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	 * Function Name : funFinalizeResults() Description : This function finalize the results on failure step and terminate the execution
-	 * Author : Suresh Kumar,Mylam Date : 19 May 2017
-	 * Parameter : none
+	 * Function Name : funFinalizeResults() Description : This function finalize
+	 * the results on failure step and terminate the execution Author : Suresh
+	 * Kumar,Mylam Date : 19 May 2017 Parameter : none
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
-	public void funFinalizeResults(){
+	public void funFinalizeResults() {
 		boolean bExpected = true;
-	    Assert.assertEquals(Stage.getInstance().getStatus(), bExpected);
+		Assert.assertEquals(Stage.getInstance().getStatus(), bExpected);
 	}
-	
+
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	 * Function Name : funStepValidate() Description : This function will compare the actual with expected values and returns result
-	 * Author : Suresh Kumar,Mylam Date : 22 May 2017
-	 * Parameter : strType : TEXT/ELEMENT,bTakeScreenShot : true/false, exitHandler : true/false
+	 * Function Name : funStepValidate() Description : This function will
+	 * compare the actual with expected values and returns result Author :
+	 * Suresh Kumar,Mylam Date : 22 May 2017 Parameter : strType :
+	 * TEXT/ELEMENT,bTakeScreenShot : true/false, exitHandler : true/false
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
-	public void funStepValidate(String strType,String strActual,String strExpected,String strDescription,boolean bTakeScreenShot,boolean exitHandler){
-		
-		switch(strType.toUpperCase().trim())
-		{
-		case "TEXT":
-			if(strActual.toLowerCase().trim().contains(strExpected.toLowerCase().trim())){
-				if(bTakeScreenShot){
-					test.log(LogStatus.PASS, strDescription + " : Actual : "+strActual+ " and Expected is : "+ strExpected , test
-							.addScreenCapture(CommonFunctions.getInstance()
-									.funTakeScreenshot(
-											Thread.currentThread().getStackTrace()[1]
-													.getMethodName())));
-				}else{
-					test.log(LogStatus.PASS, strDescription + " : Actual : "+strActual+ " and Expected is : "+ strExpected, "");
+	public void funStepValidate(String strType, String strActual,
+			String strExpected, String strDescription, boolean bTakeScreenShot,
+			boolean exitHandler) {
+		try {
+			switch (strType.toUpperCase().trim()) {
+			case "TEXT":
+				if (strActual.toLowerCase().trim()
+						.contains(strExpected.toLowerCase().trim())) {
+					if (bTakeScreenShot) {
+						test.log(LogStatus.PASS, strDescription
+								+ " : Actual : " + strActual
+								+ " and Expected is : " + strExpected, test
+								.addScreenCapture(CommonFunctions.getInstance()
+										.funTakeScreenshot(
+												Thread.currentThread()
+														.getStackTrace()[1]
+														.getMethodName())));
+					} else {
+						test.log(LogStatus.PASS, strDescription
+								+ " : Actual : " + strActual
+								+ " and Expected is : " + strExpected, "");
+					}
+					funLog(strDescription);
+				} else {
+					Stage.getInstance().setStatus(false);
+					if (bTakeScreenShot) {
+						test.log(LogStatus.FAIL, strDescription
+								+ " : Actual : " + strActual
+								+ " and Expected is : " + strExpected, test
+								.addScreenCapture(CommonFunctions.getInstance()
+										.funTakeScreenshot(
+												Thread.currentThread()
+														.getStackTrace()[1]
+														.getMethodName())));
+					} else {
+						test.log(LogStatus.FAIL, strDescription
+								+ " : Actual : " + strActual
+								+ " and Expected is : " + strExpected, "");
+					}
+					funLog(strDescription);
+					if (exitHandler) {
+						funFinalizeResults();
+					}
 				}
-				funLog(strDescription);
-			}else{
-				Stage.getInstance().setStatus(false);
-				if(bTakeScreenShot){
-					test.log(LogStatus.FAIL, strDescription + " : Actual : "+strActual+ " and Expected is : "+ strExpected, test
-							.addScreenCapture(CommonFunctions.getInstance()
-									.funTakeScreenshot(
-											Thread.currentThread().getStackTrace()[1]
-													.getMethodName())));
-				}else{
-					test.log(LogStatus.FAIL, strDescription + " : Actual : "+strActual+ " and Expected is : "+ strExpected, "");
-				}
-				funLog(strDescription);
-				if(exitHandler){
-					funFinalizeResults();
-				}
-			}				
-			break;
-		case "ELEMENT":
-			
-			break;
-		default:
-			funLog("Exception Occured in validating : " + strDescription);
-			break;
-			
+				break;
+			default:
+				funLog("Exception Occured in validating : " + strDescription);
+				break;
+
+			}
+		} catch (Exception e) {
+			funLog("Issue on validating Text phrase : " + strDescription
+					+ " : Actual : " + strActual + " and Expected is : "
+					+ strExpected + " Exception is : " + e.getMessage());
 		}
 
+	}
+
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funElementValidate() Description : This function will
+	 * compare the actual with expected values and returns result Author :
+	 * Suresh Kumar,Mylam Date : 22 May 2017 Parameter : strType :
+	 * TEXT/ELEMENT,bTakeScreenShot : true/false, exitHandler : true/false
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+	public void funElementValidate(WebElement oElement, String strValidation,
+			String strElementDescription, boolean bTakeScreenShot,
+			boolean exitHandler) {
+		try {
+			switch (strValidation.toUpperCase().trim()) {
+			case "ISPRESENT":
+				if (oElement != null) {
+					if (bTakeScreenShot) {
+						test.log(LogStatus.PASS, strElementDescription
+								+ " : is present ", test
+								.addScreenCapture(CommonFunctions.getInstance()
+										.funTakeScreenshot(
+												Thread.currentThread()
+														.getStackTrace()[1]
+														.getMethodName())));
+					} else {
+						test.log(LogStatus.PASS, strElementDescription
+								+ " : is present ", "");
+					}
+					funLog(strElementDescription + " is present ");
+				} else {
+					test.log(LogStatus.FAIL, strElementDescription
+							+ " : is NOT present ", test
+							.addScreenCapture(CommonFunctions.getInstance()
+									.funTakeScreenshot(
+											Thread.currentThread()
+													.getStackTrace()[1]
+													.getMethodName())));
+				}
+				break;
+			case "ISVISIBLE":
+				if (oElement.isDisplayed()) {
+					if (bTakeScreenShot) {
+						test.log(LogStatus.PASS, strElementDescription
+								+ " : is Displayed ", test
+								.addScreenCapture(CommonFunctions.getInstance()
+										.funTakeScreenshot(
+												Thread.currentThread()
+														.getStackTrace()[1]
+														.getMethodName())));
+					} else {
+						test.log(LogStatus.PASS, strElementDescription
+								+ " : is Displayed ", "");
+					}
+					funLog(strElementDescription + " is present ");
+				} else {
+					test.log(LogStatus.FAIL, strElementDescription
+							+ " : is NOT Displayed ", test
+							.addScreenCapture(CommonFunctions.getInstance()
+									.funTakeScreenshot(
+											Thread.currentThread()
+													.getStackTrace()[1]
+													.getMethodName())));
+				}
+				break;
+			case "ISENABLE":
+				if (oElement.isEnabled()) {
+					if (bTakeScreenShot) {
+						test.log(LogStatus.PASS, strElementDescription
+								+ " : is Enabled ", test
+								.addScreenCapture(CommonFunctions.getInstance()
+										.funTakeScreenshot(
+												Thread.currentThread()
+														.getStackTrace()[1]
+														.getMethodName())));
+					} else {
+						test.log(LogStatus.PASS, strElementDescription
+								+ " : is Enabled ", "");
+					}
+					funLog(strElementDescription + " is present ");
+				} else {
+					test.log(LogStatus.FAIL, strElementDescription
+							+ " : is NOT Enabled ", test
+							.addScreenCapture(CommonFunctions.getInstance()
+									.funTakeScreenshot(
+											Thread.currentThread()
+													.getStackTrace()[1]
+													.getMethodName())));
+				}
+				break;
+			default:
+				funLog("No case statement defined for the given validation : "
+						+ strValidation);
+				break;
+			}
+		} catch (Exception e) {
+			funLog("Issue on validating element : " + strElementDescription
+					+ ", Exception : " + e.getMessage());
+		}
+
+	}
+
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funElementsValidate() Description : This function will
+	 * compare the actual with expected values and returns result Author :
+	 * Suresh Kumar,Mylam Date : 23 May 2017 Parameter : strType :
+	 * TEXT/ELEMENT,bTakeScreenShot : true/false, exitHandler : true/false
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+	public void funElementsValidate(List<WebElement> oElement,
+			String strValidation, String strElementDescription,
+			boolean bTakeScreenShot, boolean exitHandler) {
+		try {
+			switch (strValidation.toUpperCase().trim()) {
+			case "ISPRESENT":
+				if (oElement.size() != 0) {
+					if (bTakeScreenShot) {
+						test.log(LogStatus.PASS, strElementDescription
+								+ " : WebElements list is present ", test
+								.addScreenCapture(CommonFunctions.getInstance()
+										.funTakeScreenshot(
+												Thread.currentThread()
+														.getStackTrace()[1]
+														.getMethodName())));
+					} else {
+						test.log(LogStatus.PASS, strElementDescription
+								+ " : WebElements list is present ", "");
+					}
+					funLog(strElementDescription
+							+ " WebElements list is present ");
+				} else {
+					test.log(LogStatus.FAIL, strElementDescription
+							+ " : WebElements list is NOT present ", test
+							.addScreenCapture(CommonFunctions.getInstance()
+									.funTakeScreenshot(
+											Thread.currentThread()
+													.getStackTrace()[1]
+													.getMethodName())));
+				}
+				break;
+			default:
+				funLog("No case statement defined for the given validation : "
+						+ strValidation);
+				break;
+			}
+		} catch (Exception e) {
+			funLog("Issue on validating element : " + strElementDescription
+					+ ", Exception : " + e.getMessage());
+		}
 	}
 }

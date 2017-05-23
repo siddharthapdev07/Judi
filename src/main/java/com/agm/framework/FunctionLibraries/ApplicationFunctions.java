@@ -55,17 +55,19 @@ public class ApplicationFunctions {
 			CommonFunctions.getInstance().funLog("Issue identifying the object - LoginButton" + e.getMessage());
 			test.log(LogStatus.FAIL, "Exception in clicking the Login button",test.addScreenCapture(CommonFunctions.getInstance().funTakeScreenshot(Thread.currentThread().getStackTrace()[1].getMethodName())));
 		}
-		//Login Verification
-		try{		
-			if(CommonFunctions.getInstance().getElement(driver, "judi.test.home.logout").isDisplayed()==true){
-				test.log(LogStatus.PASS, "Login to application is successful",test.addScreenCapture(CommonFunctions.getInstance().funTakeScreenshot(Thread.currentThread().getStackTrace()[1].getMethodName())));
-			}else{
-				test.log(LogStatus.FAIL, "Login to application is Failed","");
-			}
-		}catch(Exception e){
-			CommonFunctions.getInstance().funLog("Issue identifying the object - LogOut" + e.getMessage());
-			test.log(LogStatus.FAIL, "Issue identifying the object - LogOut",test.addScreenCapture(CommonFunctions.getInstance().funTakeScreenshot(Thread.currentThread().getStackTrace()[1].getMethodName())));
-		}
+		//Login Validation
+//		try{		
+//			if(CommonFunctions.getInstance().getElement(driver, "judi.test.home.logout").isDisplayed()==true){
+//				test.log(LogStatus.PASS, "Login to application is successful",test.addScreenCapture(CommonFunctions.getInstance().funTakeScreenshot(Thread.currentThread().getStackTrace()[1].getMethodName())));
+//			}else{
+//				test.log(LogStatus.FAIL, "Login to application is Failed","");
+//			}
+//		}catch(Exception e){
+//			CommonFunctions.getInstance().funLog("Issue identifying the object - LogOut" + e.getMessage());
+//			test.log(LogStatus.FAIL, "Issue identifying the object - LogOut",test.addScreenCapture(CommonFunctions.getInstance().funTakeScreenshot(Thread.currentThread().getStackTrace()[1].getMethodName())));
+//		}
+		CommonFunctions.getInstance().funElementValidate(CommonFunctions.getInstance().getElement(driver, "judi.test.home.logout"),"ISPRESENT", "Validating LogOut element : ", true, true);
+		
 	}
 	
 
