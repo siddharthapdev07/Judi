@@ -89,6 +89,8 @@ public class DemoTest3 {
 		
 		
 		//*********************************************  TEST FUNCTIONALITY END ************************************* 
+		//Finalizing the reports
+		commonFunctions.funFinalizeResults();
 	}
 
 	@AfterMethod
