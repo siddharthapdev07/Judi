@@ -88,7 +88,7 @@ public class DemoTest {
 		//Navigate to Trial Admin page
 		applicationFunctions.funNavigate_TrialAdmin();
 		//Select Test Trail
-		applicationFunctions.funSelectTestTrial("AR6NHEI");				//AutomationTestTrial value is : AR6NHEI
+//		applicationFunctions.funSelectTestTrial("AR6NHEI");				//AutomationTestTrial value is : AR6NHEI
 
 		
 		//*********************************************  TEST FUNCTIONALITY END ************************************* 
