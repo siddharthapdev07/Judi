@@ -155,7 +155,7 @@ public class CommonFunctions {
 			driver.get(strURL);
 			funStepValidate("TEXT", driver.getTitle().toString(),
 					"AGMednet Portal", "validate the Browser Title", true,
-					true);
+					false);
 		} catch (Exception e) {
 			funLog("Issue on launching URL. Exception : " + e.getMessage());
 		}
