@@ -1,7 +1,12 @@
 package com.agm.framework.FunctionLibraries;
 
+import java.util.List;
+
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+
 import com.agm.framework.helpers.Initializer;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
@@ -32,6 +37,13 @@ public class ApplicationFunctions {
 		this.driver = driver;
 	}
 
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funLoginApplication() Description : This function Login
+	 * to the application Author : Suresh Kumar,Mylam Date : 23 May 2017
+	 * Parameter : NA
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
 	public void funLoginApplication() {
 		try {
 			CommonFunctions
@@ -98,4 +110,74 @@ public class ApplicationFunctions {
 
 	}
 
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funNavigate_TrialAdmin() Description : This function
+	 * Navigate to Trail Administration Author : Suresh Kumar,Mylam Date : 23
+	 * May 2017 Parameter : NA
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+	public void funNavigate_TrialAdmin() {
+		try {
+			CommonFunctions.getInstance()
+					.getElement(driver, "judi.test.home.trialAdmin").click();
+			CommonFunctions.getInstance().funWait(12);
+			test.log(LogStatus.PASS,
+					"Trial Administration is clicked successfully", "");
+		} catch (Exception e) {
+			CommonFunctions.getInstance().funLog(
+					"Issue identifying the object - Trial Administration "
+							+ e.getMessage());
+			test.log(
+					LogStatus.FAIL,
+					"Exception in identifying the Trial Administration element",
+					test.addScreenCapture(CommonFunctions.getInstance()
+							.funTakeScreenshot(
+									Thread.currentThread().getStackTrace()[1]
+											.getMethodName())));
+		}
+		CommonFunctions.getInstance().funWait(3);
+	}
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funSelectTestTrial() Description : This function
+	 * will select the test Trial in Trail drop down Author : Suresh Kumar,Mylam Date : 23
+	 * May 2017 Parameter : NA
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+	public void funSelectTestTrial(String strValue) {
+		try {
+			driver.switchTo().frame("asdfasdfasdfsdfa");
+			WebElement obj = CommonFunctions.getInstance().getElement(driver,
+					"judi.test.trialAdmin.Trail");
+	        JavascriptExecutor js = (JavascriptExecutor) driver;	        
+	         String jsCmd = "document.getElementsByName('selecttrial')[0].value='" + strValue + "'";
+	         js.executeScript(jsCmd);
+	         
+	         
+//			Select oE = new Select(CommonFunctions.getInstance().getElement(driver,
+//					"judi.test.trialAdmin.Trail"));
+//
+//			List<WebElement> allOptions = oE.getOptions();
+//		    for (WebElement oelement : allOptions) {
+//		        if(oelement.getText().toLowerCase().trim().equalsIgnoreCase(strValue)){ 
+//		        	oelement.click();
+//		        System.out.println(oelement.getText());
+//		        CommonFunctions.getInstance().funLog(strValue + " is present and selected");
+//		        }
+//		    }
+		} catch (Exception e) {
+			CommonFunctions.getInstance().funLog("Issue on Identifying drop down : " + strValue
+					+ ", Exception : " + e.getMessage());
+			test.log(LogStatus.FAIL, strValue
+					+ " is NOT present in the drop down ", test
+					.addScreenCapture(CommonFunctions.getInstance()
+							.funTakeScreenshot(
+									Thread.currentThread()
+											.getStackTrace()[1]
+											.getMethodName())));
+		}	
+		driver.switchTo().defaultContent();
+		CommonFunctions.getInstance().funWait(1);		
+	}
 }

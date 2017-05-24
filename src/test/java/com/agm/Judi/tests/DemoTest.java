@@ -83,11 +83,13 @@ public class DemoTest {
 		// Launch Application
 		commonFunctions.funLaunchURL(Initializer.getInstance().GetValue(
 				"app.test.test05"));
-
 		// Login Application
 		applicationFunctions.funLoginApplication();		
-		
-		
+		//Navigate to Trial Admin page
+		applicationFunctions.funNavigate_TrialAdmin();
+		//Select Test Trail
+		applicationFunctions.funSelectTestTrial("AR6NHEI");				//AutomationTestTrial value is : AR6NHEI
+
 		
 		//*********************************************  TEST FUNCTIONALITY END ************************************* 
 		//Finalizing the reports
@@ -96,13 +98,13 @@ public class DemoTest {
 
 	@AfterMethod
 	public void afterMethod(ITestResult result) {		
-		try {
-			CommonFunctions.getInstance().funQuitBrowser();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			CommonFunctions.getInstance().funLog(
-					"Issue in terminating the browser");
-		}
+//		try {
+//			CommonFunctions.getInstance().funQuitBrowser();
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			CommonFunctions.getInstance().funLog(
+//					"Issue in terminating the browser");
+//		}
 		// ending test
 		extent.endTest(test);
 		// writing everything to document

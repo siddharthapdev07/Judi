@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
+
 //import javax.mail.Message;
 //import javax.mail.Session;
 //import javax.mail.Transport;
@@ -28,6 +29,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.ITestResult;
 
@@ -35,7 +37,6 @@ import autoitx4java.AutoItX;
 
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
-
 import com.agm.simple.JSONObject;
 import com.agm.testrail.APIClient;
 import com.agm.testrail.APIException;
@@ -294,8 +295,7 @@ public class CommonFunctions {
 				element = driver.findElements(By.xpath(propertyValue));
 				break;
 			case "LINKTEXT":
-				// element =
-				// TAFInitializers.driver.findElement(By.linkText(propertyValue));
+	
 				break;
 			}
 		} catch (Exception e) {
@@ -771,6 +771,43 @@ public class CommonFunctions {
 			}
 		} catch (Exception e) {
 			funLog("Issue on validating element : " + strElementDescription
+					+ ", Exception : " + e.getMessage());
+		}
+	}
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funElementsValidate() Description : This function will
+	 * compare the actual with expected values and returns result Author :
+	 * Suresh Kumar,Mylam Date : 23 May 2017 Parameter : strType :
+	 * TEXT/ELEMENT,bTakeScreenShot : true/false, exitHandler : true/false
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+	public void funSelectValidate(List<WebElement> list,
+			String strValue, String strElementDescription,
+			boolean bTakeScreenShot, boolean exitHandler) {
+		boolean found= false;
+		try {
+			Select oE = new Select((WebElement) list);
+			List<WebElement> allOptions = oE.getOptions();
+		    for (WebElement element : allOptions) {
+		        if(element.getText().toLowerCase().trim().contains(strValue));
+		        element.click();
+		        found = true;
+		    }
+			
+			if(found) {
+		        funLog(strElementDescription + " is present ");
+				test.log(LogStatus.PASS, strValue
+						+ " is NOT present in the drop down , field : "+ strElementDescription, test
+						.addScreenCapture(CommonFunctions.getInstance()
+								.funTakeScreenshot(
+										Thread.currentThread()
+												.getStackTrace()[1]
+												.getMethodName())));
+			}			
+
+		} catch (Exception e) {
+			funLog("Issue on Identifying drop down : " + strElementDescription
 					+ ", Exception : " + e.getMessage());
 		}
 	}
