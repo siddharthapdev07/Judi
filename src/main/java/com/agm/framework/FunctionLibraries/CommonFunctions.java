@@ -250,8 +250,7 @@ public class CommonFunctions {
 				element = driver.findElement(By.xpath(propertyValue));
 				break;
 			case "LINKTEXT":
-				// element =
-				// TAFInitializers.driver.findElement(By.linkText(propertyValue));
+				 element = driver.findElement(By.linkText(propertyValue));
 				break;
 			}
 		} catch (Exception e) {
