@@ -42,28 +42,23 @@ public class DemoTest {
 		strLogFileName = this.getClass().getSimpleName()
 				+ "_"
 				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
-						.getInstance().getTime());									// Setting the Log file path in system variables
+						.getInstance().getTime());														// Setting the Log file path in system variables
 		System.setProperty("logFileName", strLogFileName);
 		CommonFunctions.getInstance().funStartTestCase(
-				this.getClass().getSimpleName());
-		
-		// ********************************* R-E-P-O-R-T-S     ***************************************
-		
+				this.getClass().getSimpleName());		
+		// ********************************* R-E-P-O-R-T-S     ***************************************		
 		extent = new ExtentReports(Initializer.getInstance().GetValue(
 				"java.results.path")
-				+ strLogFileName + ".html", true);								// new instance for Extent Reports		
+				+ strLogFileName + ".html", true);														// new instance for Extent Reports		
 		extent.loadConfig(new File(
 				"src/main/resources/Config-ExtentReports.xml"));		
-		test = extent.startTest(this.getClass().getSimpleName(), this.getClass().getSimpleName());     				// starting test	
-		test.assignAuthor("Suresh Kumar Mylam");								// Set Category and author to report		
-		test.assignCategory("Regression");
-		
-		// ********************************* AUTOIT SETUP   *****************************************	
-		
+		test = extent.startTest(this.getClass().getSimpleName(), this.getClass().getSimpleName());     	// starting test	
+		test.assignAuthor("Suresh Kumar Mylam");														// Set Category and author to report		
+		test.assignCategory("Regression");		
+		// ********************************* AUTOIT SETUP   *****************************************			
 		File file = new File(Initializer.getInstance().GetValue("java.autoit.jacob"));		
 		System.setProperty(LibraryLoader.JACOB_DLL_PATH, file.getAbsolutePath());
-		objAutoIT = new AutoItX();
-		
+		objAutoIT = new AutoItX();		
 		// ********************************* TestRail details -Static Data   *****************************************
 		CommonFunctions.getInstance().funLoadTestDetailsFromTestRail(this.getClass().getSimpleName());
 	}
@@ -88,8 +83,12 @@ public class DemoTest {
 		//Navigate to Trial Admin page
 		applicationFunctions.funNavigate_TrialAdmin();
 		//Select Test Trail
-//		applicationFunctions.funSelectTestTrial("AR6NHEI");				//AutomationTestTrial value is : AR6NHEI
-
+		applicationFunctions.funSelectTestTrial("AutomationTestTrial");	
+		//Invite Users
+		applicationFunctions.funInviteUser("autotest_freetodelete3@mx-intr.agmednet.net", "Event Coordinator");
+		//Register users
+		applicationFunctions.funRegistration("autotest_freetodelete3@mx-intr.agmednet.net");
+		
 		
 		//*********************************************  TEST FUNCTIONALITY END ************************************* 
 		//Finalizing the reports
@@ -114,7 +113,6 @@ public class DemoTest {
 		    case ITestResult.SUCCESS:
 		    	CommonFunctions.getInstance().funUpdateResultsToTestRail("PASS");
 		        break;
-
 		    case ITestResult.FAILURE:
 		    	CommonFunctions.getInstance().funUpdateResultsToTestRail("FAIL");
 		        break;
