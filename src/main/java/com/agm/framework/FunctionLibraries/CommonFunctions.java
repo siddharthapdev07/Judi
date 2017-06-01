@@ -14,10 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import javax.imageio.ImageIO;
-
-
 //import javax.mail.Message;
 //import javax.mail.Session;
 //import javax.mail.Transport;
@@ -32,14 +29,13 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.ITestResult;
-
 import autoitx4java.AutoItX;
-
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
 import com.agm.simple.JSONObject;
 import com.agm.testrail.APIClient;
 import com.agm.testrail.APIException;
+import com.jacob.com.LibraryLoader;
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
@@ -50,8 +46,18 @@ public class CommonFunctions {
 	private static CommonFunctions objCmf = null;
 
 	public WebDriver driver = null;
-	public ExtentTest test = null;
+//	public ExtentTest test = null;
+//	private AutoItX objAutoIT = null;
+	
+	//=========================	
+	public String strLogFileName;
+	public boolean iStatus = true;
 	private AutoItX objAutoIT = null;
+	public ExtentReports extent;
+	public ExtentTest test;
+	public String strTestCaseName;
+	//=========================
+	
 	int iCaseID;
 	int iTestID;
 	int iRunID;
@@ -113,53 +119,7 @@ public class CommonFunctions {
 		}
 	}
 
-	/*
-	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	 * Function Name : funLaunchURL() Description : This function will launch
-	 * URL Author : Suresh Kumar,Mylam Date : 03 May 2017 Parameter : strBrowser
-	 * = iexplore.exe/chrome, strURL = URL
-	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	 */
-	public void funLaunchURL(String strURL) {
-		String strBrowser = Initializer.getInstance().GetValue("gui.browser");
-
-		try {
-			// Killing opened browser by process
-			funKillbyProcess(strBrowser);
-			// FirefoxProfile prof;
-			switch (strBrowser.toUpperCase()) {
-			case "FIREFOX":
-				System.setProperty("webdriver.gecko.driver", Initializer
-						.getInstance().GetValue("java.firefox.path"));
-				driver = new FirefoxDriver();
-				break;
-			case "IE":
-				System.setProperty("webdriver.ie.driver", Initializer
-						.getInstance().GetValue("java.ie.path"));
-				driver = new InternetExplorerDriver();
-				break;
-			case "CHROME":
-				System.setProperty("webdriver.chrome.driver", Initializer
-						.getInstance().GetValue("java.chrome.path"));
-				driver = new ChromeDriver();
-				break;
-			default:
-				System.setProperty("webdriver.gecko.driver", Initializer
-						.getInstance().GetValue("java.firefox.path"));
-				driver = new FirefoxDriver();
-			}
-			driver.manage().window().maximize();
-			ApplicationFunctions applicationFunctions = ApplicationFunctions
-					.getInstance();
-			applicationFunctions.init(driver);
-			driver.get(strURL);
-			funStepValidate("TEXT", driver.getTitle().toString(),
-					"AG Mednet Portal", "validate the Browser Title", true,
-					false);
-		} catch (Exception e) {
-			funLog("Issue on launching URL. Exception : " + e.getMessage());
-		}
-	}
+	
 
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -809,5 +769,97 @@ public class CommonFunctions {
 			funLog("Issue on Identifying drop down : " + strElementDescription
 					+ ", Exception : " + e.getMessage());
 		}
+	}
+
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funBeforeTest() Description : This function will setup
+	 * the required configurations and this needs to be executed before every
+	 * test Author : Suresh Kumar,Mylam Date : 01 Jun 2017 Parameter : strType :
+	 * TEXT/ELEMENT,bTakeScreenShot : true/false, exitHandler : true/false
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+
+	public void funBeforeTest() {
+		// ********************************* INITIAL SETUP
+		// ************************************************
+		Stage.getInstance().setStatus(iStatus);
+		strTestCaseName = sun.reflect.Reflection.getCallerClass(2)
+				.getSimpleName();
+		strLogFileName = strTestCaseName
+				+ "_"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
+						.getInstance().getTime());
+		// Setting the Log file path in system variables
+		System.setProperty("logFileName", strLogFileName);
+		funStartTestCase(strLogFileName);
+		
+		// ********************************* R-E-P-O-R-T-S
+		// **********************************************
+		// new instance for Extent Reports
+		extent = new ExtentReports(Initializer.getInstance().GetValue(
+				"java.results.path")
+				+ strLogFileName + ".html", true);
+		extent.loadConfig(new File(
+				"src/main/resources/Config-ExtentReports.xml"));
+		// starting test
+		test = extent.startTest(strTestCaseName, strTestCaseName);
+		// Set Category and author to report
+		test.assignAuthor("Suresh Kumar Mylam");
+		test.assignCategory("Regression");
+		
+		// ********************************* AUTOIT SETUP
+		// ************************************************
+		File file = new File(Initializer.getInstance().GetValue(
+				"java.autoit.jacob"));
+		System.setProperty(LibraryLoader.JACOB_DLL_PATH, file.getAbsolutePath());
+		objAutoIT = new AutoItX();
+		// ********************************* TestRail details -Static Data
+		// ***************************
+		funLoadTestDetailsFromTestRail(strTestCaseName);
+
+		// Initialize test object in ApplicationFunctions
+		ApplicationFunctions applicationFunctions = ApplicationFunctions
+				.getInstance();
+		applicationFunctions.init(test);
+	}
+
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funAfterTest() Description : This function will close the
+	 * all opened connections and terminate the script 
+	 * Author : Suresh Kumar,Mylam Date : 01 Jun 2017 Parameter : strType :
+	 * TEXT/ELEMENT,bTakeScreenShot : true/false, exitHandler : true/false
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+
+	public void funAfterTest(ITestResult result) {		
+		try {
+			funQuitBrowser();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			CommonFunctions.getInstance().funLog(
+					"Issue in terminating the browser");
+		}
+		// ending test
+		extent.endTest(test);
+		// writing everything to document
+		extent.flush();
+		try{
+		    switch (result.getStatus()) {
+		    case ITestResult.SUCCESS:
+		    	CommonFunctions.getInstance().funUpdateResultsToTestRail("PASS");
+		        break;
+		    case ITestResult.FAILURE:
+		    	CommonFunctions.getInstance().funUpdateResultsToTestRail("FAIL");
+		        break;
+		    default:
+		        throw new RuntimeException("Invalid status");
+		    }
+			}catch(Exception e){
+				CommonFunctions.getInstance().funLog("Invalid Result status");
+			}
+		CommonFunctions.getInstance().funEndTestCase(strTestCaseName);
+	
 	}
 }

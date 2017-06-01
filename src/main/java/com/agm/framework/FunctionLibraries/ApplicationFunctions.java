@@ -7,6 +7,9 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.Select;
 
 import com.agm.framework.helpers.Initializer;
@@ -38,6 +41,54 @@ public class ApplicationFunctions {
 	public void init(WebDriver driver) {
 		this.driver = driver;
 	}
+	
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funLaunchURL() Description : This function will launch
+	 * URL Author : Suresh Kumar,Mylam Date : 03 May 2017 Parameter : strBrowser
+	 * = iexplore.exe/chrome, strURL = URL
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+	public void funLaunchURL(String strURL) {
+		String strBrowser = Initializer.getInstance().GetValue("gui.browser");
+
+		try {
+			// Killing opened browser by process
+			CommonFunctions.getInstance().funKillbyProcess(strBrowser);
+			// FirefoxProfile prof;
+			switch (strBrowser.toUpperCase()) {
+			case "FIREFOX":
+				System.setProperty("webdriver.gecko.driver", Initializer
+						.getInstance().GetValue("java.firefox.path"));
+				driver = new FirefoxDriver();
+				break;
+			case "IE":
+				System.setProperty("webdriver.ie.driver", Initializer
+						.getInstance().GetValue("java.ie.path"));
+				driver = new InternetExplorerDriver();
+				break;
+			case "CHROME":
+				System.setProperty("webdriver.chrome.driver", Initializer
+						.getInstance().GetValue("java.chrome.path"));
+				driver = new ChromeDriver();
+				break;
+			default:
+				System.setProperty("webdriver.gecko.driver", Initializer
+						.getInstance().GetValue("java.firefox.path"));
+				driver = new FirefoxDriver();
+			}
+			driver.manage().window().maximize();
+			ApplicationFunctions applicationFunctions = ApplicationFunctions
+					.getInstance();
+			applicationFunctions.init(driver);
+			driver.get(strURL);
+			CommonFunctions.getInstance().funStepValidate("TEXT", driver.getTitle().toString(),
+					"AG Mednet Portal", "validate the Browser Title", true,
+					false);
+		} catch (Exception e) {
+			CommonFunctions.getInstance().funLog("Issue on launching URL. Exception : " + e.getMessage());
+		}
+	}
 
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -47,6 +98,9 @@ public class ApplicationFunctions {
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
 	public void funLoginApplication() {
+		//Launch URL 
+		funLaunchURL(Initializer.getInstance().GetValue(
+				"app.test.test05"));
 		try {
 			CommonFunctions
 					.getInstance()
@@ -161,6 +215,8 @@ public class ApplicationFunctions {
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
 	public void funSelectTestTrial(String strValue) {
+		//Navigate to Trial Admin page
+		funNavigate_TrialAdmin();
 		driver.switchTo().frame("asdfasdfasdfsdfa");
 		// Navigate to Users page
 		try {
