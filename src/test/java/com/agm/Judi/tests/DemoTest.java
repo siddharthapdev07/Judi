@@ -18,6 +18,7 @@ import autoitx4java.AutoItX;
 import com.agm.framework.FunctionLibraries.ApplicationFunctions;
 import com.agm.framework.FunctionLibraries.CommonFunctions;
 import com.agm.framework.FunctionLibraries.DB;
+import com.agm.framework.FunctionLibraries.TestScripts;
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
 import com.jacob.com.LibraryLoader;
@@ -26,12 +27,10 @@ import com.relevantcodes.extentreports.ExtentTest;
 
 public class DemoTest {
 
-	public String strSQLQuery;
-	public String strField;
 	public ITestResult result;
 	
-	ApplicationFunctions applicationFunctions = ApplicationFunctions.getInstance();
 	CommonFunctions commonFunctions = CommonFunctions.getInstance();
+	TestScripts testScripts = TestScripts.getInstance();
 	
 	@BeforeMethod
 	public void beforeMethod() {		
@@ -39,16 +38,10 @@ public class DemoTest {
 	}
 
 	@Test
-	public void Test() {		
-		// Login Application
-		applicationFunctions.funLoginApplication();		
-		//Select Test Trail
-		applicationFunctions.funSelectTestTrial("AutomationTestTrial");	
-		//Invite Users
-		applicationFunctions.funInviteUser("autotest_freetodelete3@mx-intr.agmednet.net", "Event Coordinator");
-		//Register users
-		applicationFunctions.funRegistration("autotest_freetodelete3@mx-intr.agmednet.net");
-		
+	public void Test() {	
+		//Test Script
+		testScripts.DemoTest();	
+	
 		//Finalizing the reports
 		commonFunctions.funFinalizeResults();
 		

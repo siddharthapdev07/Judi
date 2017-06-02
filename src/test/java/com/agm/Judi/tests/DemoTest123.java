@@ -18,6 +18,7 @@ import autoitx4java.AutoItX;
 import com.agm.framework.FunctionLibraries.ApplicationFunctions;
 import com.agm.framework.FunctionLibraries.CommonFunctions;
 import com.agm.framework.FunctionLibraries.DB;
+import com.agm.framework.FunctionLibraries.TestData;
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
 import com.jacob.com.LibraryLoader;
@@ -60,7 +61,7 @@ public class DemoTest123 {
 		System.setProperty(LibraryLoader.JACOB_DLL_PATH, file.getAbsolutePath());
 		objAutoIT = new AutoItX();		
 		// ********************************* TestRail details -Static Data   *****************************************
-		CommonFunctions.getInstance().funLoadTestDetailsFromTestRail(this.getClass().getSimpleName());
+		TestData.getInstance().funLoadTestData(this.getClass().getSimpleName());
 	}
 
 	@Test
