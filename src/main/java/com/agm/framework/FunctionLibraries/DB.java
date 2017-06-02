@@ -8,6 +8,8 @@ import java.sql.Statement;
 
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
+import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
 
 public class DB {
 
@@ -15,6 +17,9 @@ public class DB {
 	public Statement st;
 	public String strURL;
 	public ResultSet rs;
+	public ExtentTest test = null;
+	public String strSQLQuery=null;
+	public String strField = null;
 	private static DB objDB = null;
 	private DB() {
 	}
@@ -25,7 +30,14 @@ public class DB {
 			objDB = new DB();
 		return objDB;
 	}
-
+	
+	public void init(ExtentTest test) {
+		this.test = test;
+	}
+	
+	ApplicationFunctions applicationFunctions = ApplicationFunctions
+			.getInstance();
+	CommonFunctions commonFunctions = CommonFunctions.getInstance();
 	Initializer initializer = Initializer.getInstance();
 	Stage stage = Stage.getInstance();
 	
@@ -101,5 +113,21 @@ public class DB {
 		
 		return strFieldValue;
 	}
+	
+	public void funValidateInviteUser(String strEmail, String strRole) {
+
+		funConnectDB(initializer.GetValue("db.env"),
+				initializer.GetValue("db.test05.dbname.portal"));
+		strSQLQuery = "select trial_id from pendingtrialuser where emailaddress = '"
+				+ strEmail + "' and roleenum = '" + strRole + "'";
+		strField = funExecuteQuery(strSQLQuery, "trial_id");
+		if (strField != null) {
+
+		}else{
+			commonFunctions.funLog("User is not invited successfully, please check the invite user functionlaity"	);
+			test.log(LogStatus.FAIL, "User is not invited successfully, please check the invite user functionlaity","");
+		}
+	}
+	
 
 }

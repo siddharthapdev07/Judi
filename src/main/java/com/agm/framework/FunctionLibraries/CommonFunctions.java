@@ -18,6 +18,8 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 
+
+
 //import javax.mail.Message;
 //import javax.mail.Session;
 //import javax.mail.Transport;
@@ -58,9 +60,9 @@ public class CommonFunctions {
 	public ExtentTest test;
 	public String strTestCaseName;
 
-	private CommonFunctions() {
-
-	}
+//	private CommonFunctions() {
+//
+//	}
 
 	public static CommonFunctions getInstance() {
 		if (objCmf == null)
@@ -75,14 +77,6 @@ public class CommonFunctions {
 	public void init(AutoItX objAutoIT) {
 		this.objAutoIT = objAutoIT;
 	}
-
-	TestScripts testScripts = TestScripts.getInstance();
-	TestData testData = TestData.getInstance();
-	ApplicationFunctions applicationFunctions = ApplicationFunctions
-			.getInstance();
-	DB db = DB.getInstance();
-	Initializer initializer = Initializer.getInstance();
-	Stage stage = Stage.getInstance();
 	
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -150,9 +144,9 @@ public class CommonFunctions {
 	public WebElement getElement(WebDriver driver, String propertyName) {
 		WebElement element = null;
 
-		String propertyValue = initializer.GetValue(propertyName)
+		String propertyValue = Initializer.getInstance().GetValue(propertyName)
 				.trim();
-		String propertyType = initializer.GetType(propertyName)
+		String propertyType = Initializer.getInstance().GetType(propertyName)
 				.trim();
 
 		try {
@@ -194,9 +188,9 @@ public class CommonFunctions {
 	public List<WebElement> getElements(WebDriver driver, String propertyName) {
 		List<WebElement> element = null;
 
-		String propertyValue = initializer.GetValue(propertyName)
+		String propertyValue = Initializer.getInstance().GetValue(propertyName)
 				.trim();
-		String propertyType = initializer.GetType(propertyName)
+		String propertyType = Initializer.getInstance().GetType(propertyName)
 				.trim();
 
 		try {
@@ -247,10 +241,10 @@ public class CommonFunctions {
 		}
 
 		if (strMessage.toUpperCase().contains("ISSUE")) {
-			stage.getLog()
+			Stage.getInstance().getLog()
 					.error(strMethodCalling + " : " + strMessage);
 		} else {
-			stage.getLog()
+			Stage.getInstance().getLog()
 					.info(strMethodCalling + " : " + strMessage);
 		}
 
@@ -267,15 +261,15 @@ public class CommonFunctions {
 	 */
 	// public void funSendEmail(String strStatus, String strApplicationName,
 	// String strContent) {
-	// String to = initializer.GetValue("email.to");
-	// String cc = initializer.GetValue("email.cc");
-	// String from = initializer.GetValue("email.from");
+	// String to = Initializer.getInstance().GetValue("email.to");
+	// String cc = Initializer.getInstance().GetValue("email.cc");
+	// String from = Initializer.getInstance().GetValue("email.from");
 	//
 	// Properties prop = System.getProperties();
 	// prop.setProperty("mail.smtp.host",
-	// initializer.GetValue("email.hostname"));
+	// Initializer.getInstance().GetValue("email.hostname"));
 	// prop.setProperty("mail.smtp.port",
-	// initializer.GetValue("email.port"));
+	// Initializer.getInstance().GetValue("email.port"));
 	//
 	// Session sess = Session.getDefaultInstance(prop);
 	//
@@ -326,9 +320,9 @@ public class CommonFunctions {
 					Toolkit.getDefaultToolkit().getScreenSize()));
 			strFileName = strImgName + formatter.format(now.getTime()) + ".jpg";
 			strFileName = strFileName.replace(" ", "");
-			ImageIO.write(image, "jpg", new File(initializer
+			ImageIO.write(image, "jpg", new File(Initializer.getInstance()
 					.GetValue("java.error.path") + strFileName));
-			strFileName = new File(initializer.GetValue(
+			strFileName = new File(Initializer.getInstance().GetValue(
 					"java.error.path")
 					+ strFileName).getAbsolutePath();
 
@@ -423,34 +417,34 @@ public class CommonFunctions {
 
 		// strResultStatus = "PASS"; //Need to pass from test case
 
-		APIClient client = new APIClient(initializer.GetValue(
+		APIClient client = new APIClient(Initializer.getInstance().GetValue(
 				"app.test.testRailURL"));
-		client.setUser(initializer.GetValue(
+		client.setUser(Initializer.getInstance().GetValue(
 				"app.test.testRailUsername"));
-		client.setPassword(initializer.GetValue(
+		client.setPassword(Initializer.getInstance().GetValue(
 				"app.test.testRailUserPassword"));
 
-		testCases.add(stage.getCaseID());
+		testCases.add(Stage.getInstance().getCaseID());
 		switch (strResultStatus) {
 		case "PASS":
-			testCasesResults.put(stage.getTestID(), 1);
+			testCasesResults.put(Stage.getInstance().getTestID(), 1);
 			break;
 		case "FAIL":
-			testCasesResults.put(stage.getTestID(), 5);
+			testCasesResults.put(Stage.getInstance().getTestID(), 5);
 			break;
 		default:
-			testCasesResults.put(stage.getTestID(), 4);
+			testCasesResults.put(Stage.getInstance().getTestID(), 4);
 			break;
 		}
 
 		for (int i = 0; i < testCasesResults.size(); i++) {
 			// iTestID = (int) testCases.get(i);
 			data.put("status_id",
-					testCasesResults.get(stage.getTestID()));
+					testCasesResults.get(Stage.getInstance().getTestID()));
 			try {
 				r = (JSONObject) client.sendPost("add_result_for_case/"
-						+ stage.getRunID() + "/"
-						+ stage.getCaseID(), data);
+						+ Stage.getInstance().getRunID() + "/"
+						+ Stage.getInstance().getCaseID(), data);
 			} catch (MalformedURLException e) {
 				CommonFunctions.getInstance().funLog(
 						"Issue on forming the API. Exception : "
@@ -478,7 +472,7 @@ public class CommonFunctions {
 	 */
 	public void funFinalizeResults() {
 		boolean bExpected = true;
-		Assert.assertEquals(stage.getStatus(), bExpected);
+		Assert.assertEquals(Stage.getInstance().getStatus(), bExpected);
 	}
 
 	/*
@@ -513,7 +507,7 @@ public class CommonFunctions {
 					}
 					funLog(strDescription);
 				} else {
-					stage.setStatus(false);
+					Stage.getInstance().setStatus(false);
 					if (bTakeScreenShot) {
 						test.log(LogStatus.FAIL, strDescription
 								+ " : Actual : " + strActual
@@ -751,7 +745,7 @@ public class CommonFunctions {
 	public void funBeforeTest() {
 		// ********************************* INITIAL SETUP
 		// ************************************************
-		stage.setStatus(iStatus);
+		Stage.getInstance().setStatus(iStatus);
 		strTestCaseName = sun.reflect.Reflection.getCallerClass(2)
 				.getSimpleName();
 		strLogFileName = strTestCaseName
@@ -765,7 +759,7 @@ public class CommonFunctions {
 		// ********************************* R-E-P-O-R-T-S
 		// **********************************************
 		// new instance for Extent Reports
-		extent = new ExtentReports(initializer.GetValue(
+		extent = new ExtentReports(Initializer.getInstance().GetValue(
 				"java.results.path")
 				+ strLogFileName + ".html", true);
 		extent.loadConfig(new File(
@@ -778,18 +772,22 @@ public class CommonFunctions {
 
 		// ********************************* AUTOIT SETUP
 		// ************************************************
-		File file = new File(initializer.GetValue(
+		File file = new File(Initializer.getInstance().GetValue(
 				"java.autoit.jacob"));
 		System.setProperty(LibraryLoader.JACOB_DLL_PATH, file.getAbsolutePath());
 		objAutoIT = new AutoItX();
 		// ********************************* TestRail details -Static Data
 		// ***************************
-		testData.funLoadTestData(strTestCaseName);
+//		ApplicationFunctions.getInstance() ApplicationFunctions.getInstance() = ApplicationFunctions.getInstance()
+//				.getInstance();
+//		TestData.getInstance() TestData.getInstance() = TestData.getInstance().getInstance();
+//		TestData.getInstance().funLoadTestData.getInstance()(strTestCaseName);
 
-		// Initialize test object in ApplicationFunctions
-		// ApplicationFunctions applicationFunctions = ApplicationFunctions
-		// .getInstance();
-		applicationFunctions.init(test);
+		// Initialize test object in other Libraries
+		ApplicationFunctions.getInstance().init(test);
+		DB.getInstance().init(test);
+		TestData.getInstance().init(test);
+		TestScripts.getInstance().init(test);		
 	}
 
 	/*

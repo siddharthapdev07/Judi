@@ -2,10 +2,12 @@ package com.agm.framework.FunctionLibraries;
 
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
+import com.relevantcodes.extentreports.ExtentTest;
 
 public class TestData {
 
 	private static TestData objTd = null;
+	public ExtentTest test = null;
 
 	public static TestData getInstance() {
 		if (objTd == null)
@@ -17,13 +19,10 @@ public class TestData {
 	int iTestID;
 	int iRunID;
 
-	ApplicationFunctions applicationFunctions = ApplicationFunctions
-			.getInstance();
-	CommonFunctions commonFunctions = CommonFunctions.getInstance();
-	TestScripts testScripts = TestScripts.getInstance();
-	DB db = DB.getInstance();
-	Initializer initializer = Initializer.getInstance();
-	Stage stage = Stage.getInstance();
+	public void init(ExtentTest test) {
+		this.test = test;
+	}
+	
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funLoadTestDetailsFromTestRail() Description : This
@@ -38,7 +37,7 @@ public class TestData {
 			case "DEMOTEST":
 				iCaseID = 541421;
 				iTestID = 1079709;
-				iRunID = 2081;
+				iRunID = 2081;				
 				break;
 			case "DEMOTEST2":
 				iCaseID = 541421;
@@ -51,7 +50,7 @@ public class TestData {
 				iRunID = 2081;
 				break;
 			default:
-				commonFunctions
+				CommonFunctions.getInstance()
 						.funLog("Issue on identifying the test case - Please add New Case for the running Test");
 
 			}
@@ -60,7 +59,7 @@ public class TestData {
 			Stage.getInstance().setRunID(iRunID);
 
 		} catch (Exception e) {
-			commonFunctions
+			CommonFunctions.getInstance()
 					.funLog("Exception occured while setting test details. Exception : "
 							+ e.getMessage());
 		}

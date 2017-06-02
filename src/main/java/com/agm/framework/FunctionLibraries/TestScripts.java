@@ -2,34 +2,38 @@ package com.agm.framework.FunctionLibraries;
 
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
+import com.relevantcodes.extentreports.ExtentTest;
 
 public class TestScripts {
 	
 	private static TestScripts objTs = null;
-	
+	public ExtentTest test = null;
 	public static TestScripts getInstance() {
 		if (objTs == null)
 			objTs = new TestScripts();
 		return objTs;
 	}
-	
+	public void init(ExtentTest test) {
+		this.test = test;
+	}
 
-	ApplicationFunctions applicationFunctions = ApplicationFunctions
-			.getInstance();
-	CommonFunctions commonFunctions = CommonFunctions.getInstance();
-	TestData testData = TestData.getInstance();
-	DB db = DB.getInstance();
-	Initializer initializer = Initializer.getInstance();
-	Stage stage = Stage.getInstance();
+//	ApplicationFunctions.getInstance() ApplicationFunctions.getInstance() = ApplicationFunctions.getInstance().getInstance();
+//	CommonFunctions.getInstance() CommonFunctions.getInstance() = CommonFunctions.getInstance().getInstance();
+//	TestData testData = TestData.getInstance();
+//	DB db = DB.getInstance();
+//	Initializer initializer = Initializer.getInstance();
+//	Stage stage = Stage.getInstance();
 	
 	public void DemoTest() {
+		
 		// Login Application
-		applicationFunctions.funLoginApplication();		
+		ApplicationFunctions.getInstance().funLoginApplication();		
 		//Select Test Trail
-		applicationFunctions.funSelectTestTrial("AutomationTestTrial");	
+		ApplicationFunctions.getInstance().funSelectTestTrial("AutomationTestTrial");	
 		//Invite Users
-		applicationFunctions.funInviteUser("autotest_freetodelete3@mx-intr.agmednet.net", "Event Coordinator");
+		ApplicationFunctions.getInstance().funInviteUser("autotest_freetodelete3@mx-intr.agmednet.net", "Event Coordinator");
 		//Register users
-		applicationFunctions.funRegistration("autotest_freetodelete3@mx-intr.agmednet.net");
+		ApplicationFunctions.getInstance().funRegistration("autotest_freetodelete3@mx-intr.agmednet.net");
+		
 	}
 }
