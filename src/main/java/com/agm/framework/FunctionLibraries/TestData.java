@@ -3,7 +3,7 @@ package com.agm.framework.FunctionLibraries;
 import com.agm.framework.helpers.Stage;
 
 public class TestData {
-	
+
 	private static TestData objTd = null;
 
 	public static TestData getInstance() {
@@ -11,15 +11,16 @@ public class TestData {
 			objTd = new TestData();
 		return objTd;
 	}
-	
+
 	int iCaseID;
 	int iTestID;
 	int iRunID;
 
 	ApplicationFunctions applicationFunctions = ApplicationFunctions
 			.getInstance();
-	CommonFunctions commonFunctions = CommonFunctions.getInstance();	
-	
+	CommonFunctions commonFunctions = CommonFunctions.getInstance();
+	TestScripts testScripts = TestScripts.getInstance();
+
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funLoadTestDetailsFromTestRail() Description : This
@@ -47,22 +48,19 @@ public class TestData {
 				iRunID = 2081;
 				break;
 			default:
-				commonFunctions.funLog("Issue on identifying the test case - Please add New Case for the running Test");
+				commonFunctions
+						.funLog("Issue on identifying the test case - Please add New Case for the running Test");
 
 			}
 			Stage.getInstance().setCaseID(iCaseID);
 			Stage.getInstance().setTestID(iTestID);
 			Stage.getInstance().setRunID(iRunID);
-			
+
 		} catch (Exception e) {
-			commonFunctions.funLog("Exception occured while setting test details. Exception : "
-					+ e.getMessage());
+			commonFunctions
+					.funLog("Exception occured while setting test details. Exception : "
+							+ e.getMessage());
 		}
 	}
-	
-	
-	
-	
-	
-	
+
 }
