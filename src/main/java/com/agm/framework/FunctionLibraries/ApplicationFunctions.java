@@ -1,9 +1,5 @@
 package com.agm.framework.FunctionLibraries;
 
-import java.util.List;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,7 +8,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.Select;
 import com.agm.framework.helpers.Initializer;
-import com.agm.framework.helpers.Stage;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
@@ -42,12 +37,6 @@ public class ApplicationFunctions {
 		this.driver = driver;
 	}
 
-//	CommonFunctions commonFunctions = CommonFunctions.getInstance();
-//	TestScripts.getInstance() TestScripts.getInstance() = TestScripts.getInstance().getInstance();
-//	TestData.getInstance() TestData.getInstance() = TestData.getInstance().getInstance();
-//	DB.getInstance() DB.getInstance() = DB.getInstance().getInstance();
-//	Initializer.getInstance() Initializer.getInstance() = Initializer.getInstance().getInstance();
-//	Stage stage = Stage.getInstance();
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funLaunchURL() Description : This function will launch
@@ -64,22 +53,22 @@ public class ApplicationFunctions {
 			// FirefoxProfile prof;
 			switch (strBrowser.toUpperCase()) {
 			case "FIREFOX":
-				System.setProperty("webdriver.gecko.driver", Initializer.getInstance()
+				System.setProperty("webdriver.gecko.driver", Initializer
 						.getInstance().GetValue("java.firefox.path"));
 				driver = new FirefoxDriver();
 				break;
 			case "IE":
-				System.setProperty("webdriver.ie.driver", Initializer.getInstance()
+				System.setProperty("webdriver.ie.driver", Initializer
 						.getInstance().GetValue("java.ie.path"));
 				driver = new InternetExplorerDriver();
 				break;
 			case "CHROME":
-				System.setProperty("webdriver.chrome.driver", Initializer.getInstance()
+				System.setProperty("webdriver.chrome.driver", Initializer
 						.getInstance().GetValue("java.chrome.path"));
 				driver = new ChromeDriver();
 				break;
 			default:
-				System.setProperty("webdriver.gecko.driver", Initializer.getInstance()
+				System.setProperty("webdriver.gecko.driver", Initializer
 						.getInstance().GetValue("java.firefox.path"));
 				driver = new FirefoxDriver();
 			}
@@ -453,22 +442,22 @@ public class ApplicationFunctions {
 		}
 		try {
 			CommonFunctions.getInstance()
-					.getInstance()
 					.getElement(driver,
 							"judi.test.register.step1.confirmPassword")
 					.sendKeys(strUserName);
 			test.log(LogStatus.PASS, "confirmPassword is entered successfully",
 					"");
 		} catch (Exception e) {
-			CommonFunctions.getInstance()
-					.funLog("Issue identifying the object - Register-->Step1--> confirmPassword "
+			CommonFunctions.getInstance().funLog(
+					"Issue identifying the object - Register-->Step1--> confirmPassword "
 							+ e.getMessage());
 			test.log(
 					LogStatus.FAIL,
 					"Issue identifying the object - Register-->Step1--> confirmPassword ",
 					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(Thread.currentThread()
-									.getStackTrace()[1].getMethodName())));
+							.funTakeScreenshot(
+									Thread.currentThread().getStackTrace()[1]
+											.getMethodName())));
 		}
 		try {
 			CommonFunctions.getInstance().getElement(driver,

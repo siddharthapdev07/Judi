@@ -13,8 +13,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
-
 import javax.imageio.ImageIO;
 
 
@@ -28,9 +26,6 @@ import javax.imageio.ImageIO;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.ITestResult;
@@ -39,7 +34,6 @@ import autoitx4java.AutoItX;
 
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
-import com.agm.simple.JSONObject;
 import com.agm.testrail.APIClient;
 import com.agm.testrail.APIException;
 import com.jacob.com.LibraryLoader;
@@ -410,10 +404,10 @@ public class CommonFunctions {
 	 */
 
 	public void funUpdateResultsToTestRail(String strResultStatus) {
-		JSONObject r;
-		List testCases = new ArrayList();
-		Map testCasesResults = new HashMap();
-		Map data = new HashMap();
+//		JSONObject r;
+		List<Integer> testCases = new ArrayList<Integer>();
+		Map<Integer,Integer> testCasesResults = new HashMap<Integer,Integer>();
+		Map<String,Integer> data = new HashMap<String,Integer>();
 
 		// strResultStatus = "PASS"; //Need to pass from test case
 
@@ -442,7 +436,10 @@ public class CommonFunctions {
 			data.put("status_id",
 					testCasesResults.get(Stage.getInstance().getTestID()));
 			try {
-				r = (JSONObject) client.sendPost("add_result_for_case/"
+//				r = (JSONObject) client.sendPost("add_result_for_case/"
+//						+ Stage.getInstance().getRunID() + "/"
+//						+ Stage.getInstance().getCaseID(), data);
+				client.sendPost("add_result_for_case/"
 						+ Stage.getInstance().getRunID() + "/"
 						+ Stage.getInstance().getCaseID(), data);
 			} catch (MalformedURLException e) {

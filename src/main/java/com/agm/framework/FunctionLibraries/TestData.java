@@ -1,6 +1,5 @@
 package com.agm.framework.FunctionLibraries;
 
-import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
 import com.relevantcodes.extentreports.ExtentTest;
 

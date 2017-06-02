@@ -1,7 +1,5 @@
 package com.agm.framework.FunctionLibraries;
 
-import com.agm.framework.helpers.Initializer;
-import com.agm.framework.helpers.Stage;
 import com.relevantcodes.extentreports.ExtentTest;
 
 public class TestScripts {
@@ -17,13 +15,6 @@ public class TestScripts {
 		this.test = test;
 	}
 
-//	ApplicationFunctions.getInstance() ApplicationFunctions.getInstance() = ApplicationFunctions.getInstance().getInstance();
-//	CommonFunctions.getInstance() CommonFunctions.getInstance() = CommonFunctions.getInstance().getInstance();
-//	TestData testData = TestData.getInstance();
-//	DB db = DB.getInstance();
-//	Initializer initializer = Initializer.getInstance();
-//	Stage stage = Stage.getInstance();
-	
 	public void DemoTest() {
 		
 		// Login Application
