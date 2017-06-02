@@ -41,7 +41,11 @@ public class ApplicationFunctions {
 	public void init(WebDriver driver) {
 		this.driver = driver;
 	}
-	
+
+	CommonFunctions commonFunctions = CommonFunctions.getInstance();
+	TestScripts testScripts = TestScripts.getInstance();
+	TestData testData = TestData.getInstance();
+
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funLaunchURL() Description : This function will launch
@@ -54,7 +58,7 @@ public class ApplicationFunctions {
 
 		try {
 			// Killing opened browser by process
-			CommonFunctions.getInstance().funKillbyProcess(strBrowser);
+			commonFunctions.funKillbyProcess(strBrowser);
 			// FirefoxProfile prof;
 			switch (strBrowser.toUpperCase()) {
 			case "FIREFOX":
@@ -82,11 +86,12 @@ public class ApplicationFunctions {
 					.getInstance();
 			applicationFunctions.init(driver);
 			driver.get(strURL);
-			CommonFunctions.getInstance().funStepValidate("TEXT", driver.getTitle().toString(),
-					"AG Mednet Portal", "validate the Browser Title", true,
-					false);
+			commonFunctions.funStepValidate("TEXT", driver.getTitle()
+					.toString(), "AG Mednet Portal",
+					"validate the Browser Title", true, false);
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog("Issue on launching URL. Exception : " + e.getMessage());
+			commonFunctions.funLog("Issue on launching URL. Exception : "
+					+ e.getMessage());
 		}
 	}
 
@@ -98,56 +103,47 @@ public class ApplicationFunctions {
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
 	public void funLoginApplication() {
-		//Launch URL 
-		funLaunchURL(Initializer.getInstance().GetValue(
-				"app.test.test05"));
+		// Launch URL
+		funLaunchURL(Initializer.getInstance().GetValue("app.test.test05"));
 		try {
-			CommonFunctions
-					.getInstance()
-					.getElement(driver, "judi.test.login.username")
+			commonFunctions.getElement(driver, "judi.test.login.username")
 					.sendKeys(
 							Initializer.getInstance().GetValue(
 									"app.test.test05.username"));
 			test.log(LogStatus.PASS, "Userid Entered successfully", "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - UserName" + e.getMessage());
+			commonFunctions.funLog("Issue identifying the object - UserName"
+					+ e.getMessage());
 			test.log(LogStatus.FAIL,
 					"Exception in identifying the UserName field", "");
 		}
 		try {
-			CommonFunctions
-					.getInstance()
-					.getElement(driver, "judi.test.login.password")
+			commonFunctions.getElement(driver, "judi.test.login.password")
 					.sendKeys(
 							Initializer.getInstance().GetValue(
 									"app.test.test05.password"));
 			test.log(LogStatus.PASS, "Password field verification", "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Password" + e.getMessage());
+			commonFunctions.funLog("Issue identifying the object - Password"
+					+ e.getMessage());
 			test.log(LogStatus.FAIL,
 					"Exception in identifying the password field", "");
 		}
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.login.login").click();
+			commonFunctions.getElement(driver, "judi.test.login.login").click();
 			test.log(LogStatus.PASS, "Login Button is clicked successfully", "");
-			CommonFunctions.getInstance().funWait(15);
+			commonFunctions.funWait(15);
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - LoginButton"
-							+ e.getMessage());
+			commonFunctions.funLog("Issue identifying the object - LoginButton"
+					+ e.getMessage());
 			test.log(LogStatus.FAIL, "Exception in clicking the Login button",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
-		CommonFunctions.getInstance().funElementValidate(
-				CommonFunctions.getInstance().getElement(driver,
-						"judi.test.home.logout"), "ISPRESENT",
-				"Validating LogOut element : ", true, true);
+		commonFunctions.funElementValidate(
+				commonFunctions.getElement(driver, "judi.test.home.logout"),
+				"ISPRESENT", "Validating LogOut element : ", true, true);
 
 	}
 
@@ -160,22 +156,19 @@ public class ApplicationFunctions {
 	 */
 	public void funLogOutApplication() {
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.home.logout").click();
+			commonFunctions.getElement(driver, "judi.test.home.logout").click();
 
 			test.log(LogStatus.PASS, "LogOut button is clicked", "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - LogOut" + e.getMessage());
+			commonFunctions.funLog("Issue identifying the object - LogOut"
+					+ e.getMessage());
 			test.log(LogStatus.FAIL,
-					"Exception in identifying the LogOut button", test
-							.addScreenCapture(CommonFunctions.getInstance()
-									.funTakeScreenshot(
-											Thread.currentThread()
-													.getStackTrace()[1]
-													.getMethodName())));
+					"Exception in identifying the LogOut button",
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
-		CommonFunctions.getInstance().funWait(3);
+		commonFunctions.funWait(3);
 	}
 
 	/*
@@ -187,24 +180,23 @@ public class ApplicationFunctions {
 	 */
 	public void funNavigate_TrialAdmin() {
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.home.trialAdmin").click();
-			CommonFunctions.getInstance().funWait(12);
+			commonFunctions.getElement(driver, "judi.test.home.trialAdmin")
+					.click();
+			commonFunctions.funWait(12);
 			test.log(LogStatus.PASS,
 					"Trial Administration is clicked successfully", "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Trial Administration "
+			commonFunctions
+					.funLog("Issue identifying the object - Trial Administration "
 							+ e.getMessage());
 			test.log(
 					LogStatus.FAIL,
 					"Exception in identifying the Trial Administration element",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
-		CommonFunctions.getInstance().funWait(3);
+		commonFunctions.funWait(3);
 	}
 
 	/*
@@ -215,48 +207,48 @@ public class ApplicationFunctions {
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
 	public void funSelectTestTrial(String strValue) {
-		//Navigate to Trial Admin page
+		// Navigate to Trial Admin page
 		funNavigate_TrialAdmin();
 		driver.switchTo().frame("asdfasdfasdfsdfa");
 		// Navigate to Users page
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.trialAdmin.Users").click();
+			commonFunctions.getElement(driver, "judi.test.trialAdmin.Users")
+					.click();
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Users " + e.getMessage());
+			commonFunctions.funLog("Issue identifying the object - Users "
+					+ e.getMessage());
 		}
-		CommonFunctions.getInstance().funWait(4);
+		commonFunctions.funWait(4);
 		try {
 			// Select Value in drop down
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.trialAdmin.Trail")
+			commonFunctions.getElement(driver, "judi.test.trialAdmin.Trail")
 					.sendKeys("AutomationTestTrial");
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.trialAdmin.Trail").click();
-			Select oE = new Select(CommonFunctions.getInstance().getElement(
-					driver, "judi.test.trialAdmin.Trail"));
+			commonFunctions.getElement(driver, "judi.test.trialAdmin.Trail")
+					.click();
+			Select oE = new Select(commonFunctions.getElement(driver,
+					"judi.test.trialAdmin.Trail"));
 			WebElement oSelected = oE.getFirstSelectedOption();
 			String strSelected = oSelected.getText();
 			if (strSelected.trim().equalsIgnoreCase(strValue.trim())) {
-				CommonFunctions.getInstance().funLog(
-						"Trial is selected in the drop down : " + strValue);
+				commonFunctions.funLog("Trial is selected in the drop down : "
+						+ strValue);
 				test.log(LogStatus.PASS, strValue
 						+ " is selected in the drop down ", "");
 			} else {
-				CommonFunctions.getInstance().funLog(
-						"Expected Trial is NOT selected in the drop down : Actual value is - "
-								+ strSelected + " and Expected value is - "
+				commonFunctions
+						.funLog("Expected Trial is NOT selected in the drop down : Actual value is - "
+								+ strSelected
+								+ " and Expected value is - "
 								+ strValue);
 				test.log(LogStatus.FAIL,
 						"Expected Trial is NOT selected in the drop down : Actual value is - "
 								+ strSelected + " and Expected value is - "
 								+ strValue, test
-								.addScreenCapture(CommonFunctions.getInstance()
-										.funTakeScreenshot(
-												Thread.currentThread()
-														.getStackTrace()[1]
-														.getMethodName())));
+								.addScreenCapture(commonFunctions
+										.funTakeScreenshot(Thread
+												.currentThread()
+												.getStackTrace()[1]
+												.getMethodName())));
 			}
 			// JavascriptExecutor executor = (JavascriptExecutor) driver;
 			// executor.executeScript("arguments[0].click()", obj);
@@ -267,18 +259,16 @@ public class ApplicationFunctions {
 			// + "'";
 			// js.executeScript(jsCmd);
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue on Identifying drop down : " + strValue
-							+ ", Exception : " + e.getMessage());
+			commonFunctions.funLog("Issue on Identifying drop down : "
+					+ strValue + ", Exception : " + e.getMessage());
 			test.log(LogStatus.FAIL, strValue
-					+ " is NOT present in the drop down ", test
-					.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					+ " is NOT present in the drop down ",
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
 		driver.switchTo().defaultContent();
-		CommonFunctions.getInstance().funWait(1);
+		commonFunctions.funWait(1);
 	}
 
 	/*
@@ -292,62 +282,57 @@ public class ApplicationFunctions {
 		driver.switchTo().frame("asdfasdfasdfsdfa");
 		// Navigate to Users page
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.trialAdmin.Email").clear();
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.trialAdmin.Email")
+			commonFunctions.getElement(driver, "judi.test.trialAdmin.Email")
+					.clear();
+			commonFunctions.getElement(driver, "judi.test.trialAdmin.Email")
 					.sendKeys(strEmail);
-			CommonFunctions.getInstance().funLog(
-					"Email entered successfully on Users page");
+			commonFunctions.funLog("Email entered successfully on Users page");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Email " + e.getMessage());
+			commonFunctions.funLog("Issue identifying the object - Email "
+					+ e.getMessage());
 		}
-		CommonFunctions.getInstance().funWait(3);
+		commonFunctions.funWait(3);
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.trialAdmin.Role").click();
-			CommonFunctions.getInstance().funWait(3);
-			// Select oE = new Select(CommonFunctions.getInstance().getElement(
+			commonFunctions.getElement(driver, "judi.test.trialAdmin.Role")
+					.click();
+			commonFunctions.funWait(3);
+			// Select oE = new Select(commonFunctions.getElement(
 			// driver, "judi.test.trialAdmin.Role"));
 			// List<WebElement> allOptions = oE.getOptions();
 			// for (WebElement oelement : allOptions) {
 			// if (oelement.getText().toLowerCase().trim()
 			// .equalsIgnoreCase(strUserRole.toLowerCase().trim())) {
 			// oelement.click();
-			// CommonFunctions.getInstance().funLog(
+			// commonFunctions.funLog(
 			// strUserRole + " is present and selected");
 			// break;
 			// }
 			// }
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.trialAdmin.Role")
+			commonFunctions.getElement(driver, "judi.test.trialAdmin.Role")
 					.sendKeys(strUserRole);
 
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue on Identifying drop down : " + strUserRole
-							+ ", Exception : " + e.getMessage());
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.trialAdmin.Email").click();
+			commonFunctions.funLog("Issue on Identifying drop down : "
+					+ strUserRole + ", Exception : " + e.getMessage());
+			commonFunctions.getElement(driver, "judi.test.trialAdmin.Email")
+					.click();
 			test.log(LogStatus.FAIL, strUserRole
-					+ " is NOT present in the drop down ", test
-					.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					+ " is NOT present in the drop down ",
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.trialAdmin.Invite").click();
-			CommonFunctions.getInstance().funLog(
-					"Invite button is clicked successfully on Users page");
+			commonFunctions.getElement(driver, "judi.test.trialAdmin.Invite")
+					.click();
+			commonFunctions
+					.funLog("Invite button is clicked successfully on Users page");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Invite " + e.getMessage());
+			commonFunctions.funLog("Issue identifying the object - Invite "
+					+ e.getMessage());
 		}
 		driver.switchTo().defaultContent();
-		CommonFunctions.getInstance().funWait(1);
+		commonFunctions.funWait(1);
 		// LogOut from Applications
 		funLogOutApplication();
 	}
@@ -363,65 +348,59 @@ public class ApplicationFunctions {
 		// Launch application
 		driver.navigate().to(
 				Initializer.getInstance().GetValue("app.test.test05"));
-		CommonFunctions.getInstance().funWait(8);
+		commonFunctions.funWait(8);
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.login.register").click();
-			CommonFunctions.getInstance().funWait(3);
+			commonFunctions.getElement(driver, "judi.test.login.register")
+					.click();
+			commonFunctions.funWait(3);
 			test.log(LogStatus.PASS, "Register button is clicked", "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Register" + e.getMessage());
+			commonFunctions.funLog("Issue identifying the object - Register"
+					+ e.getMessage());
 			test.log(LogStatus.FAIL,
-					"Exception in identifying the Register button", test
-							.addScreenCapture(CommonFunctions.getInstance()
-									.funTakeScreenshot(
-											Thread.currentThread()
-													.getStackTrace()[1]
-													.getMethodName())));
+					"Exception in identifying the Register button",
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.email")
+			commonFunctions.getElement(driver, "judi.test.register.email")
 					.sendKeys(strEmail);
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.email")
+			commonFunctions.getElement(driver, "judi.test.register.email")
 					.sendKeys(Keys.TAB);
-			CommonFunctions.getInstance().funWait(1);
+			commonFunctions.funWait(1);
 			test.log(LogStatus.PASS,
 					"Register page - Email entered successfully", "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Register--> Email"
+			commonFunctions
+					.funLog("Issue identifying the object - Register--> Email"
 							+ e.getMessage());
 			test.log(LogStatus.FAIL,
 					"Exception in identifying the object - Register--> Email",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
-			CommonFunctions.getInstance().funWait(5);
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
+			commonFunctions.funWait(5);
 		}
 
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.continue").click();
-			CommonFunctions.getInstance().funWait(3);
+			commonFunctions.getElement(driver, "judi.test.register.continue")
+					.click();
+			commonFunctions.funWait(3);
 			test.log(LogStatus.PASS, "Continue button is clicked successfully",
 					"");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Register--> Continue"
+			commonFunctions
+					.funLog("Issue identifying the object - Register--> Continue"
 							+ e.getMessage());
 			test.log(
 					LogStatus.FAIL,
 					"Exception in identifying the object - Register--> Continue",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
-		CommonFunctions.getInstance().funWait(2);
+		commonFunctions.funWait(2);
 		// Step 1 in Registration
 		funRegistration_Step1("AutoTest1");
 		// Step 2 in Registration
@@ -437,40 +416,36 @@ public class ApplicationFunctions {
 	 */
 	public void funRegistration_Step1(String strUserName) {
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.step1.userName")
-					.sendKeys(strUserName);
-			CommonFunctions.getInstance().funWait(1);
+			commonFunctions.getElement(driver,
+					"judi.test.register.step1.userName").sendKeys(strUserName);
+			commonFunctions.funWait(1);
 			test.log(LogStatus.PASS, "User Name is entered successfully"
 					+ strUserName, "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Register-->Step1--> UserName "
+			commonFunctions
+					.funLog("Issue identifying the object - Register-->Step1--> UserName "
 							+ e.getMessage());
 			test.log(
 					LogStatus.FAIL,
 					"Issue identifying the object - Register-->Step1--> UserName ",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.step1.password")
-					.sendKeys(strUserName);
+			commonFunctions.getElement(driver,
+					"judi.test.register.step1.password").sendKeys(strUserName);
 			test.log(LogStatus.PASS, "password is entered successfully", "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Register-->Step1--> password "
+			commonFunctions
+					.funLog("Issue identifying the object - Register-->Step1--> password "
 							+ e.getMessage());
 			test.log(
 					LogStatus.FAIL,
 					"Issue identifying the object - Register-->Step1--> password ",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
 		try {
 			CommonFunctions
@@ -481,90 +456,80 @@ public class ApplicationFunctions {
 			test.log(LogStatus.PASS, "confirmPassword is entered successfully",
 					"");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Register-->Step1--> confirmPassword "
+			commonFunctions
+					.funLog("Issue identifying the object - Register-->Step1--> confirmPassword "
 							+ e.getMessage());
 			test.log(
 					LogStatus.FAIL,
 					"Issue identifying the object - Register-->Step1--> confirmPassword ",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.step1.firstName")
-					.sendKeys(strUserName);
+			commonFunctions.getElement(driver,
+					"judi.test.register.step1.firstName").sendKeys(strUserName);
 			test.log(LogStatus.PASS, "firstName is entered successfully", "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Register-->Step1--> firstName "
+			commonFunctions
+					.funLog("Issue identifying the object - Register-->Step1--> firstName "
 							+ e.getMessage());
 			test.log(
 					LogStatus.FAIL,
 					"Issue identifying the object - Register-->Step1--> firstName ",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.step1.lastName")
-					.sendKeys(strUserName);
+			commonFunctions.getElement(driver,
+					"judi.test.register.step1.lastName").sendKeys(strUserName);
 			test.log(LogStatus.PASS, "lastName is entered successfully", "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Register-->Step1--> lastName "
+			commonFunctions
+					.funLog("Issue identifying the object - Register-->Step1--> lastName "
 							+ e.getMessage());
 			test.log(
 					LogStatus.FAIL,
 					"Issue identifying the object - Register-->Step1--> lastName ",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.step1.phoneNo")
-					.sendKeys(strUserName);
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.step1.phoneNo")
-					.sendKeys(Keys.TAB);
-			CommonFunctions.getInstance().funWait(1);
+			commonFunctions.getElement(driver,
+					"judi.test.register.step1.phoneNo").sendKeys(strUserName);
+			commonFunctions.getElement(driver,
+					"judi.test.register.step1.phoneNo").sendKeys(Keys.TAB);
+			commonFunctions.funWait(1);
 			test.log(LogStatus.PASS, "phoneNo is entered successfully", "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Register-->Step1-->phoneNo "
+			commonFunctions
+					.funLog("Issue identifying the object - Register-->Step1-->phoneNo "
 							+ e.getMessage());
 			test.log(
 					LogStatus.FAIL,
 					"Issue identifying the object - Register-->Step1--> phoneNo ",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
-		CommonFunctions.getInstance().funWait(1);
+		commonFunctions.funWait(1);
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.step1.continue")
-					.click();
+			commonFunctions.getElement(driver,
+					"judi.test.register.step1.continue").click();
 			test.log(LogStatus.PASS,
 					"Continue button is clicked successfully on Step1 page", "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Register--> Step1-->Continue "
+			commonFunctions
+					.funLog("Issue identifying the object - Register--> Step1-->Continue "
 							+ e.getMessage());
 			test.log(
 					LogStatus.FAIL,
 					"Issue identifying the object - Register--> Step1-->Continue ",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
 	}
 
@@ -577,150 +542,133 @@ public class ApplicationFunctions {
 	 */
 	public void funRegistration_Step2(String strValue) {
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.step2.org")
+			commonFunctions.getElement(driver, "judi.test.register.step2.org")
 					.sendKeys(strValue);
 			test.log(LogStatus.PASS, "Organization is entered successfully"
 					+ strValue, "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Register-->Step2--> Organization "
+			commonFunctions
+					.funLog("Issue identifying the object - Register-->Step2--> Organization "
 							+ e.getMessage());
 			test.log(
 					LogStatus.FAIL,
 					"Issue identifying the object - Register--> Step2--> Organization ",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.step2.address1")
-					.sendKeys(strValue);
+			commonFunctions.getElement(driver,
+					"judi.test.register.step2.address1").sendKeys(strValue);
 			test.log(LogStatus.PASS, "address1 is entered successfully", "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Register-->Step2--> address1 "
+			commonFunctions
+					.funLog("Issue identifying the object - Register-->Step2--> address1 "
 							+ e.getMessage());
 			test.log(
 					LogStatus.FAIL,
 					"Issue identifying the object - Register-->Step2--> address1 ",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.step2.address2")
-					.sendKeys(strValue);
+			commonFunctions.getElement(driver,
+					"judi.test.register.step2.address2").sendKeys(strValue);
 			test.log(LogStatus.PASS, "address2 is entered successfully", "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Register--> Step2--> address2 "
+			commonFunctions
+					.funLog("Issue identifying the object - Register--> Step2--> address2 "
 							+ e.getMessage());
 			test.log(
 					LogStatus.FAIL,
 					"Issue identifying the object - Register--> Step2--> address2 ",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.step2.city")
+			commonFunctions.getElement(driver, "judi.test.register.step2.city")
 					.sendKeys(strValue);
 			test.log(LogStatus.PASS, "City is entered successfully", "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Register-->Step2--> City "
+			commonFunctions
+					.funLog("Issue identifying the object - Register-->Step2--> City "
 							+ e.getMessage());
 			test.log(
 					LogStatus.FAIL,
 					"Issue identifying the object - Register--> Step2--> City ",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
 		try {
-			CommonFunctions.getInstance()
+			commonFunctions
 					.getElement(driver, "judi.test.register.step2.state")
 					.sendKeys(strValue);
 			test.log(LogStatus.PASS, "State is entered successfully", "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Register--> Step2-->State "
+			commonFunctions
+					.funLog("Issue identifying the object - Register--> Step2-->State "
 							+ e.getMessage());
 			test.log(
 					LogStatus.FAIL,
 					"Issue identifying the object - Register--> Step2-->State ",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.step2.postal")
-					.sendKeys(strValue);
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.step2.postal")
-					.sendKeys(Keys.TAB);
+			commonFunctions.getElement(driver,
+					"judi.test.register.step2.postal").sendKeys(strValue);
+			commonFunctions.getElement(driver,
+					"judi.test.register.step2.postal").sendKeys(Keys.TAB);
 			test.log(LogStatus.PASS, "Postal code is entered successfully", "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Register-->Step2-->Postal code "
+			commonFunctions
+					.funLog("Issue identifying the object - Register-->Step2-->Postal code "
 							+ e.getMessage());
 			test.log(
 					LogStatus.FAIL,
 					"Issue identifying the object - Register-->Step2-->Postal code",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.step2.country")
-					.sendKeys(strValue);
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.step2.country")
-					.sendKeys(Keys.TAB);
+			commonFunctions.getElement(driver,
+					"judi.test.register.step2.country").sendKeys(strValue);
+			commonFunctions.getElement(driver,
+					"judi.test.register.step2.country").sendKeys(Keys.TAB);
 			test.log(LogStatus.PASS, "Country is entered successfully", "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Register-->Step2-->Country"
+			commonFunctions
+					.funLog("Issue identifying the object - Register-->Step2-->Country"
 							+ e.getMessage());
 			test.log(
 					LogStatus.FAIL,
 					"Issue identifying the object - Register-->Step2-->Country",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
 
-		CommonFunctions.getInstance().funWait(1);
+		commonFunctions.funWait(1);
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.step2.continue")
-					.click();
+			commonFunctions.getElement(driver,
+					"judi.test.register.step2.continue").click();
 			test.log(LogStatus.PASS,
 					"Continue button is clicked successfully on Step2 page", "");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Register--> Step2-->Continue "
+			commonFunctions
+					.funLog("Issue identifying the object - Register--> Step2-->Continue "
 							+ e.getMessage());
 			test.log(
 					LogStatus.FAIL,
 					"Issue identifying the object - Register--> Step2-->Continue ",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(
-									Thread.currentThread().getStackTrace()[1]
-											.getMethodName())));
+					test.addScreenCapture(commonFunctions
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
 		}
 	}
 

@@ -14,7 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
 import javax.imageio.ImageIO;
+
 //import javax.mail.Message;
 //import javax.mail.Session;
 //import javax.mail.Transport;
@@ -29,7 +31,9 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.ITestResult;
+
 import autoitx4java.AutoItX;
+
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
 import com.agm.simple.JSONObject;
@@ -46,21 +50,12 @@ public class CommonFunctions {
 	private static CommonFunctions objCmf = null;
 
 	public WebDriver driver = null;
-//	public ExtentTest test = null;
-//	private AutoItX objAutoIT = null;
-	
-	//=========================	
 	public String strLogFileName;
 	public boolean iStatus = true;
 	private AutoItX objAutoIT = null;
 	public ExtentReports extent;
 	public ExtentTest test;
 	public String strTestCaseName;
-	//=========================
-	
-	int iCaseID;
-	int iTestID;
-	int iRunID;
 
 	private CommonFunctions() {
 
@@ -80,47 +75,12 @@ public class CommonFunctions {
 		this.objAutoIT = objAutoIT;
 	}
 
-	/*
-	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	 * Function Name : funLoadTestDetailsFromTestRail() Description : This
-	 * function will Load the TestID,Case ID and Run ID for the test case Author
-	 * : Suresh Kumar,Mylam Date : 17 May 2017 Parameter : strTestCaseName :
-	 * Provide the test case name
-	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	 */
-	public void funLoadTestDetailsFromTestRail(String strTestCaseName) {
-		try {
-			switch (strTestCaseName.toUpperCase()) {
-			case "DEMOTEST":
-				iCaseID = 541421;
-				iTestID = 1079709;
-				iRunID = 2081;
-				break;
-			case "DEMOTEST2":
-				iCaseID = 541421;
-				iTestID = 1079709;
-				iRunID = 2081;
-				break;
-			case "DEMOTEST3":
-				iCaseID = 541421;
-				iTestID = 1079709;
-				iRunID = 2081;
-				break;
-			default:
-				funLog("Issue on identifying the test case - Please add New Case for the running Test");
-
-			}
-			Stage.getInstance().setCaseID(iCaseID);
-			Stage.getInstance().setTestID(iTestID);
-			Stage.getInstance().setRunID(iRunID);
-		} catch (Exception e) {
-			funLog("Exception occured while setting test details. Exception : "
-					+ e.getMessage());
-		}
-	}
+	TestScripts testScripts = TestScripts.getInstance();
+	TestData testData = TestData.getInstance();
+	ApplicationFunctions applicationFunctions = ApplicationFunctions
+			.getInstance();
 
 	
-
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funQuitBrowser() Description : This function will quit
@@ -210,7 +170,7 @@ public class CommonFunctions {
 				element = driver.findElement(By.xpath(propertyValue));
 				break;
 			case "LINKTEXT":
-				 element = driver.findElement(By.linkText(propertyValue));
+				element = driver.findElement(By.linkText(propertyValue));
 				break;
 			}
 		} catch (Exception e) {
@@ -254,7 +214,7 @@ public class CommonFunctions {
 				element = driver.findElements(By.xpath(propertyValue));
 				break;
 			case "LINKTEXT":
-	
+
 				break;
 			}
 		} catch (Exception e) {
@@ -733,6 +693,7 @@ public class CommonFunctions {
 					+ ", Exception : " + e.getMessage());
 		}
 	}
+
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funElementsValidate() Description : This function will
@@ -741,29 +702,33 @@ public class CommonFunctions {
 	 * TEXT/ELEMENT,bTakeScreenShot : true/false, exitHandler : true/false
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
-	public void funSelectValidate(List<WebElement> list,
-			String strValue, String strElementDescription,
-			boolean bTakeScreenShot, boolean exitHandler) {
-		boolean found= false;
+	public void funSelectValidate(List<WebElement> list, String strValue,
+			String strElementDescription, boolean bTakeScreenShot,
+			boolean exitHandler) {
+		boolean found = false;
 		try {
 			Select oE = new Select((WebElement) list);
 			List<WebElement> allOptions = oE.getOptions();
-		    for (WebElement element : allOptions) {
-		        if(element.getText().toLowerCase().trim().contains(strValue));
-		        element.click();
-		        found = true;
-		    }
-			
-			if(found) {
-		        funLog(strElementDescription + " is present ");
-				test.log(LogStatus.PASS, strValue
-						+ " is NOT present in the drop down , field : "+ strElementDescription, test
-						.addScreenCapture(CommonFunctions.getInstance()
+			for (WebElement element : allOptions) {
+				if (element.getText().toLowerCase().trim().contains(strValue))
+					;
+				element.click();
+				found = true;
+			}
+
+			if (found) {
+				funLog(strElementDescription + " is present ");
+				test.log(
+						LogStatus.PASS,
+						strValue
+								+ " is NOT present in the drop down , field : "
+								+ strElementDescription,
+						test.addScreenCapture(CommonFunctions
+								.getInstance()
 								.funTakeScreenshot(
-										Thread.currentThread()
-												.getStackTrace()[1]
+										Thread.currentThread().getStackTrace()[1]
 												.getMethodName())));
-			}			
+			}
 
 		} catch (Exception e) {
 			funLog("Issue on Identifying drop down : " + strElementDescription
@@ -793,7 +758,7 @@ public class CommonFunctions {
 		// Setting the Log file path in system variables
 		System.setProperty("logFileName", strLogFileName);
 		funStartTestCase(strLogFileName);
-		
+
 		// ********************************* R-E-P-O-R-T-S
 		// **********************************************
 		// new instance for Extent Reports
@@ -807,7 +772,7 @@ public class CommonFunctions {
 		// Set Category and author to report
 		test.assignAuthor("Suresh Kumar Mylam");
 		test.assignCategory("Regression");
-		
+
 		// ********************************* AUTOIT SETUP
 		// ************************************************
 		File file = new File(Initializer.getInstance().GetValue(
@@ -816,50 +781,49 @@ public class CommonFunctions {
 		objAutoIT = new AutoItX();
 		// ********************************* TestRail details -Static Data
 		// ***************************
-		funLoadTestDetailsFromTestRail(strTestCaseName);
+		testData.funLoadTestData(strTestCaseName);
 
 		// Initialize test object in ApplicationFunctions
-		ApplicationFunctions applicationFunctions = ApplicationFunctions
-				.getInstance();
+		// ApplicationFunctions applicationFunctions = ApplicationFunctions
+		// .getInstance();
 		applicationFunctions.init(test);
 	}
 
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funAfterTest() Description : This function will close the
-	 * all opened connections and terminate the script 
-	 * Author : Suresh Kumar,Mylam Date : 01 Jun 2017 Parameter : strType :
+	 * all opened connections and terminate the script Author : Suresh
+	 * Kumar,Mylam Date : 01 Jun 2017 Parameter : strType :
 	 * TEXT/ELEMENT,bTakeScreenShot : true/false, exitHandler : true/false
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
 
-	public void funAfterTest(ITestResult result) {		
+	public void funAfterTest(ITestResult result) {
 		try {
 			funQuitBrowser();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			CommonFunctions.getInstance().funLog(
-					"Issue in terminating the browser");
+			funLog("Issue in terminating the browser");
 		}
 		// ending test
 		extent.endTest(test);
 		// writing everything to document
 		extent.flush();
-		try{
-		    switch (result.getStatus()) {
-		    case ITestResult.SUCCESS:
-		    	CommonFunctions.getInstance().funUpdateResultsToTestRail("PASS");
-		        break;
-		    case ITestResult.FAILURE:
-		    	CommonFunctions.getInstance().funUpdateResultsToTestRail("FAIL");
-		        break;
-		    default:
-		        throw new RuntimeException("Invalid status");
-		    }
-			}catch(Exception e){
-				CommonFunctions.getInstance().funLog("Invalid Result status");
+		try {
+			switch (result.getStatus()) {
+			case ITestResult.SUCCESS:
+				funUpdateResultsToTestRail("PASS");
+				break;
+			case ITestResult.FAILURE:
+				funUpdateResultsToTestRail("FAIL");
+				break;
+			default:
+				throw new RuntimeException("Invalid status");
 			}
-		CommonFunctions.getInstance().funEndTestCase(strTestCaseName);
-	
+		} catch (Exception e) {
+			funLog("Invalid Result status");
+		}
+		funEndTestCase(strTestCaseName);
+
 	}
 }
