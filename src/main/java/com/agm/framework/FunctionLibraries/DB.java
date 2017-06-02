@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.agm.framework.helpers.Initializer;
+import com.agm.framework.helpers.Stage;
+
 public class DB {
 
 	public Connection objConnDB = null;
@@ -13,7 +16,6 @@ public class DB {
 	public String strURL;
 	public ResultSet rs;
 	private static DB objDB = null;
-
 	private DB() {
 	}
 
@@ -24,6 +26,9 @@ public class DB {
 		return objDB;
 	}
 
+	Initializer initializer = Initializer.getInstance();
+	Stage stage = Stage.getInstance();
+	
 	public Connection funConnectDB(String strEnv, String dbName) {
 
 		try {

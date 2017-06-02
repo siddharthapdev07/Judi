@@ -13,6 +13,7 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.Select;
 
 import com.agm.framework.helpers.Initializer;
+import com.agm.framework.helpers.Stage;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
@@ -46,6 +47,8 @@ public class ApplicationFunctions {
 	TestScripts testScripts = TestScripts.getInstance();
 	TestData testData = TestData.getInstance();
 	DB db = DB.getInstance();
+	Initializer initializer = Initializer.getInstance();
+	Stage stage = Stage.getInstance();
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funLaunchURL() Description : This function will launch
@@ -54,7 +57,7 @@ public class ApplicationFunctions {
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
 	public void funLaunchURL(String strURL) {
-		String strBrowser = Initializer.getInstance().GetValue("gui.browser");
+		String strBrowser = initializer.GetValue("gui.browser");
 
 		try {
 			// Killing opened browser by process
@@ -104,11 +107,11 @@ public class ApplicationFunctions {
 	 */
 	public void funLoginApplication() {
 		// Launch URL
-		funLaunchURL(Initializer.getInstance().GetValue("app.test.test05"));
+		funLaunchURL(initializer.GetValue("app.test.test05"));
 		try {
 			commonFunctions.getElement(driver, "judi.test.login.username")
 					.sendKeys(
-							Initializer.getInstance().GetValue(
+							initializer.GetValue(
 									"app.test.test05.username"));
 			test.log(LogStatus.PASS, "Userid Entered successfully", "");
 		} catch (Exception e) {
@@ -120,7 +123,7 @@ public class ApplicationFunctions {
 		try {
 			commonFunctions.getElement(driver, "judi.test.login.password")
 					.sendKeys(
-							Initializer.getInstance().GetValue(
+							initializer.GetValue(
 									"app.test.test05.password"));
 			test.log(LogStatus.PASS, "Password field verification", "");
 		} catch (Exception e) {
@@ -347,7 +350,7 @@ public class ApplicationFunctions {
 	public void funRegistration(String strEmail) {
 		// Launch application
 		driver.navigate().to(
-				Initializer.getInstance().GetValue("app.test.test05"));
+				initializer.GetValue("app.test.test05"));
 		commonFunctions.funWait(8);
 		try {
 			commonFunctions.getElement(driver, "judi.test.login.register")

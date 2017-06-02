@@ -1,5 +1,6 @@
 package com.agm.framework.FunctionLibraries;
 
+import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
 
 public class TestScripts {
@@ -18,7 +19,9 @@ public class TestScripts {
 	CommonFunctions commonFunctions = CommonFunctions.getInstance();
 	TestData testData = TestData.getInstance();
 	DB db = DB.getInstance();
-
+	Initializer initializer = Initializer.getInstance();
+	Stage stage = Stage.getInstance();
+	
 	public void DemoTest() {
 		// Login Application
 		applicationFunctions.funLoginApplication();		

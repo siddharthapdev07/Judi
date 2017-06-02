@@ -81,6 +81,8 @@ public class CommonFunctions {
 	ApplicationFunctions applicationFunctions = ApplicationFunctions
 			.getInstance();
 	DB db = DB.getInstance();
+	Initializer initializer = Initializer.getInstance();
+	Stage stage = Stage.getInstance();
 	
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -148,9 +150,9 @@ public class CommonFunctions {
 	public WebElement getElement(WebDriver driver, String propertyName) {
 		WebElement element = null;
 
-		String propertyValue = Initializer.getInstance().GetValue(propertyName)
+		String propertyValue = initializer.GetValue(propertyName)
 				.trim();
-		String propertyType = Initializer.getInstance().GetType(propertyName)
+		String propertyType = initializer.GetType(propertyName)
 				.trim();
 
 		try {
@@ -192,9 +194,9 @@ public class CommonFunctions {
 	public List<WebElement> getElements(WebDriver driver, String propertyName) {
 		List<WebElement> element = null;
 
-		String propertyValue = Initializer.getInstance().GetValue(propertyName)
+		String propertyValue = initializer.GetValue(propertyName)
 				.trim();
-		String propertyType = Initializer.getInstance().GetType(propertyName)
+		String propertyType = initializer.GetType(propertyName)
 				.trim();
 
 		try {
@@ -245,10 +247,10 @@ public class CommonFunctions {
 		}
 
 		if (strMessage.toUpperCase().contains("ISSUE")) {
-			Stage.getInstance().getLog()
+			stage.getLog()
 					.error(strMethodCalling + " : " + strMessage);
 		} else {
-			Stage.getInstance().getLog()
+			stage.getLog()
 					.info(strMethodCalling + " : " + strMessage);
 		}
 
@@ -265,15 +267,15 @@ public class CommonFunctions {
 	 */
 	// public void funSendEmail(String strStatus, String strApplicationName,
 	// String strContent) {
-	// String to = Initializer.getInstance().GetValue("email.to");
-	// String cc = Initializer.getInstance().GetValue("email.cc");
-	// String from = Initializer.getInstance().GetValue("email.from");
+	// String to = initializer.GetValue("email.to");
+	// String cc = initializer.GetValue("email.cc");
+	// String from = initializer.GetValue("email.from");
 	//
 	// Properties prop = System.getProperties();
 	// prop.setProperty("mail.smtp.host",
-	// Initializer.getInstance().GetValue("email.hostname"));
+	// initializer.GetValue("email.hostname"));
 	// prop.setProperty("mail.smtp.port",
-	// Initializer.getInstance().GetValue("email.port"));
+	// initializer.GetValue("email.port"));
 	//
 	// Session sess = Session.getDefaultInstance(prop);
 	//
@@ -324,9 +326,9 @@ public class CommonFunctions {
 					Toolkit.getDefaultToolkit().getScreenSize()));
 			strFileName = strImgName + formatter.format(now.getTime()) + ".jpg";
 			strFileName = strFileName.replace(" ", "");
-			ImageIO.write(image, "jpg", new File(Initializer.getInstance()
+			ImageIO.write(image, "jpg", new File(initializer
 					.GetValue("java.error.path") + strFileName));
-			strFileName = new File(Initializer.getInstance().GetValue(
+			strFileName = new File(initializer.GetValue(
 					"java.error.path")
 					+ strFileName).getAbsolutePath();
 
@@ -421,34 +423,34 @@ public class CommonFunctions {
 
 		// strResultStatus = "PASS"; //Need to pass from test case
 
-		APIClient client = new APIClient(Initializer.getInstance().GetValue(
+		APIClient client = new APIClient(initializer.GetValue(
 				"app.test.testRailURL"));
-		client.setUser(Initializer.getInstance().GetValue(
+		client.setUser(initializer.GetValue(
 				"app.test.testRailUsername"));
-		client.setPassword(Initializer.getInstance().GetValue(
+		client.setPassword(initializer.GetValue(
 				"app.test.testRailUserPassword"));
 
-		testCases.add(Stage.getInstance().getCaseID());
+		testCases.add(stage.getCaseID());
 		switch (strResultStatus) {
 		case "PASS":
-			testCasesResults.put(Stage.getInstance().getTestID(), 1);
+			testCasesResults.put(stage.getTestID(), 1);
 			break;
 		case "FAIL":
-			testCasesResults.put(Stage.getInstance().getTestID(), 5);
+			testCasesResults.put(stage.getTestID(), 5);
 			break;
 		default:
-			testCasesResults.put(Stage.getInstance().getTestID(), 4);
+			testCasesResults.put(stage.getTestID(), 4);
 			break;
 		}
 
 		for (int i = 0; i < testCasesResults.size(); i++) {
 			// iTestID = (int) testCases.get(i);
 			data.put("status_id",
-					testCasesResults.get(Stage.getInstance().getTestID()));
+					testCasesResults.get(stage.getTestID()));
 			try {
 				r = (JSONObject) client.sendPost("add_result_for_case/"
-						+ Stage.getInstance().getRunID() + "/"
-						+ Stage.getInstance().getCaseID(), data);
+						+ stage.getRunID() + "/"
+						+ stage.getCaseID(), data);
 			} catch (MalformedURLException e) {
 				CommonFunctions.getInstance().funLog(
 						"Issue on forming the API. Exception : "
@@ -476,7 +478,7 @@ public class CommonFunctions {
 	 */
 	public void funFinalizeResults() {
 		boolean bExpected = true;
-		Assert.assertEquals(Stage.getInstance().getStatus(), bExpected);
+		Assert.assertEquals(stage.getStatus(), bExpected);
 	}
 
 	/*
@@ -511,7 +513,7 @@ public class CommonFunctions {
 					}
 					funLog(strDescription);
 				} else {
-					Stage.getInstance().setStatus(false);
+					stage.setStatus(false);
 					if (bTakeScreenShot) {
 						test.log(LogStatus.FAIL, strDescription
 								+ " : Actual : " + strActual
@@ -749,7 +751,7 @@ public class CommonFunctions {
 	public void funBeforeTest() {
 		// ********************************* INITIAL SETUP
 		// ************************************************
-		Stage.getInstance().setStatus(iStatus);
+		stage.setStatus(iStatus);
 		strTestCaseName = sun.reflect.Reflection.getCallerClass(2)
 				.getSimpleName();
 		strLogFileName = strTestCaseName
@@ -763,7 +765,7 @@ public class CommonFunctions {
 		// ********************************* R-E-P-O-R-T-S
 		// **********************************************
 		// new instance for Extent Reports
-		extent = new ExtentReports(Initializer.getInstance().GetValue(
+		extent = new ExtentReports(initializer.GetValue(
 				"java.results.path")
 				+ strLogFileName + ".html", true);
 		extent.loadConfig(new File(
@@ -776,7 +778,7 @@ public class CommonFunctions {
 
 		// ********************************* AUTOIT SETUP
 		// ************************************************
-		File file = new File(Initializer.getInstance().GetValue(
+		File file = new File(initializer.GetValue(
 				"java.autoit.jacob"));
 		System.setProperty(LibraryLoader.JACOB_DLL_PATH, file.getAbsolutePath());
 		objAutoIT = new AutoItX();

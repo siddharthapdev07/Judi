@@ -1,5 +1,6 @@
 package com.agm.framework.FunctionLibraries;
 
+import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
 
 public class TestData {
@@ -21,6 +22,8 @@ public class TestData {
 	CommonFunctions commonFunctions = CommonFunctions.getInstance();
 	TestScripts testScripts = TestScripts.getInstance();
 	DB db = DB.getInstance();
+	Initializer initializer = Initializer.getInstance();
+	Stage stage = Stage.getInstance();
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funLoadTestDetailsFromTestRail() Description : This
