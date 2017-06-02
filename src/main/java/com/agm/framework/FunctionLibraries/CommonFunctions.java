@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
+
 //import javax.mail.Message;
 //import javax.mail.Session;
 //import javax.mail.Transport;
@@ -79,7 +80,7 @@ public class CommonFunctions {
 	TestData testData = TestData.getInstance();
 	ApplicationFunctions applicationFunctions = ApplicationFunctions
 			.getInstance();
-
+	DB db = DB.getInstance();
 	
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

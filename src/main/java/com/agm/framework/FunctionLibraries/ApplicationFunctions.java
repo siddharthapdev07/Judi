@@ -45,7 +45,7 @@ public class ApplicationFunctions {
 	CommonFunctions commonFunctions = CommonFunctions.getInstance();
 	TestScripts testScripts = TestScripts.getInstance();
 	TestData testData = TestData.getInstance();
-
+	DB db = DB.getInstance();
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funLaunchURL() Description : This function will launch

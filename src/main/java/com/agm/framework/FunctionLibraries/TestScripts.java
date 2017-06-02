@@ -17,7 +17,7 @@ public class TestScripts {
 			.getInstance();
 	CommonFunctions commonFunctions = CommonFunctions.getInstance();
 	TestData testData = TestData.getInstance();
-	
+	DB db = DB.getInstance();
 
 	public void DemoTest() {
 		// Login Application

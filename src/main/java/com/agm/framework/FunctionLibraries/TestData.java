@@ -20,7 +20,7 @@ public class TestData {
 			.getInstance();
 	CommonFunctions commonFunctions = CommonFunctions.getInstance();
 	TestScripts testScripts = TestScripts.getInstance();
-
+	DB db = DB.getInstance();
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funLoadTestDetailsFromTestRail() Description : This
