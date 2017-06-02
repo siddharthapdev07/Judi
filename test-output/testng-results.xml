@@ -2,24 +2,24 @@
 <testng-results skipped="0" failed="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="30226" started-at="2017-05-19T20:26:56Z" finished-at="2017-05-19T20:27:26Z">
+  <suite name="Default suite" duration-ms="91549" started-at="2017-06-02T18:44:54Z" finished-at="2017-06-02T18:46:26Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="30226" started-at="2017-05-19T20:26:56Z" finished-at="2017-05-19T20:27:26Z">
+    <test name="Default test" duration-ms="91549" started-at="2017-06-02T18:44:54Z" finished-at="2017-06-02T18:46:26Z">
       <class name="com.agm.Judi.tests.DemoTest">
-        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:com.agm.Judi.tests.DemoTest@56235b8e]" name="beforeMethod" is-config="true" duration-ms="518" started-at="2017-05-19T16:26:56Z" finished-at="2017-05-19T16:26:57Z">
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:com.agm.Judi.tests.DemoTest@3632be31]" name="beforeMethod" is-config="true" duration-ms="1201" started-at="2017-06-02T14:44:54Z" finished-at="2017-06-02T14:44:56Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- beforeMethod -->
-        <test-method status="PASS" signature="Test()[pri:0, instance:com.agm.Judi.tests.DemoTest@56235b8e]" name="Test" duration-ms="28205" started-at="2017-05-19T16:26:57Z" finished-at="2017-05-19T16:27:25Z">
+        <test-method status="PASS" signature="Test()[pri:0, instance:com.agm.Judi.tests.DemoTest@3632be31]" name="Test" duration-ms="88627" started-at="2017-06-02T14:44:56Z" finished-at="2017-06-02T14:46:24Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- Test -->
-        <test-method status="PASS" signature="afterMethod(org.testng.ITestResult)[pri:0, instance:com.agm.Judi.tests.DemoTest@56235b8e]" name="afterMethod" is-config="true" duration-ms="1474" started-at="2017-05-19T16:27:25Z" finished-at="2017-05-19T16:27:26Z">
+        <test-method status="PASS" signature="afterMethod(org.testng.ITestResult)[pri:0, instance:com.agm.Judi.tests.DemoTest@3632be31]" name="afterMethod" is-config="true" duration-ms="1705" started-at="2017-06-02T14:46:24Z" finished-at="2017-06-02T14:46:26Z">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[TestResult name=Test status=SUCCESS method=DemoTest.Test()[pri:0, instance:com.agm.Judi.tests.DemoTest@56235b8e] output={null}]]]>
+                <![CDATA[[TestResult name=Test status=SUCCESS method=DemoTest.Test()[pri:0, instance:com.agm.Judi.tests.DemoTest@3632be31] output={null}]]]>
               </value>
             </param>
           </params>
