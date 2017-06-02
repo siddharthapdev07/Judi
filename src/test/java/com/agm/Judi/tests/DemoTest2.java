@@ -45,11 +45,11 @@ public class DemoTest2 {
 //		
 		
 		
-		// DB.getInstance().funConnectDB(Initializer.getInstance().GetValue("db.env"),
-		// Initializer.getInstance().GetValue("db.test05.dbname.portal"));
-		// strSQLQuery = "Select id from public.trialversion";
-		// strField = DB.getInstance().funExecuteQuery(strSQLQuery, "id");
-		// System.out.println(strField);
+		 DB.getInstance().funConnectDB(Initializer.getInstance().GetValue("db.env"),
+		 Initializer.getInstance().GetValue("db.test05.dbname.portal"));
+		 strSQLQuery = "select trial_id from pendingtrialuser where emailaddress = 'autotest_freetodelete1@mx-intr.agmednet.net'";
+		 strField = DB.getInstance().funExecuteQuery(strSQLQuery, "trial_id");
+		 System.out.println(strField);
 		
 		
 //		File file = new File(Initializer.getInstance().GetValue("java.autoit.jacob"));		
