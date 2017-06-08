@@ -1,5 +1,7 @@
 package com.agm.framework.FunctionLibraries;
 
+import java.io.FileReader;
+import java.util.Iterator;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -13,6 +15,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
+import com.opencsv.CSVReader;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
@@ -221,11 +224,12 @@ public class ApplicationFunctions {
 			CommonFunctions.getInstance().funFinalizeResults();
 		}
 	}
+
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funTrialAdmin_Trials() Description : This function will
-	 * select the test Trial in Trail drop down and validate Trial tab Author : Suresh Kumar,Mylam Date
-	 * :06 Jun 2017 Parameter : NA
+	 * select the test Trial in Trail drop down and validate Trial tab Author :
+	 * Suresh Kumar,Mylam Date :06 Jun 2017 Parameter : NA
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
 	public void funTrialAdmin_Trials(String strTrial) {
@@ -314,7 +318,7 @@ public class ApplicationFunctions {
 		System.out.println(CommonFunctions.getInstance()
 				.getElement(driver, "judi.test1g.trialAdmin.Trials.result")
 				.getText());
-		//Verify the description after update
+		// Verify the description after update
 		strQuery = "select description from trial where name = '" + strTrial
 				+ "'";
 		strTrialDesc_DB = DB.getInstance().funExecuteQuery(strQuery,
@@ -323,17 +327,18 @@ public class ApplicationFunctions {
 				strDescription.toLowerCase().trim(),
 				strTrialDesc_DB.toLowerCase().trim(),
 				"Trial Description validation", false, false);
-		
 
 	}
+
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funDeleteSiteIfExist() Description : This function will
-	 * delete the site if exist Author : Suresh Kumar,Mylam Date
-	 * :08 Jun 2017 Parameter : NA
+	 * delete the site if exist Author : Suresh Kumar,Mylam Date :08 Jun 2017
+	 * Parameter : NA
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
-	public void funDeleteSiteIfExist(String strSiteID){
+	public void funDeleteSiteIfExist(String strSiteID) {
+		boolean temp = false;
 		// check for the site existence and delete if exist , so that we can
 		// re-create same data
 		// Verify the sites added successfully
@@ -352,6 +357,7 @@ public class ApplicationFunctions {
 			String strSiteID_GUI = cells.get(0).getText().trim();
 			if (strSiteID_GUI.equalsIgnoreCase(strSiteID.trim())) {
 				funSuccessCall("This site is already present and deleting.... ");
+				temp = true;
 				WebElement cell = cells.get(iCol - 1);
 				try {
 					cell.findElement(By.cssSelector("a[ng-click='edit(site)']"))
@@ -375,49 +381,55 @@ public class ApplicationFunctions {
 							.getElement(driver,
 									"judi.test1g.trialAdmin.sites.deleteSite")
 							.click();
-					CommonFunctions.getInstance().funWait(1);
+					CommonFunctions.getInstance().funWait(1);	
+					break;					
 				} catch (Exception e) {
 					funFailureCall("Issue on Deleting the site ", e);
 					CommonFunctions.getInstance().funFinalizeResults();
 				}
-				break;
 			}
+			
 		}
-		CommonFunctions.getInstance().funWait(3);
-		// Below loop verifies the deleted record
-		allRows = oViewSitesTable.findElements(By
-				.tagName("tr"));
-		boolean flag = true;
-		for (WebElement row : allRows) {
-			List<WebElement> cells = row.findElements(By.tagName("td"));
-			String strSiteID_GUI = cells.get(0).getText().trim();
-			if (strSiteID_GUI.equalsIgnoreCase(strSiteID.trim())) {
-				CommonFunctions.getInstance().funLog(
-						"Deleted record still exist, Deleted id is : "
-								+ strSiteID_GUI);
-				test.log(LogStatus.FAIL,
-						"Deleted record still exist, Deleted id is : "
-								+ strSiteID_GUI, test
-								.addScreenCapture(CommonFunctions.getInstance()
-										.funTakeScreenshot(
-												Thread.currentThread()
-														.getStackTrace()[1]
-														.getMethodName())));
-				Stage.getInstance().setStatus(false);
-				flag = false;
-				break;
-			}	
+		if (!temp)  {
+			funSuccessCall("No Record found for this site id : " + strSiteID
+					+ " and it is free to create");
 		}
-		if(flag){
-			funSuccessCall("Record deleted Successfully : "+ strSiteID);
-		}
+		if(temp){
+			CommonFunctions.getInstance().funWait(3);
+			// Below loop verifies the deleted record
+			allRows = oViewSitesTable.findElements(By.tagName("tr"));
+			boolean flag = true;
+			for (WebElement row : allRows) {
+				List<WebElement> cells = row.findElements(By.tagName("td"));
+				String strSiteID_GUI = cells.get(0).getText().trim();
+				if (strSiteID_GUI.equalsIgnoreCase(strSiteID.trim())) {
+					CommonFunctions.getInstance().funLog(
+							"Deleted record still exist, Deleted id is : "
+									+ strSiteID_GUI);
+					test.log(LogStatus.FAIL,
+							"Deleted record still exist, Deleted id is : "
+									+ strSiteID_GUI, test
+									.addScreenCapture(CommonFunctions.getInstance()
+											.funTakeScreenshot(
+													Thread.currentThread()
+															.getStackTrace()[1]
+															.getMethodName())));
+					Stage.getInstance().setStatus(false);
+					flag = false;
+					break;
+				}
+			}
+			if (flag) {
+				funSuccessCall("Record deleted Successfully : " + strSiteID);
+			}
+		} 
 	}
-	
+
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funTrialAdmin_Trials() Description : This function will
-	 * select the test Trial in Trail drop down and validate Trial tab Author : Suresh Kumar,Mylam Date
-	 * :06 Jun 2017 Parameter : NA
+	 * select the test Trial in Trail drop down and validate Trial tab Author :
+	 * Suresh Kumar,Mylam Date :06 Jun 2017 Parameter : NA
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
 	public void funTrialAdmin_Sites(String strFun, String strSiteID) {
@@ -426,126 +438,152 @@ public class ApplicationFunctions {
 		CommonFunctions.getInstance()
 				.getElement(driver, "judi.test1g.trialAdmin.sites").click();
 		CommonFunctions.getInstance().funWait(2);
-		try{
-		switch (strFun.toUpperCase().trim()) {
-		case "ADDSITE":
-			//Check and Delete Site Id if exist
-			funDeleteSiteIfExist(strSiteID);
-			//Navigate to Add Sites tab
-			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.sites.addSites").click();
-			try {
-				CommonFunctions.getInstance().funWait(2);
+		try {
+			switch (strFun.toUpperCase().trim()) {
+			case "ADDSITE":
+				// Check and Delete Site Id if exist
+				funDeleteSiteIfExist(strSiteID);
+				// Navigate to Add Sites tab
 				CommonFunctions
 						.getInstance()
 						.getElement(driver,
-								"judi.test1g.trialAdmin.sites.siteId")
-						.sendKeys(strSiteID);
-				CommonFunctions
-						.getInstance()
-						.getElement(driver,
-								"judi.test1g.trialAdmin.sites.siteId")
-						.sendKeys(Keys.TAB);
-				CommonFunctions.getInstance().funWait(1);
-				CommonFunctions
-						.getInstance()
-						.getElement(driver,
-								"judi.test1g.trialAdmin.sites.siteName")
-						.sendKeys(strSiteID);
-				CommonFunctions
-						.getInstance()
-						.getElement(driver,
-								"judi.test1g.trialAdmin.sites.siteName")
-						.sendKeys(Keys.TAB);
-				CommonFunctions.getInstance().funWait(1);
-				CommonFunctions
-						.getInstance()
-						.getElement(driver,
-								"judi.test1g.trialAdmin.sites.country")
-						.sendKeys("United States");
-				CommonFunctions
-						.getInstance()
-						.getElement(driver,
-								"judi.test1g.trialAdmin.sites.country")
-						.sendKeys(Keys.TAB);
-				CommonFunctions.getInstance().funWait(1);
-				CommonFunctions
-						.getInstance()
-						.getElement(driver,
-								"judi.test1g.trialAdmin.sites.addSite").click();
-				CommonFunctions.getInstance().funWait(1);
-			} catch (Exception e) {
-				CommonFunctions.getInstance().funLog(
-						"Issue on Identifying objects in Sites tab : "
-								+ ", Exception : " + e.getMessage());
-				test.log(LogStatus.FAIL,
-						" Issue on identifying objects in sites tab", test
-								.addScreenCapture(CommonFunctions.getInstance()
-										.funTakeScreenshot(
-												Thread.currentThread()
-														.getStackTrace()[1]
-														.getMethodName())));
-				Stage.getInstance().setStatus(false);
-				CommonFunctions.getInstance().funFinalizeResults();
-			}
-			break;
-		case "ADDMULTIPLESITES":
-			try {
-				CommonFunctions
-						.getInstance()
-						.getElement(driver,
-								"judi.test1g.trialAdmin.sites.add").click();
-				CommonFunctions.getInstance().funWaitAndAction(
-						"File Upload",
-						"Edit1",
-						"SETTEXT",
+								"judi.test1g.trialAdmin.sites.addSites")
+						.click();
+				try {
+					CommonFunctions.getInstance().funWait(2);
+					CommonFunctions
+							.getInstance()
+							.getElement(driver,
+									"judi.test1g.trialAdmin.sites.siteId")
+							.sendKeys(strSiteID);
+					CommonFunctions
+							.getInstance()
+							.getElement(driver,
+									"judi.test1g.trialAdmin.sites.siteId")
+							.sendKeys(Keys.TAB);
+					CommonFunctions.getInstance().funWait(1);
+					CommonFunctions
+							.getInstance()
+							.getElement(driver,
+									"judi.test1g.trialAdmin.sites.siteName")
+							.sendKeys(strSiteID);
+					CommonFunctions
+							.getInstance()
+							.getElement(driver,
+									"judi.test1g.trialAdmin.sites.siteName")
+							.sendKeys(Keys.TAB);
+					CommonFunctions.getInstance().funWait(1);
+					CommonFunctions
+							.getInstance()
+							.getElement(driver,
+									"judi.test1g.trialAdmin.sites.country")
+							.sendKeys("United States");
+					CommonFunctions
+							.getInstance()
+							.getElement(driver,
+									"judi.test1g.trialAdmin.sites.country")
+							.sendKeys(Keys.TAB);
+					CommonFunctions.getInstance().funWait(1);
+					CommonFunctions
+							.getInstance()
+							.getElement(driver,
+									"judi.test1g.trialAdmin.sites.addSite")
+							.click();
+					CommonFunctions.getInstance().funWait(1);
+				} catch (Exception e) {
+					CommonFunctions.getInstance().funLog(
+							"Issue on Identifying objects in Sites tab : "
+									+ ", Exception : " + e.getMessage());
+					test.log(LogStatus.FAIL,
+							" Issue on identifying objects in sites tab", test
+									.addScreenCapture(CommonFunctions
+											.getInstance().funTakeScreenshot(
+													Thread.currentThread()
+															.getStackTrace()[1]
+															.getMethodName())));
+					Stage.getInstance().setStatus(false);
+					CommonFunctions.getInstance().funFinalizeResults();
+				}
+				break;
+			case "ADDMULTIPLESITES":
+				CSVReader reader = new CSVReader(new FileReader(
 						System.getProperty("user.dir")
 								+ Initializer.getInstance().GetValue(
-										"file.csvSitesFilePath"));
-				CommonFunctions.getInstance().funWaitAndAction(
-						"File Upload", "Button1", "CLICK", "");
-				CommonFunctions.getInstance().funWait(2);
+										"file.csvSitesFilePath")));
+				List<String[]> li = reader.readAll();
+				Iterator<String[]> i1 = li.iterator();
+
+				while (i1.hasNext()) {
+					String[] str = i1.next();
+					// Check and Delete Site Id if exist
+					funDeleteSiteIfExist(str[0].toString());
+					CommonFunctions.getInstance().funWait(2);
+				}
+
+				// Navigate to Add Sites tab
 				CommonFunctions
 						.getInstance()
 						.getElement(driver,
-								"judi.test1g.trialAdmin.sites.confirm").click();
-				CommonFunctions.getInstance().funWait(2);
-				//Verify the sites added successfully 				
-				CommonFunctions
-				.getInstance()
-				.getElement(driver,
-						"judi.test1g.trialAdmin.sites.viewSites").click();
-				CommonFunctions.getInstance().funWait(2);
-				
-			} catch (Exception e) {
-				CommonFunctions.getInstance().funLog(
-						"Issue on Adding multiple sites in Sites tab : "
-								+ ", Exception : " + e.getMessage());
-				test.log(LogStatus.FAIL,
-						" Issue on Adding multiple sites in sites tab", test
-								.addScreenCapture(CommonFunctions.getInstance()
-										.funTakeScreenshot(
-												Thread.currentThread()
-														.getStackTrace()[1]
-														.getMethodName())));
-				Stage.getInstance().setStatus(false);
-				CommonFunctions.getInstance().funFinalizeResults();
-			}
-			System.out.println("success");
-			break;
-		default:
-			System.out.println("vtgchdasbf");
-		}
-		}catch(Exception e){
-			CommonFunctions.getInstance().funLog(
-					"Issue on Adding sites in Sites tab : "
-							+ ", Exception : " + e.getMessage());
-			test.log(LogStatus.FAIL,
-					" Issue on Adding sites in sites tab", test
-							.addScreenCapture(CommonFunctions.getInstance()
+								"judi.test1g.trialAdmin.sites.addSites")
+						.click();
+
+				try {
+					CommonFunctions
+							.getInstance()
+							.getElement(driver,
+									"judi.test1g.trialAdmin.sites.add").click();
+					CommonFunctions.getInstance().funWaitAndAction(
+							"File Upload",
+							"Edit1",
+							"SETTEXT",
+							System.getProperty("user.dir")
+									+ Initializer.getInstance().GetValue(
+											"file.csvSitesFilePath"));
+					CommonFunctions.getInstance().funWaitAndAction(
+							"File Upload", "Button1", "CLICK", "");
+					CommonFunctions.getInstance().funWait(2);
+					CommonFunctions
+							.getInstance()
+							.getElement(driver,
+									"judi.test1g.trialAdmin.sites.confirm")
+							.click();
+					CommonFunctions.getInstance().funWait(2);
+					// Verify the sites added successfully
+					CommonFunctions
+							.getInstance()
+							.getElement(driver,
+									"judi.test1g.trialAdmin.sites.viewSites")
+							.click();
+					CommonFunctions.getInstance().funWait(2);
+
+				} catch (Exception e) {
+					CommonFunctions.getInstance().funLog(
+							"Issue on Adding multiple sites in Sites tab : "
+									+ ", Exception : " + e.getMessage());
+					test.log(LogStatus.FAIL,
+							" Issue on Adding multiple sites in sites tab",
+							test.addScreenCapture(CommonFunctions.getInstance()
 									.funTakeScreenshot(
 											Thread.currentThread()
 													.getStackTrace()[1]
 													.getMethodName())));
+					Stage.getInstance().setStatus(false);
+					CommonFunctions.getInstance().funFinalizeResults();
+				}
+				System.out.println("success");
+				break;
+			default:
+				System.out.println("vtgchdasbf");
+			}
+		} catch (Exception e) {
+			CommonFunctions.getInstance().funLog(
+					"Issue on Adding sites in Sites tab : " + ", Exception : "
+							+ e.getMessage());
+			test.log(LogStatus.FAIL, " Issue on Adding sites in sites tab",
+					test.addScreenCapture(CommonFunctions.getInstance()
+							.funTakeScreenshot(
+									Thread.currentThread().getStackTrace()[1]
+											.getMethodName())));
 			Stage.getInstance().setStatus(false);
 			CommonFunctions.getInstance().funFinalizeResults();
 		}

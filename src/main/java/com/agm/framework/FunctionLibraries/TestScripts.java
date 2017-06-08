@@ -26,8 +26,12 @@ public class TestScripts {
 		ApplicationFunctions.getInstance().funSelectTrial(strTrial);	
 		//Select Test Trail
 		ApplicationFunctions.getInstance().funTrialAdmin_Trials(strTrial);
+		//add site
+//		ApplicationFunctions.getInstance().funTrialAdmin_Sites("ADDSITE", strSiteID);
+		
 		//add multiple sites
-		ApplicationFunctions.getInstance().funTrialAdmin_Sites("ADDSITE", strSiteID);
+		ApplicationFunctions.getInstance().funTrialAdmin_Sites("ADDMULTIPLESITES", "");
+		
 		
 //		//Invite Users
 //		ApplicationFunctions.getInstance().funInviteUser("autotest_freetodelete3@mx-intr.agmednet.net", "Event Coordinator");
