@@ -1,5 +1,8 @@
 package com.agm.framework.FunctionLibraries;
 
+import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,7 +10,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.Select;
+
 import com.agm.framework.helpers.Initializer;
+import com.agm.framework.helpers.Stage;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
@@ -18,7 +23,9 @@ public class ApplicationFunctions {
 	public WebDriver driver = null;
 	public ExtentTest test = null;
 	WebElement element;
-
+	String strQuery = null;
+	String strField = null;
+	
 	private ApplicationFunctions() {
 
 	}
@@ -95,12 +102,12 @@ public class ApplicationFunctions {
 	 */
 	public void funLoginApplication() {
 		// Launch URL
-		funLaunchURL(Initializer.getInstance().GetValue("app.test.test05"));
+		funLaunchURL(Initializer.getInstance().GetValue("app.test.test1g"));
 		try {
-			CommonFunctions.getInstance().getElement(driver, "judi.test.login.username")
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.login.username")
 					.sendKeys(
 							Initializer.getInstance().GetValue(
-									"app.test.test05.username"));
+									"app.test.test1g.username"));
 			test.log(LogStatus.PASS, "Userid Entered successfully", "");
 		} catch (Exception e) {
 			CommonFunctions.getInstance().funLog("Issue identifying the object - UserName"
@@ -109,10 +116,10 @@ public class ApplicationFunctions {
 					"Exception in identifying the UserName field", "");
 		}
 		try {
-			CommonFunctions.getInstance().getElement(driver, "judi.test.login.password")
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.login.password")
 					.sendKeys(
 							Initializer.getInstance().GetValue(
-									"app.test.test05.password"));
+									"app.test.test1g.password"));
 			test.log(LogStatus.PASS, "Password field verification", "");
 		} catch (Exception e) {
 			CommonFunctions.getInstance().funLog("Issue identifying the object - Password"
@@ -121,9 +128,9 @@ public class ApplicationFunctions {
 					"Exception in identifying the password field", "");
 		}
 		try {
-			CommonFunctions.getInstance().getElement(driver, "judi.test.login.login").click();
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.login.login").click();
 			test.log(LogStatus.PASS, "Login Button is clicked successfully", "");
-			CommonFunctions.getInstance().funWait(15);
+			CommonFunctions.getInstance().funWait(8);
 		} catch (Exception e) {
 			CommonFunctions.getInstance().funLog("Issue identifying the object - LoginButton"
 					+ e.getMessage());
@@ -133,7 +140,7 @@ public class ApplicationFunctions {
 									.getStackTrace()[1].getMethodName())));
 		}
 		CommonFunctions.getInstance().funElementValidate(
-				CommonFunctions.getInstance().getElement(driver, "judi.test.home.logout"),
+				CommonFunctions.getInstance().getElement(driver, "judi.test1g.home.logout"),
 				"ISPRESENT", "Validating LogOut element : ", true, true);
 
 	}
@@ -149,7 +156,7 @@ public class ApplicationFunctions {
 	 */
 	public void funLogOutApplication() {
 		try {
-			CommonFunctions.getInstance().getElement(driver, "judi.test.home.logout").click();
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.home.logout").click();
 
 			test.log(LogStatus.PASS, "LogOut button is clicked", "");
 		} catch (Exception e) {
@@ -171,11 +178,11 @@ public class ApplicationFunctions {
 	 * May 2017 Parameter : NA
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
-	public void funNavigate_TrialAdmin() {
+	public void funSelectTrial(String strTrial) {
 		try {
-			CommonFunctions.getInstance().getElement(driver, "judi.test.home.trialAdmin")
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.home.trialAdmin")
 					.click();
-			CommonFunctions.getInstance().funWait(12);
+			CommonFunctions.getInstance().funWait(5);
 			test.log(LogStatus.PASS,
 					"Trial Administration is clicked successfully", "");
 		} catch (Exception e) {
@@ -189,8 +196,361 @@ public class ApplicationFunctions {
 							.funTakeScreenshot(Thread.currentThread()
 									.getStackTrace()[1].getMethodName())));
 		}
-		CommonFunctions.getInstance().funWait(3);		
+		CommonFunctions.getInstance().funWait(2);
+		try {
+			// Select Value in drop down
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Trail")
+					.sendKeys(strTrial);
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Trail")
+			.sendKeys(Keys.TAB);
+			CommonFunctions.getInstance().funWait(1);			
+			Select oE = new Select(CommonFunctions.getInstance().getElement(driver,
+					"judi.test1g.trialAdmin.Trail"));
+			WebElement oSelected = oE.getFirstSelectedOption();
+			String strSelected = oSelected.getText();
+			CommonFunctions.getInstance().funStepValidate("TEXT", strSelected.trim().toLowerCase().trim(), strTrial.toLowerCase().trim(), "Trial selection in the Trial drop down", true, true);			
+		} catch (Exception e) {
+			CommonFunctions.getInstance().funLog("Issue on Identifying drop down : "
+					+ strTrial + ", Exception : " + e.getMessage());
+			test.log(LogStatus.FAIL, strTrial
+					+ " is NOT present in the drop down ",
+					test.addScreenCapture(CommonFunctions.getInstance()
+							.funTakeScreenshot(Thread.currentThread()
+									.getStackTrace()[1].getMethodName())));
+			Stage.getInstance().setStatus(false);
+			CommonFunctions.getInstance().funFinalizeResults();
+		}
 	}
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funTrialAdmin_Trials() Description : This function will
+	 * select the test Trial in Trail drop down and validate Trial tab Author : Suresh Kumar,Mylam Date
+	 * :06 Jun 2017 Parameter : NA
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+	public void funTrialAdmin_Trials(String strTrial) {
+		CommonFunctions.getInstance().funWait(1);
+		// Trial NAme Validation
+		String TrialName = CommonFunctions.getInstance()
+				.getElement(driver, "judi.test1g.trialAdmin.Trials.TrialName")
+				.getText();
+		CommonFunctions.getInstance().funStepValidate("TEXT", TrialName,
+				strTrial, "Trial Name validation", false, false);
+		// Description Validation
+		String strDescription = CommonFunctions
+				.getInstance()
+				.getElement(driver, "judi.test1g.trialAdmin.Trials.Description")
+				.getAttribute("value");
+		DB.getInstance().funConnectDB(
+				Initializer.getInstance().GetValue("db.env"),
+				Initializer.getInstance().GetValue("db.test1g.dbname.portal"));
+		strQuery = "select description from trial where name = '" + strTrial
+				+ "'";
+		String strTrialDesc_DB = DB.getInstance().funExecuteQuery(strQuery,
+				"description");
+		CommonFunctions.getInstance().funStepValidate("TEXT",
+				strDescription.toLowerCase().trim(),
+				strTrialDesc_DB.toLowerCase().trim(),
+				"Trial Description validation", false, false);
+		if (strDescription.contains("_End")) {
+			strDescription = strDescription.replace("_End", "");
+		} else {
+			strDescription = strDescription + "_End";
+		}
+		CommonFunctions
+				.getInstance()
+				.getElement(driver, "judi.test1g.trialAdmin.Trials.Description")
+				.clear();
+		CommonFunctions
+				.getInstance()
+				.getElement(driver, "judi.test1g.trialAdmin.Trials.Description")
+				.sendKeys(strDescription);
+		// Join Code validation
+		String strJoinCode = CommonFunctions.getInstance()
+				.getElement(driver, "judi.test1g.trialAdmin.Trials.joinCode")
+				.getText();
+		strJoinCode = strJoinCode.split(":")[1].trim();
+		strQuery = "select joincode from trial where name = '" + strTrial + "'";
+		String strJoinCode_DB = DB.getInstance().funExecuteQuery(strQuery,
+				"joincode");
+		CommonFunctions.getInstance().funStepValidate("TEXT",
+				strJoinCode.toLowerCase().trim(),
+				strJoinCode_DB.toLowerCase().trim(),
+				"Trial join code validation", false, false);
+		// Number of Sites Validation
+		String iSites = CommonFunctions.getInstance()
+				.getElement(driver, "judi.test1g.trialAdmin.Trials.sites")
+				.getText();
+		iSites = iSites.split(":")[1].trim();
+		strQuery = "SELECT count(*) as COUNT from trialsite WHERE trial_id IN (SELECT id FROM trial where name = '"
+				+ strTrial + "') group by trial_id";
+		CommonFunctions.getInstance().funLog(
+				"SQL Query used to fetch sites is : " + strQuery);
+		String iSites_DB = DB.getInstance().funExecuteQuery(strQuery, "count");
+		CommonFunctions.getInstance().funStepValidate("INTEGER", iSites,
+				iSites_DB, "Validating sites count from GUI to DB", false,
+				false);
+		CommonFunctions.getInstance().funWait(1);
+		// No of subjects Validation
+		String iSubjects = CommonFunctions.getInstance()
+				.getElement(driver, "judi.test1g.trialAdmin.Trials.subjects")
+				.getText();
+		iSubjects = iSubjects.split(":")[1].trim();
+		strQuery = "SELECT count(*) as COUNT from trialsubject WHERE trial_id IN (SELECT id FROM trial where name = '"
+				+ strTrial + "') group by trial_id";
+		CommonFunctions.getInstance().funLog(
+				"SQL Query used to fetch subjects is : " + strQuery);
+		String iSubjects_DB = DB.getInstance().funExecuteQuery(strQuery,
+				"count");
+		CommonFunctions.getInstance().funStepValidate("INTEGER", iSubjects,
+				iSubjects_DB, "Validating Subjects count from GUI to DB",
+				false, false);
+		// Save changes button
+		CommonFunctions
+				.getInstance()
+				.getElement(driver, "judi.test1g.trialAdmin.Trials.saveChanges")
+				.click();
+		CommonFunctions.getInstance().funWait(4);
+		System.out.println(CommonFunctions.getInstance()
+				.getElement(driver, "judi.test1g.trialAdmin.Trials.result")
+				.getText());
+		//Verify the description after update
+		strQuery = "select description from trial where name = '" + strTrial
+				+ "'";
+		strTrialDesc_DB = DB.getInstance().funExecuteQuery(strQuery,
+				"description");
+		CommonFunctions.getInstance().funStepValidate("TEXT",
+				strDescription.toLowerCase().trim(),
+				strTrialDesc_DB.toLowerCase().trim(),
+				"Trial Description validation", false, false);
+		
+
+	}
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funDeleteSiteIfExist() Description : This function will
+	 * delete the site if exist Author : Suresh Kumar,Mylam Date
+	 * :08 Jun 2017 Parameter : NA
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+	public void funDeleteSiteIfExist(String strSiteID){
+		// check for the site existence and delete if exist , so that we can
+		// re-create same data
+		// Verify the sites added successfully
+		CommonFunctions.getInstance()
+				.getElement(driver, "judi.test1g.trialAdmin.sites.viewSites")
+				.click();
+		CommonFunctions.getInstance().funWait(2);
+		WebElement oViewSitesTable = CommonFunctions.getInstance().getElement(
+				driver, "judi.test1g.trialAdmin.sites.viewSitesTable");
+		List<WebElement> allRows = oViewSitesTable.findElements(By
+				.tagName("tr"));
+		// Below loop finds the record and delete
+		for (WebElement row : allRows) {
+			List<WebElement> cells = row.findElements(By.tagName("td"));
+			int iCol = cells.size();
+			String strSiteID_GUI = cells.get(0).getText().trim();
+			if (strSiteID_GUI.equalsIgnoreCase(strSiteID.trim())) {
+				funSuccessCall("This site is already present and deleting.... ");
+				WebElement cell = cells.get(iCol - 1);
+				try {
+					cell.findElement(By.cssSelector("a[ng-click='edit(site)']"))
+							.click();
+					CommonFunctions.getInstance().funWait(2);
+				} catch (Exception e) {
+					funFailureCall(
+							"Issue on Identifying Edit objects in view Sites tab : ",
+							e);
+					CommonFunctions.getInstance().funFinalizeResults();
+				}
+				try {
+					CommonFunctions
+							.getInstance()
+							.getElement(driver,
+									"judi.test1g.trialAdmin.sites.delete")
+							.click();
+					CommonFunctions.getInstance().funWait(1);
+					CommonFunctions
+							.getInstance()
+							.getElement(driver,
+									"judi.test1g.trialAdmin.sites.deleteSite")
+							.click();
+					CommonFunctions.getInstance().funWait(1);
+				} catch (Exception e) {
+					funFailureCall("Issue on Deleting the site ", e);
+					CommonFunctions.getInstance().funFinalizeResults();
+				}
+				break;
+			}
+		}
+		CommonFunctions.getInstance().funWait(3);
+		// Below loop verifies the deleted record
+		allRows = oViewSitesTable.findElements(By
+				.tagName("tr"));
+		boolean flag = true;
+		for (WebElement row : allRows) {
+			List<WebElement> cells = row.findElements(By.tagName("td"));
+			String strSiteID_GUI = cells.get(0).getText().trim();
+			if (strSiteID_GUI.equalsIgnoreCase(strSiteID.trim())) {
+				CommonFunctions.getInstance().funLog(
+						"Deleted record still exist, Deleted id is : "
+								+ strSiteID_GUI);
+				test.log(LogStatus.FAIL,
+						"Deleted record still exist, Deleted id is : "
+								+ strSiteID_GUI, test
+								.addScreenCapture(CommonFunctions.getInstance()
+										.funTakeScreenshot(
+												Thread.currentThread()
+														.getStackTrace()[1]
+														.getMethodName())));
+				Stage.getInstance().setStatus(false);
+				flag = false;
+				break;
+			}	
+		}
+		if(flag){
+			funSuccessCall("Record deleted Successfully : "+ strSiteID);
+		}
+	}
+	
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funTrialAdmin_Trials() Description : This function will
+	 * select the test Trial in Trail drop down and validate Trial tab Author : Suresh Kumar,Mylam Date
+	 * :06 Jun 2017 Parameter : NA
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+	public void funTrialAdmin_Sites(String strFun, String strSiteID) {
+		CommonFunctions.getInstance().funWait(1);
+		// Select Sites Tab
+		CommonFunctions.getInstance()
+				.getElement(driver, "judi.test1g.trialAdmin.sites").click();
+		CommonFunctions.getInstance().funWait(2);
+		try{
+		switch (strFun.toUpperCase().trim()) {
+		case "ADDSITE":
+			//Check and Delete Site Id if exist
+			funDeleteSiteIfExist(strSiteID);
+			//Navigate to Add Sites tab
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.sites.addSites").click();
+			try {
+				CommonFunctions.getInstance().funWait(2);
+				CommonFunctions
+						.getInstance()
+						.getElement(driver,
+								"judi.test1g.trialAdmin.sites.siteId")
+						.sendKeys(strSiteID);
+				CommonFunctions
+						.getInstance()
+						.getElement(driver,
+								"judi.test1g.trialAdmin.sites.siteId")
+						.sendKeys(Keys.TAB);
+				CommonFunctions.getInstance().funWait(1);
+				CommonFunctions
+						.getInstance()
+						.getElement(driver,
+								"judi.test1g.trialAdmin.sites.siteName")
+						.sendKeys(strSiteID);
+				CommonFunctions
+						.getInstance()
+						.getElement(driver,
+								"judi.test1g.trialAdmin.sites.siteName")
+						.sendKeys(Keys.TAB);
+				CommonFunctions.getInstance().funWait(1);
+				CommonFunctions
+						.getInstance()
+						.getElement(driver,
+								"judi.test1g.trialAdmin.sites.country")
+						.sendKeys("United States");
+				CommonFunctions
+						.getInstance()
+						.getElement(driver,
+								"judi.test1g.trialAdmin.sites.country")
+						.sendKeys(Keys.TAB);
+				CommonFunctions.getInstance().funWait(1);
+				CommonFunctions
+						.getInstance()
+						.getElement(driver,
+								"judi.test1g.trialAdmin.sites.addSite").click();
+				CommonFunctions.getInstance().funWait(1);
+			} catch (Exception e) {
+				CommonFunctions.getInstance().funLog(
+						"Issue on Identifying objects in Sites tab : "
+								+ ", Exception : " + e.getMessage());
+				test.log(LogStatus.FAIL,
+						" Issue on identifying objects in sites tab", test
+								.addScreenCapture(CommonFunctions.getInstance()
+										.funTakeScreenshot(
+												Thread.currentThread()
+														.getStackTrace()[1]
+														.getMethodName())));
+				Stage.getInstance().setStatus(false);
+				CommonFunctions.getInstance().funFinalizeResults();
+			}
+			break;
+		case "ADDMULTIPLESITES":
+			try {
+				CommonFunctions
+						.getInstance()
+						.getElement(driver,
+								"judi.test1g.trialAdmin.sites.add").click();
+				CommonFunctions.getInstance().funWaitAndAction(
+						"File Upload",
+						"Edit1",
+						"SETTEXT",
+						System.getProperty("user.dir")
+								+ Initializer.getInstance().GetValue(
+										"file.csvSitesFilePath"));
+				CommonFunctions.getInstance().funWaitAndAction(
+						"File Upload", "Button1", "CLICK", "");
+				CommonFunctions.getInstance().funWait(2);
+				CommonFunctions
+						.getInstance()
+						.getElement(driver,
+								"judi.test1g.trialAdmin.sites.confirm").click();
+				CommonFunctions.getInstance().funWait(2);
+				//Verify the sites added successfully 				
+				CommonFunctions
+				.getInstance()
+				.getElement(driver,
+						"judi.test1g.trialAdmin.sites.viewSites").click();
+				CommonFunctions.getInstance().funWait(2);
+				
+			} catch (Exception e) {
+				CommonFunctions.getInstance().funLog(
+						"Issue on Adding multiple sites in Sites tab : "
+								+ ", Exception : " + e.getMessage());
+				test.log(LogStatus.FAIL,
+						" Issue on Adding multiple sites in sites tab", test
+								.addScreenCapture(CommonFunctions.getInstance()
+										.funTakeScreenshot(
+												Thread.currentThread()
+														.getStackTrace()[1]
+														.getMethodName())));
+				Stage.getInstance().setStatus(false);
+				CommonFunctions.getInstance().funFinalizeResults();
+			}
+			System.out.println("success");
+			break;
+		default:
+			System.out.println("vtgchdasbf");
+		}
+		}catch(Exception e){
+			CommonFunctions.getInstance().funLog(
+					"Issue on Adding sites in Sites tab : "
+							+ ", Exception : " + e.getMessage());
+			test.log(LogStatus.FAIL,
+					" Issue on Adding sites in sites tab", test
+							.addScreenCapture(CommonFunctions.getInstance()
+									.funTakeScreenshot(
+											Thread.currentThread()
+													.getStackTrace()[1]
+													.getMethodName())));
+			Stage.getInstance().setStatus(false);
+			CommonFunctions.getInstance().funFinalizeResults();
+		}
+	}
+
 
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -200,12 +560,10 @@ public class ApplicationFunctions {
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
 	public void funSelectTestTrial(String strValue) {
-		// Navigate to Trial Admin page
-		funNavigate_TrialAdmin();
 		driver.switchTo().frame("asdfasdfasdfsdfa");
 		// Navigate to Users page
 		try {
-			CommonFunctions.getInstance().getElement(driver, "judi.test.trialAdmin.Users")
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Users")
 					.click();
 		} catch (Exception e) {
 			CommonFunctions.getInstance().funLog("Issue identifying the object - Users "
@@ -214,12 +572,12 @@ public class ApplicationFunctions {
 		CommonFunctions.getInstance().funWait(4);
 		try {
 			// Select Value in drop down
-			CommonFunctions.getInstance().getElement(driver, "judi.test.trialAdmin.Trail")
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Trail")
 					.sendKeys("AutomationTestTrial");
-			CommonFunctions.getInstance().getElement(driver, "judi.test.trialAdmin.Trail")
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Trail")
 					.click();
 			Select oE = new Select(CommonFunctions.getInstance().getElement(driver,
-					"judi.test.trialAdmin.Trail"));
+					"judi.test1g.trialAdmin.Trail"));
 			WebElement oSelected = oE.getFirstSelectedOption();
 			String strSelected = oSelected.getText();
 			if (strSelected.trim().equalsIgnoreCase(strValue.trim())) {
@@ -275,9 +633,9 @@ public class ApplicationFunctions {
 		driver.switchTo().frame("asdfasdfasdfsdfa");
 		// Navigate to Users page
 		try {
-			CommonFunctions.getInstance().getElement(driver, "judi.test.trialAdmin.Email")
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Email")
 					.clear();
-			CommonFunctions.getInstance().getElement(driver, "judi.test.trialAdmin.Email")
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Email")
 					.sendKeys(strEmail);
 			CommonFunctions.getInstance().funLog("Email entered successfully on Users page");
 		} catch (Exception e) {
@@ -286,7 +644,7 @@ public class ApplicationFunctions {
 		}
 		CommonFunctions.getInstance().funWait(3);
 		try {
-			CommonFunctions.getInstance().getElement(driver, "judi.test.trialAdmin.Role")
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Role")
 					.click();
 			CommonFunctions.getInstance().funWait(3);
 			// Select oE = new Select(CommonFunctions.getInstance().getElement(
@@ -301,13 +659,13 @@ public class ApplicationFunctions {
 			// break;
 			// }
 			// }
-			CommonFunctions.getInstance().getElement(driver, "judi.test.trialAdmin.Role")
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Role")
 					.sendKeys(strUserRole);
 
 		} catch (Exception e) {
 			CommonFunctions.getInstance().funLog("Issue on Identifying drop down : "
 					+ strUserRole + ", Exception : " + e.getMessage());
-			CommonFunctions.getInstance().getElement(driver, "judi.test.trialAdmin.Email")
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Email")
 					.click();
 			test.log(LogStatus.FAIL, strUserRole
 					+ " is NOT present in the drop down ",
@@ -316,7 +674,7 @@ public class ApplicationFunctions {
 									.getStackTrace()[1].getMethodName())));
 		}
 		try {
-			CommonFunctions.getInstance().getElement(driver, "judi.test.trialAdmin.Invite")
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Invite")
 					.click();
 			CommonFunctions.getInstance()
 					.funLog("Invite button is clicked successfully on Users page");
@@ -340,10 +698,10 @@ public class ApplicationFunctions {
 	public void funRegistration(String strEmail) {
 		// Launch application
 		driver.navigate().to(
-				Initializer.getInstance().GetValue("app.test.test05"));
+				Initializer.getInstance().GetValue("app.test.test1g"));
 		CommonFunctions.getInstance().funWait(8);
 		try {
-			CommonFunctions.getInstance().getElement(driver, "judi.test.login.register")
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.login.register")
 					.click();
 			CommonFunctions.getInstance().funWait(3);
 			test.log(LogStatus.PASS, "Register button is clicked", "");
@@ -357,9 +715,9 @@ public class ApplicationFunctions {
 									.getStackTrace()[1].getMethodName())));
 		}
 		try {
-			CommonFunctions.getInstance().getElement(driver, "judi.test.register.email")
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.register.email")
 					.sendKeys(strEmail);
-			CommonFunctions.getInstance().getElement(driver, "judi.test.register.email")
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.register.email")
 					.sendKeys(Keys.TAB);
 			CommonFunctions.getInstance().funWait(1);
 			test.log(LogStatus.PASS,
@@ -377,7 +735,7 @@ public class ApplicationFunctions {
 		}
 
 		try {
-			CommonFunctions.getInstance().getElement(driver, "judi.test.register.continue")
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.register.continue")
 					.click();
 			CommonFunctions.getInstance().funWait(3);
 			test.log(LogStatus.PASS, "Continue button is clicked successfully",
@@ -410,7 +768,7 @@ public class ApplicationFunctions {
 	public void funRegistration_Step1(String strUserName) {
 		try {
 			CommonFunctions.getInstance().getElement(driver,
-					"judi.test.register.step1.userName").sendKeys(strUserName);
+					"judi.test1g.register.step1.userName").sendKeys(strUserName);
 			CommonFunctions.getInstance().funWait(1);
 			test.log(LogStatus.PASS, "User Name is entered successfully"
 					+ strUserName, "");
@@ -427,7 +785,7 @@ public class ApplicationFunctions {
 		}
 		try {
 			CommonFunctions.getInstance().getElement(driver,
-					"judi.test.register.step1.password").sendKeys(strUserName);
+					"judi.test1g.register.step1.password").sendKeys(strUserName);
 			test.log(LogStatus.PASS, "password is entered successfully", "");
 		} catch (Exception e) {
 			CommonFunctions.getInstance()
@@ -443,7 +801,7 @@ public class ApplicationFunctions {
 		try {
 			CommonFunctions.getInstance()
 					.getElement(driver,
-							"judi.test.register.step1.confirmPassword")
+							"judi.test1g.register.step1.confirmPassword")
 					.sendKeys(strUserName);
 			test.log(LogStatus.PASS, "confirmPassword is entered successfully",
 					"");
@@ -461,7 +819,7 @@ public class ApplicationFunctions {
 		}
 		try {
 			CommonFunctions.getInstance().getElement(driver,
-					"judi.test.register.step1.firstName").sendKeys(strUserName);
+					"judi.test1g.register.step1.firstName").sendKeys(strUserName);
 			test.log(LogStatus.PASS, "firstName is entered successfully", "");
 		} catch (Exception e) {
 			CommonFunctions.getInstance()
@@ -476,7 +834,7 @@ public class ApplicationFunctions {
 		}
 		try {
 			CommonFunctions.getInstance().getElement(driver,
-					"judi.test.register.step1.lastName").sendKeys(strUserName);
+					"judi.test1g.register.step1.lastName").sendKeys(strUserName);
 			test.log(LogStatus.PASS, "lastName is entered successfully", "");
 		} catch (Exception e) {
 			CommonFunctions.getInstance()
@@ -491,9 +849,9 @@ public class ApplicationFunctions {
 		}
 		try {
 			CommonFunctions.getInstance().getElement(driver,
-					"judi.test.register.step1.phoneNo").sendKeys(strUserName);
+					"judi.test1g.register.step1.phoneNo").sendKeys(strUserName);
 			CommonFunctions.getInstance().getElement(driver,
-					"judi.test.register.step1.phoneNo").sendKeys(Keys.TAB);
+					"judi.test1g.register.step1.phoneNo").sendKeys(Keys.TAB);
 			CommonFunctions.getInstance().funWait(1);
 			test.log(LogStatus.PASS, "phoneNo is entered successfully", "");
 		} catch (Exception e) {
@@ -510,7 +868,7 @@ public class ApplicationFunctions {
 		CommonFunctions.getInstance().funWait(1);
 		try {
 			CommonFunctions.getInstance().getElement(driver,
-					"judi.test.register.step1.continue").click();
+					"judi.test1g.register.step1.continue").click();
 			test.log(LogStatus.PASS,
 					"Continue button is clicked successfully on Step1 page", "");
 		} catch (Exception e) {
@@ -535,7 +893,7 @@ public class ApplicationFunctions {
 	 */
 	public void funRegistration_Step2(String strValue) {
 		try {
-			CommonFunctions.getInstance().getElement(driver, "judi.test.register.step2.org")
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.register.step2.org")
 					.sendKeys(strValue);
 			test.log(LogStatus.PASS, "Organization is entered successfully"
 					+ strValue, "");
@@ -552,7 +910,7 @@ public class ApplicationFunctions {
 		}
 		try {
 			CommonFunctions.getInstance().getElement(driver,
-					"judi.test.register.step2.address1").sendKeys(strValue);
+					"judi.test1g.register.step2.address1").sendKeys(strValue);
 			test.log(LogStatus.PASS, "address1 is entered successfully", "");
 		} catch (Exception e) {
 			CommonFunctions.getInstance()
@@ -567,7 +925,7 @@ public class ApplicationFunctions {
 		}
 		try {
 			CommonFunctions.getInstance().getElement(driver,
-					"judi.test.register.step2.address2").sendKeys(strValue);
+					"judi.test1g.register.step2.address2").sendKeys(strValue);
 			test.log(LogStatus.PASS, "address2 is entered successfully", "");
 		} catch (Exception e) {
 			CommonFunctions.getInstance()
@@ -581,7 +939,7 @@ public class ApplicationFunctions {
 									.getStackTrace()[1].getMethodName())));
 		}
 		try {
-			CommonFunctions.getInstance().getElement(driver, "judi.test.register.step2.city")
+			CommonFunctions.getInstance().getElement(driver, "judi.test1g.register.step2.city")
 					.sendKeys(strValue);
 			test.log(LogStatus.PASS, "City is entered successfully", "");
 		} catch (Exception e) {
@@ -597,7 +955,7 @@ public class ApplicationFunctions {
 		}
 		try {
 			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test.register.step2.state")
+					.getElement(driver, "judi.test1g.register.step2.state")
 					.sendKeys(strValue);
 			test.log(LogStatus.PASS, "State is entered successfully", "");
 		} catch (Exception e) {
@@ -613,9 +971,9 @@ public class ApplicationFunctions {
 		}
 		try {
 			CommonFunctions.getInstance().getElement(driver,
-					"judi.test.register.step2.postal").sendKeys(strValue);
+					"judi.test1g.register.step2.postal").sendKeys(strValue);
 			CommonFunctions.getInstance().getElement(driver,
-					"judi.test.register.step2.postal").sendKeys(Keys.TAB);
+					"judi.test1g.register.step2.postal").sendKeys(Keys.TAB);
 			test.log(LogStatus.PASS, "Postal code is entered successfully", "");
 		} catch (Exception e) {
 			CommonFunctions.getInstance()
@@ -630,9 +988,9 @@ public class ApplicationFunctions {
 		}
 		try {
 			CommonFunctions.getInstance().getElement(driver,
-					"judi.test.register.step2.country").sendKeys(strValue);
+					"judi.test1g.register.step2.country").sendKeys(strValue);
 			CommonFunctions.getInstance().getElement(driver,
-					"judi.test.register.step2.country").sendKeys(Keys.TAB);
+					"judi.test1g.register.step2.country").sendKeys(Keys.TAB);
 			test.log(LogStatus.PASS, "Country is entered successfully", "");
 		} catch (Exception e) {
 			CommonFunctions.getInstance()
@@ -649,7 +1007,7 @@ public class ApplicationFunctions {
 		CommonFunctions.getInstance().funWait(1);
 		try {
 			CommonFunctions.getInstance().getElement(driver,
-					"judi.test.register.step2.continue").click();
+					"judi.test1g.register.step2.continue").click();
 			test.log(LogStatus.PASS,
 					"Continue button is clicked successfully on Step2 page", "");
 		} catch (Exception e) {
@@ -664,5 +1022,37 @@ public class ApplicationFunctions {
 									.getStackTrace()[1].getMethodName())));
 		}
 	}
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funSuccessCall() Description : This function
+	 * will update results in success call Author : Suresh Kumar,Mylam
+	 * Date : 08 jun 2017 Parameter : strDescription
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+	public void funSuccessCall(String strDescription) {
+		CommonFunctions.getInstance().funLog(strDescription);
+		test.log(LogStatus.PASS, strDescription, test
+				.addScreenCapture(CommonFunctions.getInstance()
+						.funTakeScreenshot(
+								Thread.currentThread().getStackTrace()[1]
+										.getMethodName())));
+	}
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funFailureCall() Description : This function
+	 * will update results in success call Author : Suresh Kumar,Mylam
+	 * Date : 08 jun 2017 Parameter : strDescription,Exception
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+	public void funFailureCall(String strDescription, Exception e) {
+		CommonFunctions.getInstance().funLog(strDescription + e.getMessage());
+		test.log(LogStatus.FAIL, strDescription, test
+				.addScreenCapture(CommonFunctions.getInstance()
+						.funTakeScreenshot(
+								Thread.currentThread().getStackTrace()[1]
+										.getMethodName())));
+		Stage.getInstance().setStatus(false);
+	}
+	
 
 }

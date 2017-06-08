@@ -13,7 +13,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.imageio.ImageIO;
+
+
 
 
 
@@ -47,16 +50,16 @@ public class CommonFunctions {
 	private static CommonFunctions objCmf = null;
 
 	public WebDriver driver = null;
-	public String strLogFileName;
+	public String strLogFileName = null;
 	public boolean iStatus = true;
 	private AutoItX objAutoIT = null;
 	public ExtentReports extent;
 	public ExtentTest test;
-	public String strTestCaseName;
+	public String strTestCaseName = null;
 
-//	private CommonFunctions() {
-//
-//	}
+		private CommonFunctions() {
+
+	}
 
 	public static CommonFunctions getInstance() {
 		if (objCmf == null)
@@ -525,6 +528,37 @@ public class CommonFunctions {
 					}
 				}
 				break;
+			case "INTEGER":
+				int strActualValue = Integer.parseInt(strActual);
+				int strExpectedValue = Integer.parseInt(strExpected);				
+				if (strActualValue-strExpectedValue==0) {
+					if (bTakeScreenShot) {
+						test.log(LogStatus.PASS, strDescription
+								+ " : Actual : " + strActual
+								+ " and Expected is : " + strExpected, "");
+					} else {
+						test.log(LogStatus.PASS, strDescription
+								+ " : Actual : " + strActual
+								+ " and Expected is : " + strExpected, "");
+					}
+					funLog(strDescription);
+				} else {
+					Stage.getInstance().setStatus(false);
+					if (bTakeScreenShot) {
+						test.log(LogStatus.FAIL, strDescription
+								+ " : Actual : " + strActual
+								+ " and Expected is : " + strExpected, "");
+					} else {
+						test.log(LogStatus.FAIL, strDescription
+								+ " : Actual : " + strActual
+								+ " and Expected is : " + strExpected, "");
+					}
+					funLog(strDescription);
+					if (exitHandler) {
+						funFinalizeResults();
+					}
+				}
+				break;
 			default:
 				funLog("Exception Occured in validating : " + strDescription);
 				break;
@@ -780,7 +814,7 @@ public class CommonFunctions {
 //		TestData.getInstance() TestData.getInstance() = TestData.getInstance().getInstance();
 //		TestData.getInstance().funLoadTestData.getInstance()(strTestCaseName);
 
-		// Initialize test object in other Libraries
+		// Initialize test object in other Libraries			
 		ApplicationFunctions.getInstance().init(test);
 		DB.getInstance().init(test);
 		TestData.getInstance().init(test);
@@ -807,20 +841,20 @@ public class CommonFunctions {
 		extent.endTest(test);
 		// writing everything to document
 		extent.flush();
-		try {
-			switch (result.getStatus()) {
-			case ITestResult.SUCCESS:
-				funUpdateResultsToTestRail("PASS");
-				break;
-			case ITestResult.FAILURE:
-				funUpdateResultsToTestRail("FAIL");
-				break;
-			default:
-				throw new RuntimeException("Invalid status");
-			}
-		} catch (Exception e) {
-			funLog("Invalid Result status");
-		}
+//		try {
+//			switch (result.getStatus()) {
+//			case ITestResult.SUCCESS:
+//				funUpdateResultsToTestRail("PASS");
+//				break;
+//			case ITestResult.FAILURE:
+//				funUpdateResultsToTestRail("FAIL");
+//				break;
+//			default:
+//				throw new RuntimeException("Invalid status");
+//			}
+//		} catch (Exception e) {
+//			funLog("Invalid Result status");
+//		}
 		funEndTestCase(strTestCaseName);
 
 	}

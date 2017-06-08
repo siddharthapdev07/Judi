@@ -44,15 +44,15 @@ public class DB {
 	public Connection funConnectDB(String strEnv, String dbName) {
 
 		try {
-			switch (strEnv.toLowerCase()) {
+			switch (strEnv) {
 			case "test05":
 				strURL = "jdbc:postgresql://db.test05.agmednet.net:5432/" + dbName;
 				break;
-			case "tes-1g":
+			case "test-1g":
 				strURL = "jdbc:postgresql://db.test-1g.agmednet.net:5432" + dbName;
 				break;
 			default:
-				strURL = "jdbc:postgresql://db.test05.agmednet.net:5432/portal_db";
+				strURL = "jdbc:postgresql://db.test-1g.agmednet.net:5432/portal_db";
 			}
 			Class.forName("org.postgresql.Driver");
 			try {
