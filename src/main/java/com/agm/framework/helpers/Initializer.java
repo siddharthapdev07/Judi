@@ -23,7 +23,7 @@ public class Initializer {
 
 	@BeforeSuite
 	public void funIntialize() {
-		System.out.println("before suite");
+//		System.out.println("before suite");
 		funLoadProps();
 	}
 
@@ -41,7 +41,6 @@ public class Initializer {
 				+ "//src//test//resources//properties//config.properties";
 		String orPropsPath = System.getProperty("user.dir")
 				+ "//src//test//resources//properties//OR.properties";
-
 		try {
 			configProps = new Properties();
 			FileInputStream propFile = new FileInputStream(configPropsPath);
