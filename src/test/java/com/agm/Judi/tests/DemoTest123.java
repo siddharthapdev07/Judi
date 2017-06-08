@@ -82,7 +82,7 @@ public class DemoTest123 {
 		// Login Application
 		applicationFunctions.funLoginApplication();		
 		//Navigate to Trial Admin page
-		applicationFunctions.funNavigate_TrialAdmin();
+//		applicationFunctions.funNavigate_TrialAdmin();
 		//Select Test Trail
 		applicationFunctions.funSelectTestTrial("AutomationTestTrial");	
 		//Invite Users
