@@ -28,7 +28,28 @@ public class Stage {
 		private int iRunID;
 		private int iCaseID;
 		private boolean iStatus;
+		private String strSite;
+		private String strTrial;
 		
+		public String getTrial()
+		{
+			return strTrial;
+		}
+		
+		public void setTrial(String strTrial)
+		{
+			this.strTrial = strTrial;
+		}
+		
+		public String getSite()
+		{
+			return strSite;
+		}
+		
+		public void setSite(String strSite)
+		{
+			this.strSite = strSite;
+		}
 		
 		public boolean getStatus()
 		{
