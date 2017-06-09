@@ -1,6 +1,7 @@
 package com.agm.framework.FunctionLibraries;
 
 import com.agm.framework.helpers.Initializer;
+import com.agm.framework.helpers.Stage;
 import com.relevantcodes.extentreports.ExtentTest;
 
 public class TestScripts {
@@ -19,6 +20,7 @@ public class TestScripts {
 
 	public void DemoTest() {
 		strTrial  = "Judi_Demo";
+		Stage.getInstance().setTrial(strTrial);
 		String strSiteID = "AutoSite2";
 		// Login Application
 		ApplicationFunctions.getInstance().funLoginApplication();	
@@ -27,10 +29,11 @@ public class TestScripts {
 		//Select Test Trail
 		ApplicationFunctions.getInstance().funTrialAdmin_Trials(strTrial);
 		//add site
-//		ApplicationFunctions.getInstance().funTrialAdmin_Sites("ADDSITE", strSiteID);
-		
+		ApplicationFunctions.getInstance().funTrialAdmin_Sites("ADDSITE", strSiteID);		
 		//add multiple sites
 		ApplicationFunctions.getInstance().funTrialAdmin_Sites("ADDMULTIPLESITES", "");
+		//add subject
+		ApplicationFunctions.getInstance().funTrialAdmin_Subjects("ADDSUBJECT", "");
 		
 		
 //		//Invite Users

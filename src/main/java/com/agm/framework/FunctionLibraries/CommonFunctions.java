@@ -73,18 +73,8 @@ public class CommonFunctions {
 
 	public void init(AutoItX objAutoIT) {
 		this.objAutoIT = objAutoIT;
-	}
-	
-	/*
-	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	 * Function Name : funQuitBrowser() Description : This function will quit
-	 * browser Author : Suresh Kumar,Mylam Date : 03 May 2017 Parameter : NA
-	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	 */
-	public void funQuitBrowser() throws Exception {
-		if (driver != null)
-			driver.quit();
-	}
+	}	
+
 
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -832,7 +822,7 @@ public class CommonFunctions {
 
 	public void funAfterTest(ITestResult result) {
 		try {
-			funQuitBrowser();
+			ApplicationFunctions.getInstance().funQuitBrowser();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			funLog("Issue in terminating the browser");

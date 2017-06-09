@@ -8,6 +8,7 @@ import java.sql.Statement;
 
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
+import java.util.ArrayList;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
@@ -127,6 +128,65 @@ public class DB {
 			commonFunctions.funLog("User is not invited successfully, please check the invite user functionlaity"	);
 			test.log(LogStatus.FAIL, "User is not invited successfully, please check the invite user functionlaity","");
 		}
+	}
+	
+	/*''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	Function Name	: funGetDBValuesArr()
+	Description		: This function will run query and return the result in array format for the total rows
+	Author			: Suresh Kumar Mylam
+	Date			: 09 Jun 2017
+	Parameter		: strQuery = SQL query, strField = Field name in the array
+					If field name has :: then array first position has the first field name value and second position has second field name value etc..
+	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''*/
+	public ArrayList<String> funGetDBValuesArr(String strDBName, String strQuery, String strField)
+	{
+		//Declaring variable		
+		Statement oState = null;
+		ResultSet oRS = null;
+		String strFieldFirst = null;
+		String strFieldSecond = null;
+		
+		//Connecting DB
+		if(strDBName.trim().length() != 0)
+		{
+			funConnectDB(Initializer.getInstance().GetValue("db.env"),strDBName);
+		}
+		
+		if(strField.contains("::"))
+		{
+			String[] strFields = strField.split("::");
+			strFieldFirst = strFields[0] ;
+			strFieldSecond = strFields[1] ;
+			
+		}
+		
+		ArrayList <String>arrDBValues = new ArrayList<String>();
+		
+		try
+		{
+			oState = objConnDB.createStatement();
+			oRS = oState.executeQuery(strQuery);
+			
+			while(oRS.next())
+			{	
+				if(strField.contains("::"))
+				{
+					arrDBValues.add(oRS.getString(strFieldFirst));
+					arrDBValues.add(oRS.getString(strFieldSecond));
+				}
+				else
+				{
+					arrDBValues.add(oRS.getString(strField));
+				}
+			}
+		}
+		catch(Exception e)
+		{			
+			CommonFunctions.getInstance().funLog("Error on querying the field "+ strField +"\n Query : "+ strQuery +". Exception : "+ e.getMessage());
+
+		}
+		
+		return arrDBValues;
 	}
 	
 
