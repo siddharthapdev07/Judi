@@ -1,0 +1,31 @@
+[INFO] 2017-06-12 15:52:07 - funStartTestCase : ****************************************************************************************
+[INFO] 2017-06-12 15:52:07 - funStartTestCase : ------------------  DemoTest_20170612_155206 Execution is STARTED   ------------------------
+[INFO] 2017-06-12 15:52:07 - funStartTestCase : ****************************************************************************************
+[INFO] 2017-06-12 15:52:21 - funStepValidate : validate the Browser Title
+[INFO] 2017-06-12 15:52:30 - funElementValidate : Validating LogOut element :  is present 
+[INFO] 2017-06-12 15:52:41 - funStepValidate : Trial selection in the Trial drop down
+[INFO] 2017-06-12 15:52:42 - funStepValidate : Trial Name validation
+[INFO] 2017-06-12 15:52:42 - funStepValidate : Trial Description validation
+[INFO] 2017-06-12 15:52:43 - funStepValidate : Trial join code validation
+[INFO] 2017-06-12 15:52:43 - funTrialAdmin_Trials : SQL Query used to fetch sites is : SELECT count(*) as COUNT from trialsite WHERE trial_id IN (SELECT id FROM trial where name = 'Judi_Demo') group by trial_id
+[INFO] 2017-06-12 15:52:43 - funStepValidate : Validating sites count from GUI to DB
+[INFO] 2017-06-12 15:52:44 - funTrialAdmin_Trials : SQL Query used to fetch subjects is : SELECT count(*) as COUNT from trialsubject WHERE trial_id IN (SELECT id FROM trial where name = 'Judi_Demo') group by trial_id
+[INFO] 2017-06-12 15:52:44 - funStepValidate : Validating Subjects count from GUI to DB
+[INFO] 2017-06-12 15:52:48 - funStepValidate : Trial Description validation
+[INFO] 2017-06-12 15:52:56 - funCheckSiteID : SQL Query used to fetch verify site exist or not is : select clinicaltrialsiteid from trialsite where trial_id = (SELECT id FROM trial where name = 'Judi_Demo') and clinicaltrialsiteid = 'AutoSite8' and ctmdeleted = 'f'
+[INFO] 2017-06-12 15:52:57 - funDeleteSiteIfExist : No Site exist with name : AutoSite8
+[INFO] 2017-06-12 15:53:02 - funSuccessCall : New site is added and Site is : AutoSite8
+[INFO] 2017-06-12 15:53:11 - funSuccessCall : No Record found for this Subject id : AutoSite8-AutoSite8 and it is free to create
+[INFO] 2017-06-12 15:53:17 - funSuccessCall : New subject is added and subject is : AutoSite8-AutoSite8
+[INFO] 2017-06-12 15:53:21 - funCheckSiteID : SQL Query used to fetch verify site exist or not is : select clinicaltrialsiteid from trialsite where trial_id = (SELECT id FROM trial where name = 'Judi_Demo') and clinicaltrialsiteid = 'AutoSite2' and ctmdeleted = 'f'
+[INFO] 2017-06-12 15:53:21 - funSuccessCall : Checking for any subjects associated to this site.... 
+[INFO] 2017-06-12 15:53:21 - funDeleteSubjectOnSite : No subject found for this Site ID: AutoSite2
+[INFO] 2017-06-12 15:53:24 - funSuccessCall : This site is already present and deleting.... 
+[INFO] 2017-06-12 15:53:32 - funSuccessCall : Record deleted Successfully : AutoSite2
+[INFO] 2017-06-12 15:53:33 - funCheckSiteID : SQL Query used to fetch verify site exist or not is : select clinicaltrialsiteid from trialsite where trial_id = (SELECT id FROM trial where name = 'Judi_Demo') and clinicaltrialsiteid = 'AutoSite3' and ctmdeleted = 'f'
+[INFO] 2017-06-12 15:53:33 - funSuccessCall : Checking for any subjects associated to this site.... 
+[INFO] 2017-06-12 15:53:33 - funDeleteSubjectOnSite : No subject found for this Site ID: AutoSite3
+[INFO] 2017-06-12 15:53:36 - funSuccessCall : This site is already present and deleting.... 
+[INFO] 2017-06-12 15:53:44 - funSuccessCall : Record deleted Successfully : AutoSite3
+[INFO] 2017-06-12 15:53:58 - funSuccessCall : Multiple sites are added successfully
+[INFO] 2017-06-12 15:54:00 - funEndTestCase : ------------------  DemoTest Execution is END   ---------------------------

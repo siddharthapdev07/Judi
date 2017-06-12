@@ -8,7 +8,9 @@ import java.sql.Statement;
 
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
+
 import java.util.ArrayList;
+
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
@@ -19,8 +21,9 @@ public class DB {
 	public String strURL;
 	public ResultSet rs;
 	public ExtentTest test = null;
-	public String strSQLQuery=null;
+	public String strQuery=null;
 	public String strField = null;
+	
 	private static DB objDB = null;
 	private DB() {
 	}
@@ -119,9 +122,9 @@ public class DB {
 
 		funConnectDB(initializer.GetValue("db.env"),
 				initializer.GetValue("db.test05.dbname.portal"));
-		strSQLQuery = "select trial_id from pendingtrialuser where emailaddress = '"
+		strQuery = "select trial_id from pendingtrialuser where emailaddress = '"
 				+ strEmail + "' and roleenum = '" + strRole + "'";
-		strField = funExecuteQuery(strSQLQuery, "trial_id");
+		strField = funExecuteQuery(strQuery, "trial_id");
 		if (strField != null) {
 
 		}else{
@@ -187,6 +190,22 @@ public class DB {
 		}
 		
 		return arrDBValues;
+	}
+	
+	
+	public String funCheckSiteID(String strSiteID){
+		strQuery = "select clinicaltrialsiteid from trialsite where trial_id = (SELECT id FROM trial where name = '"
+				+ Stage.getInstance().getTrial()
+				+ "') and clinicaltrialsiteid = '"
+				+ strSiteID
+				+ "' and ctmdeleted = 'f'";		
+		DB.getInstance().funConnectDB(
+		Initializer.getInstance().GetValue("db.env"),
+		Initializer.getInstance().GetValue("db.test1g.dbname.portal"));
+		CommonFunctions.getInstance().funLog("SQL Query used to fetch verify site exist or not is : " + strQuery);
+		String strValue = DB.getInstance().funExecuteQuery(strQuery, "clinicaltrialsiteid");
+
+		return strValue;
 	}
 	
 

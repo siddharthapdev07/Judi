@@ -29,7 +29,7 @@ public class ApplicationFunctions {
 	WebElement element;
 	String strQuery = null;
 	String strField = null;
-	
+//	public String[] str= null;
 	private ApplicationFunctions() {
 
 	}
@@ -273,73 +273,82 @@ public class ApplicationFunctions {
 		} else {
 			strDescription = strDescription + "_End";
 		}
-		CommonFunctions
-				.getInstance()
-				.getElement(driver, "judi.test1g.trialAdmin.Trials.Description")
-				.clear();
-		CommonFunctions
-				.getInstance()
-				.getElement(driver, "judi.test1g.trialAdmin.Trials.Description")
-				.sendKeys(strDescription);
-		// Join Code validation
-		String strJoinCode = CommonFunctions.getInstance()
-				.getElement(driver, "judi.test1g.trialAdmin.Trials.joinCode")
-				.getText();
-		strJoinCode = strJoinCode.split(":")[1].trim();
-		strQuery = "select joincode from trial where name = '" + strTrial + "'";
-		String strJoinCode_DB = DB.getInstance().funExecuteQuery(strQuery,
-				"joincode");
-		CommonFunctions.getInstance().funStepValidate("TEXT",
-				strJoinCode.toLowerCase().trim(),
-				strJoinCode_DB.toLowerCase().trim(),
-				"Trial join code validation", false, false);
-		// Number of Sites Validation
-		String iSites = CommonFunctions.getInstance()
-				.getElement(driver, "judi.test1g.trialAdmin.Trials.sites")
-				.getText();
-		iSites = iSites.split(":")[1].trim();
-		strQuery = "SELECT count(*) as COUNT from trialsite WHERE trial_id IN (SELECT id FROM trial where name = '"
-				+ strTrial + "') group by trial_id";
-		CommonFunctions.getInstance().funLog(
-				"SQL Query used to fetch sites is : " + strQuery);
-		String iSites_DB = DB.getInstance().funExecuteQuery(strQuery, "count");
-		CommonFunctions.getInstance().funStepValidate("INTEGER", iSites,
-				iSites_DB, "Validating sites count from GUI to DB", false,
-				false);
-		CommonFunctions.getInstance().funWait(1);
-		// No of subjects Validation
-		String iSubjects = CommonFunctions.getInstance()
-				.getElement(driver, "judi.test1g.trialAdmin.Trials.subjects")
-				.getText();
-		iSubjects = iSubjects.split(":")[1].trim();
-		strQuery = "SELECT count(*) as COUNT from trialsubject WHERE trial_id IN (SELECT id FROM trial where name = '"
-				+ strTrial + "') group by trial_id";
-		CommonFunctions.getInstance().funLog(
-				"SQL Query used to fetch subjects is : " + strQuery);
-		String iSubjects_DB = DB.getInstance().funExecuteQuery(strQuery,
-				"count");
-		CommonFunctions.getInstance().funStepValidate("INTEGER", iSubjects,
-				iSubjects_DB, "Validating Subjects count from GUI to DB",
-				false, false);
-		// Save changes button
-		CommonFunctions
-				.getInstance()
-				.getElement(driver, "judi.test1g.trialAdmin.Trials.saveChanges")
-				.click();
-		CommonFunctions.getInstance().funWait(4);
-		System.out.println(CommonFunctions.getInstance()
-				.getElement(driver, "judi.test1g.trialAdmin.Trials.result")
-				.getText());
-		// Verify the description after update
-		strQuery = "select description from trial where name = '" + strTrial
-				+ "'";
-		strTrialDesc_DB = DB.getInstance().funExecuteQuery(strQuery,
-				"description");
-		CommonFunctions.getInstance().funStepValidate("TEXT",
-				strDescription.toLowerCase().trim(),
-				strTrialDesc_DB.toLowerCase().trim(),
-				"Trial Description validation", false, false);
-
+		try {
+			CommonFunctions
+					.getInstance()
+					.getElement(driver,
+							"judi.test1g.trialAdmin.Trials.Description")
+					.clear();
+			CommonFunctions
+					.getInstance()
+					.getElement(driver,
+							"judi.test1g.trialAdmin.Trials.Description")
+					.sendKeys(strDescription);
+			// Join Code validation
+			String strJoinCode = CommonFunctions
+					.getInstance()
+					.getElement(driver,
+							"judi.test1g.trialAdmin.Trials.joinCode").getText();
+			strJoinCode = strJoinCode.split(":")[1].trim();
+			strQuery = "select joincode from trial where name = '" + strTrial
+					+ "'";
+			String strJoinCode_DB = DB.getInstance().funExecuteQuery(strQuery,
+					"joincode");
+			CommonFunctions.getInstance().funStepValidate("TEXT",
+					strJoinCode.toLowerCase().trim(),
+					strJoinCode_DB.toLowerCase().trim(),
+					"Trial join code validation", false, false);
+			// Number of Sites Validation
+			String iSites = CommonFunctions.getInstance()
+					.getElement(driver, "judi.test1g.trialAdmin.Trials.sites")
+					.getText();
+			iSites = iSites.split(":")[1].trim();
+			strQuery = "SELECT count(*) as COUNT from trialsite WHERE trial_id IN (SELECT id FROM trial where name = '"
+					+ strTrial + "') group by trial_id";			
+			CommonFunctions.getInstance().funLog(
+					"SQL Query used to fetch sites is : " + strQuery);
+			String iSites_DB = DB.getInstance().funExecuteQuery(strQuery,
+					"count");
+			CommonFunctions.getInstance().funStepValidate("INTEGER", iSites,
+					iSites_DB, "Validating sites count from GUI to DB", false,
+					false);
+			CommonFunctions.getInstance().funWait(1);
+			// No of subjects Validation
+			String iSubjects = CommonFunctions
+					.getInstance()
+					.getElement(driver,
+							"judi.test1g.trialAdmin.Trials.subjects").getText();
+			iSubjects = iSubjects.split(":")[1].trim();
+			strQuery = "SELECT count(*) as COUNT from trialsubject WHERE trial_id IN (SELECT id FROM trial where name = '"
+					+ strTrial + "') group by trial_id";
+			CommonFunctions.getInstance().funLog(
+					"SQL Query used to fetch subjects is : " + strQuery);
+			String iSubjects_DB = DB.getInstance().funExecuteQuery(strQuery,
+					"count");
+			CommonFunctions.getInstance().funStepValidate("INTEGER", iSubjects,
+					iSubjects_DB, "Validating Subjects count from GUI to DB",
+					false, false);
+			// Save changes button
+			CommonFunctions
+					.getInstance()
+					.getElement(driver,
+							"judi.test1g.trialAdmin.Trials.saveChanges")
+					.click();
+			CommonFunctions.getInstance().funWait(4);
+			System.out.println(CommonFunctions.getInstance()
+					.getElement(driver, "judi.test1g.result").getText());
+			// Verify the description after update
+			strQuery = "select description from trial where name = '"
+					+ strTrial + "'";
+			strTrialDesc_DB = DB.getInstance().funExecuteQuery(strQuery,
+					"description");
+			CommonFunctions.getInstance().funStepValidate("TEXT",
+					strDescription.toLowerCase().trim(),
+					strTrialDesc_DB.toLowerCase().trim(),
+					"Trial Description validation", false, false);
+		}catch(Exception e){
+			funFailureCall("Issue in validating the Trial details under Trial tab", e);
+		}
 	}
 
 	/*
@@ -351,111 +360,111 @@ public class ApplicationFunctions {
 	 */
 	public void funDeleteSiteIfExist(String strSiteID) {
 		boolean temp = false;
-		// check for the site existence and delete if exist , so that we can
-		// re-create same data
-		// Verify the sites added successfully
-		CommonFunctions.getInstance()
-				.getElement(driver, "judi.test1g.trialAdmin.sites.viewSites")
-				.click();
-		CommonFunctions.getInstance().funWait(2);
-		WebElement oViewSitesTable = CommonFunctions.getInstance().getElement(
-				driver, "judi.test1g.trialAdmin.sites.viewSitesTable");
-		List<WebElement> allRows = oViewSitesTable.findElements(By
-				.tagName("tr"));
-		// Below loop finds the record and delete
-		for (WebElement row : allRows) {
-			List<WebElement> cells = row.findElements(By.tagName("td"));
-			int iCol = cells.size();
-			String strSiteID_GUI = cells.get(0).getText().trim();
-			if (strSiteID_GUI.equalsIgnoreCase(strSiteID.trim())) {
-				funSuccessCall("This site is already present and deleting.... ");
-				funSuccessCall("Checking for any subjects associated to this site.... ");
-				//======================================================================
-				//Delete Subject if it exist on Site				
-				funDeleteSubjectOnSite(strSiteID);
-				//click Sites
-				CommonFunctions.getInstance()
-						.getElement(driver, "judi.test1g.trialAdmin.sites")
-						.click();
-				CommonFunctions.getInstance().funWait(2);			
-				//view sites
-				CommonFunctions
-						.getInstance()
-						.getElement(driver,
-								"judi.test1g.trialAdmin.sites.viewSites")
-						.click();
-				CommonFunctions.getInstance().funWait(2);
-				//======================================================================
-				temp = true;
-				WebElement cell = cells.get(iCol - 1);
-				try {
-					cell.findElement(By.cssSelector("a[ng-click='edit(site)']"))
-							.click();
-					CommonFunctions.getInstance().funWait(2);
-				} catch (Exception e) {
-					funFailureCall(
-							"Issue on Identifying Edit objects in view Sites tab : ",
-							e);
-					CommonFunctions.getInstance().funFinalizeResults();
-				}
-				try {
-					CommonFunctions
-							.getInstance()
-							.getElement(driver,
-									"judi.test1g.trialAdmin.sites.delete")
-							.click();
-					CommonFunctions.getInstance().funWait(1);
-					CommonFunctions
-							.getInstance()
-							.getElement(driver,
-									"judi.test1g.trialAdmin.sites.deleteSite")
-							.click();
-					CommonFunctions.getInstance().funWait(1);	
-					break;					
-				} catch (Exception e) {
-					funFailureCall("Issue on Deleting the site ", e);
-					CommonFunctions.getInstance().funFinalizeResults();
-				}
-			}
-			
-		}
-		if (!temp)  {
-			funSuccessCall("No Record found for this site id : " + strSiteID
-					+ " and it is free to create");
-		}
-		if(temp){
-			CommonFunctions.getInstance().funWait(3);
-			// Below loop verifies the deleted record
-			allRows = oViewSitesTable.findElements(By.tagName("tr"));
-			boolean flag = true;
+		String strSiteStatus = DB.getInstance().funCheckSiteID(strSiteID);
+		
+		if (strSiteStatus != null) {
+			funSuccessCall("Checking for any subjects associated to this site.... ");
+			//Delete Subject if it exist on Site				
+			funDeleteSubjectOnSite(strSiteID);
+			// check for the site existence and delete if exist , so that we can
+			// re-create same data
+			// Verify the sites added successfully
+			CommonFunctions.getInstance()
+					.getElement(driver, "judi.test1g.trialAdmin.sites").click();
+			CommonFunctions
+					.getInstance()
+					.getElement(driver,
+							"judi.test1g.trialAdmin.sites.viewSites").click();
+			CommonFunctions.getInstance().funWait(2);
+			WebElement oViewSitesTable = CommonFunctions.getInstance().getElement(
+					driver, "judi.test1g.trialAdmin.sites.viewSitesTable");
+			List<WebElement> allRows = oViewSitesTable.findElements(By
+					.tagName("tr"));
+			// Below loop finds the record and delete
 			for (WebElement row : allRows) {
 				List<WebElement> cells = row.findElements(By.tagName("td"));
+				int iCol = cells.size();
 				String strSiteID_GUI = cells.get(0).getText().trim();
 				if (strSiteID_GUI.equalsIgnoreCase(strSiteID.trim())) {
-					CommonFunctions.getInstance().funLog(
-							"Deleted record still exist, Deleted id is : "
-									+ strSiteID_GUI);
-					test.log(LogStatus.FAIL,
-							"Deleted record still exist, Deleted id is : "
-									+ strSiteID_GUI, test
-									.addScreenCapture(CommonFunctions.getInstance()
-											.funTakeScreenshot(
-													Thread.currentThread()
-															.getStackTrace()[1]
-															.getMethodName())));
-					Stage.getInstance().setStatus(false);
-					flag = false;
-					break;
+					funSuccessCall("This site is already present and deleting.... ");
+					temp = true;
+					WebElement cell = cells.get(iCol - 1);
+					try {
+						cell.findElement(By.cssSelector("a[ng-click='edit(site)']"))
+								.click();
+						CommonFunctions.getInstance().funWait(2);
+					} catch (Exception e) {
+						funFailureCall(
+								"Issue on Identifying Edit objects in view Sites tab : ",
+								e);
+						CommonFunctions.getInstance().funFinalizeResults();
+					}
+					try {
+						CommonFunctions
+								.getInstance()
+								.getElement(driver,
+										"judi.test1g.trialAdmin.sites.delete")
+								.click();
+						CommonFunctions.getInstance().funWait(1);
+						CommonFunctions
+								.getInstance()
+								.getElement(driver,
+										"judi.test1g.trialAdmin.sites.deleteSite")
+								.click();
+						CommonFunctions.getInstance().funWait(1);	
+						break;					
+					} catch (Exception e) {
+						funFailureCall("Issue on Deleting the site ", e);
+						CommonFunctions.getInstance().funFinalizeResults();
+					}
 				}
+				
 			}
-			if (flag) {
-				funSuccessCall("Record deleted Successfully : " + strSiteID);
+			if (!temp)  {
+				funSuccessCall("No Record found for this site id : " + strSiteID
+						+ " and it is free to create");
 			}
-		} 
+			if(temp){
+				CommonFunctions.getInstance().funWait(3);
+				// Below loop verifies the deleted record
+				allRows = oViewSitesTable.findElements(By.tagName("tr"));
+				boolean flag = true;
+				for (WebElement row : allRows) {
+					List<WebElement> cells = row.findElements(By.tagName("td"));
+					String strSiteID_GUI = cells.get(0).getText().trim();
+					if (strSiteID_GUI.equalsIgnoreCase(strSiteID.trim())) {
+						CommonFunctions.getInstance().funLog(
+								"Deleted record still exist, Deleted id is : "
+										+ strSiteID_GUI);
+						test.log(LogStatus.FAIL,
+								"Deleted record still exist, Deleted id is : "
+										+ strSiteID_GUI, test
+										.addScreenCapture(CommonFunctions.getInstance()
+												.funTakeScreenshot(
+														Thread.currentThread()
+																.getStackTrace()[1]
+																.getMethodName())));
+						Stage.getInstance().setStatus(false);
+						flag = false;
+						break;
+					}
+				}
+				if (flag) {
+					funSuccessCall("Record deleted Successfully : " + strSiteID);
+				}
+			} 
+		} else {
+			CommonFunctions.getInstance().funLog(
+					"No Site exist with name : "
+							+ strSiteID);
+			test.log(LogStatus.PASS,
+					"No Site exist with name : "
+							+ strSiteID,"");
+		}		
 	}
 	
 	public void funDeleteSubjectOnSite(String strSiteID){
-		strQuery= "select clinicaltrialsubjectid from trialsubject where id in '"
+		strQuery= "select clinicaltrialsubjectid from trialsubject where id in "
 				+ "(select subject_id from subjectsitexref where site_id = "
 				+ "(select id from trialsite where clinicaltrialsiteid = '"+strSiteID+"' "
 				+ "and trial_id = (select id from trial where name = '"+Stage.getInstance().getTrial()+"')))";
@@ -527,18 +536,51 @@ public class ApplicationFunctions {
 									"judi.test1g.trialAdmin.sites.country")
 							.sendKeys("United States");
 					CommonFunctions
+					.getInstance()
+					.getElement(driver,
+							"judi.test1g.trialAdmin.sites.country").click();
+					
+					CommonFunctions
 							.getInstance()
 							.getElement(driver,
 									"judi.test1g.trialAdmin.sites.country")
 							.sendKeys(Keys.TAB);
+					CommonFunctions.getInstance().funWait(1);						
+					try {
+						if (CommonFunctions
+								.getInstance()
+								.getElement(driver,
+										"judi.test1g.trialAdmin.sites.addSite")
+								.getAttribute("disabled")!=null) {
+							CommonFunctions
+									.getInstance()
+									.funLog("Issue in adding new site, please check 'Add Site' button is enabled or NOT");
+							test.log(
+									LogStatus.FAIL,
+									"Issue in adding new site, please check 'Add Site' button is enabled or NOT",
+									test.addScreenCapture(CommonFunctions
+											.getInstance().funTakeScreenshot(
+													Thread.currentThread()
+															.getStackTrace()[1]
+															.getMethodName())));
+							Stage.getInstance().setStatus(false);
+						} else {
+							CommonFunctions
+									.getInstance()
+									.getElement(driver,
+											"judi.test1g.trialAdmin.sites.addSite")
+									.click();
+							funSuccessCall("New site is added and Site is : "
+									+ strSiteID);
+						}
+					} catch (Exception e) {
+						funFailureCall(
+								"Issue in adding new site, please check 'Add Site' button is enabled or NOT",
+								e);
+					}
+
 					CommonFunctions.getInstance().funWait(1);
-					CommonFunctions
-							.getInstance()
-							.getElement(driver,
-									"judi.test1g.trialAdmin.sites.addSite")
-							.click();
-					CommonFunctions.getInstance().funWait(1);
-					//Add this siteid as primary site to validate Subjects tab
+					//Add this siteid as primary site to validate Sites tab
 					Stage.getInstance().setSite(strSiteID+"-"+strSiteID);
 				} catch (Exception e) {
 					CommonFunctions.getInstance().funLog(
@@ -560,17 +602,16 @@ public class ApplicationFunctions {
 						System.getProperty("user.dir")
 								+ Initializer.getInstance().GetValue(
 										"file.csvSitesFilePath")));
-				List<String[]> li = reader.readAll();
-				Iterator<String[]> i1 = li.iterator();
-
-				while (i1.hasNext()) {
-					String[] str = i1.next();
-					// Check and Delete Site Id if exist
+				List<String[]> list = reader.readAll();
+				Iterator<String[]> ite = list.iterator();				
+				while (ite.hasNext()) {
+					String[] str = ite.next();
+					System.out.println(str[0].toString());
 					funDeleteSiteIfExist(str[0].toString());
-					//Add this siteid as primary site to validate Subjects tab
 					Stage.getInstance().setSite(str[0].toString()+"-"+ str[0].toString());
-					CommonFunctions.getInstance().funWait(2);
+					CommonFunctions.getInstance().funWait(1);
 				}
+
 
 				// Navigate to Add Sites tab
 				CommonFunctions
@@ -584,6 +625,7 @@ public class ApplicationFunctions {
 							.getInstance()
 							.getElement(driver,
 									"judi.test1g.trialAdmin.sites.add").click();
+					CommonFunctions.getInstance().funWait(2);
 					CommonFunctions.getInstance().funWaitAndAction(
 							"File Upload",
 							"Edit1",
@@ -591,22 +633,79 @@ public class ApplicationFunctions {
 							System.getProperty("user.dir")
 									+ Initializer.getInstance().GetValue(
 											"file.csvSitesFilePath"));
+					CommonFunctions.getInstance().funWait(2);
 					CommonFunctions.getInstance().funWaitAndAction(
 							"File Upload", "Button1", "CLICK", "");
-					CommonFunctions.getInstance().funWait(2);
-					CommonFunctions
-							.getInstance()
-							.getElement(driver,
-									"judi.test1g.trialAdmin.sites.confirm")
-							.click();
-					CommonFunctions.getInstance().funWait(2);
+					CommonFunctions.getInstance().funWait(2);			
+					try {
+						if (CommonFunctions
+								.getInstance()
+								.getElement(driver,
+										"judi.test1g.trialAdmin.sites.confirm")
+								.getAttribute("disabled") != null) {
+							CommonFunctions
+									.getInstance()
+									.funLog("Issue in adding multiple sites, please check 'Confirm sites' button is enabled or NOT");
+							test.log(
+									LogStatus.FAIL,
+									"Issue in adding multiple sites, please check 'Confirm sites' button is enabled or NOT",
+									test.addScreenCapture(CommonFunctions
+											.getInstance().funTakeScreenshot(
+													Thread.currentThread()
+															.getStackTrace()[1]
+															.getMethodName())));
+							Stage.getInstance().setStatus(false);
+						} else {
+							CommonFunctions
+									.getInstance()
+									.getElement(driver,
+											"judi.test1g.trialAdmin.sites.confirm")
+									.click();
+							CommonFunctions.getInstance().funWait(1);
+							funSuccessCall("Multiple sites are added successfully"
+									+ strSiteID);
+						}
+					} catch (Exception e) {
+						funFailureCall(
+								"Issue in adding multiple sites, please check 'Confirm sites' button is enabled or NOT",
+								e);
+					}					
+					
 					// Verify the sites added successfully
 					CommonFunctions
 							.getInstance()
 							.getElement(driver,
 									"judi.test1g.trialAdmin.sites.viewSites")
 							.click();
-					CommonFunctions.getInstance().funWait(2);
+					CommonFunctions.getInstance().funWait(1);
+//					for(int i=0;i<str.length;i++){
+////						String[] str = i1.next();
+//						WebElement oViewSitesTable = CommonFunctions
+//								.getInstance()
+//								.getElement(driver,
+//										"judi.test1g.trialAdmin.sites.viewSitesTable");
+//						List<WebElement> allRows = oViewSitesTable
+//								.findElements(By.tagName("tr"));
+//						CommonFunctions.getInstance().funWait(1);
+//						for (WebElement row : allRows) {
+//							List<WebElement> cells = row.findElements(By
+//									.tagName("td"));
+//							String strSiteID_GUI = cells.get(0).getText()
+//									.trim();
+//							if (strSiteID_GUI.equalsIgnoreCase(str[i]
+//									.toString().trim())) {
+//								CommonFunctions.getInstance().funLog(
+//										"Site added successfully and Site id is : "
+//												+ strSiteID_GUI);
+//								test.log(LogStatus.FAIL,
+//										"Site added successfully and Site id is : "
+//												+ strSiteID_GUI, "");
+//								Stage.getInstance().setStatus(false);
+//								break;
+//							}
+//						}
+//					}
+//					}
 
 				} catch (Exception e) {
 					CommonFunctions.getInstance().funLog(
@@ -622,7 +721,6 @@ public class ApplicationFunctions {
 					Stage.getInstance().setStatus(false);
 					CommonFunctions.getInstance().funFinalizeResults();
 				}
-				System.out.println("success");
 				break;
 			default:
 				System.out.println("vtgchdasbf");
@@ -654,7 +752,7 @@ public class ApplicationFunctions {
 		// re-create same data
 		// Verify the sites added successfully
 		CommonFunctions.getInstance()
-				.getElement(driver, "judi.test1g.trialAdmin.sub.addSub")
+				.getElement(driver, "judi.test1g.trialAdmin.sub")
 				.click();
 		CommonFunctions.getInstance().funWait(2);
 		CommonFunctions.getInstance()
@@ -749,7 +847,7 @@ public class ApplicationFunctions {
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
 	public void funTrialAdmin_Subjects(String strFun, String strSite) {
-		if (strSite !=null &&  !strSite.isEmpty()){
+		if (strSite.isEmpty()){
 			strSite= Stage.getInstance().getSite();
 		}
 		CommonFunctions.getInstance().funWait(1);
@@ -803,12 +901,46 @@ public class ApplicationFunctions {
 									"judi.test1g.trialAdmin.sub.subDesc")
 							.sendKeys(Keys.TAB);
 					CommonFunctions.getInstance().funWait(1);
-					CommonFunctions
-							.getInstance()
-							.getElement(driver,
-									"judi.test1g.trialAdmin.sub.addSubject")
-							.click();
-					CommonFunctions.getInstance().funWait(1);
+//					CommonFunctions
+//							.getInstance()
+//							.getElement(driver,
+//									"judi.test1g.trialAdmin.sub.addSubject")
+//							.click();
+//					CommonFunctions.getInstance().funWait(1);
+					
+					try {
+						if (CommonFunctions
+								.getInstance()
+								.getElement(driver,
+										"judi.test1g.trialAdmin.sub.addSubject")
+								.getAttribute("disabled")!=null) {
+							CommonFunctions
+									.getInstance()
+									.funLog("Issue in adding new subject, please check 'Add Subject' button is enabled or NOT");
+							test.log(
+									LogStatus.FAIL,
+									"Issue in adding new subject, please check 'Add Subject' button is enabled or NOT",
+									test.addScreenCapture(CommonFunctions
+											.getInstance().funTakeScreenshot(
+													Thread.currentThread()
+															.getStackTrace()[1]
+															.getMethodName())));
+							Stage.getInstance().setStatus(false);
+						} else {
+							CommonFunctions
+									.getInstance()
+									.getElement(driver,
+											"judi.test1g.trialAdmin.sub.addSubject")
+									.click();
+							CommonFunctions.getInstance().funWait(1);
+							funSuccessCall("New subject is added and subject is : "
+									+ strSite);
+						}
+					} catch (Exception e) {
+						funFailureCall(
+								"Issue in adding new site, please check 'Add Site' button is enabled or NOT",
+								e);
+					}						
 				} catch (Exception e) {
 					CommonFunctions.getInstance().funLog(
 							"Issue on Identifying objects in Subjects tab : "

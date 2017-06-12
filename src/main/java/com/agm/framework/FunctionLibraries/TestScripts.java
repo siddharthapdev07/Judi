@@ -21,7 +21,7 @@ public class TestScripts {
 	public void DemoTest() {
 		strTrial  = "Judi_Demo";
 		Stage.getInstance().setTrial(strTrial);
-		String strSiteID = "AutoSite2";
+		String strSiteID = "AutoSite8";
 		// Login Application
 		ApplicationFunctions.getInstance().funLoginApplication();	
 		// Navigate to Trial Administration page and Select Trial
@@ -29,11 +29,12 @@ public class TestScripts {
 		//Select Test Trail
 		ApplicationFunctions.getInstance().funTrialAdmin_Trials(strTrial);
 		//add site
-		ApplicationFunctions.getInstance().funTrialAdmin_Sites("ADDSITE", strSiteID);		
-		//add multiple sites
-		ApplicationFunctions.getInstance().funTrialAdmin_Sites("ADDMULTIPLESITES", "");
+		ApplicationFunctions.getInstance().funTrialAdmin_Sites("ADDSITE", strSiteID);
 		//add subject
 		ApplicationFunctions.getInstance().funTrialAdmin_Subjects("ADDSUBJECT", "");
+		//add multiple sites
+		ApplicationFunctions.getInstance().funTrialAdmin_Sites("ADDMULTIPLESITES", "");
+		
 		
 		
 //		//Invite Users
