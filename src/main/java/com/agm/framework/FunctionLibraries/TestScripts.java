@@ -46,10 +46,7 @@ public class TestScripts {
 		//add multiple sites
 		ApplicationFunctions.getInstance().funTrialAdmin_Subjects("ADDMULTIPLESUBJECTS", "");
 		//add multiple sites
-		ApplicationFunctions.getInstance().funTrialAdmin_Sites("ADDMULTIPLESITES", "");
-		
-		
-		
+		ApplicationFunctions.getInstance().funTrialAdmin_Sites("ADDMULTIPLESITES", "");		
 //		//Invite Users
 //		ApplicationFunctions.getInstance().funInviteUser("autotest_freetodelete3@mx-intr.agmednet.net", "Event Coordinator");
 //		//Register users
