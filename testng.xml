@@ -2,7 +2,7 @@
 <suite name="Suite" parallel="false">
   <test name="Test">
     <classes>
-    	<class name="com.agm.Judi.tests.DemoTest"/>
+    	<class name="com.agm.Judi.tests.Validate_TrialAdmin_TrialsSitesSubjectsUsers"/>
 <!--       	<class name="com.agm.Judi.tests.DemoTest3"/> -->
     </classes>
   </test> <!-- Test -->
