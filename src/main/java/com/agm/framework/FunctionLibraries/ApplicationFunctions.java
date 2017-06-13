@@ -1119,47 +1119,54 @@ public class ApplicationFunctions {
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
 	public void funInviteUser(String strEmail, String strUserRole) {
-		driver.switchTo().frame("asdfasdfasdfsdfa");
 		// Navigate to Users page
+		CommonFunctions.getInstance()
+				.getElement(driver, "judi.test1g.trialAdmin.users").click();
 		try {
-			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Email")
-					.clear();
-			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Email")
+			CommonFunctions.getInstance()
+					.getElement(driver, "judi.test1g.trialAdmin.users.email").clear();
+			CommonFunctions.getInstance()
+					.getElement(driver, "judi.test1g.trialAdmin.users.email")
 					.sendKeys(strEmail);
-			CommonFunctions.getInstance().funLog("Email entered successfully on Users page");
+			CommonFunctions.getInstance().funLog(
+					"Email entered successfully on Users page");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog("Issue identifying the object - Email "
-					+ e.getMessage());
+			CommonFunctions.getInstance().funLog(
+					"Issue identifying the object - Email " + e.getMessage());
 		}
-		CommonFunctions.getInstance().funWait(3);
+		CommonFunctions.getInstance().funWait(1);
 		try {
-			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Role")
-					.click();
-			CommonFunctions.getInstance().funWait(3);
-			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Role")
+			CommonFunctions.getInstance()
+					.getElement(driver, "judi.test1g.trialAdmin.users.role").click();
+			CommonFunctions.getInstance().funWait(1);
+			CommonFunctions.getInstance()
+					.getElement(driver, "judi.test1g.trialAdmin.users.role")
 					.sendKeys(strUserRole);
+			CommonFunctions.getInstance()
+					.getElement(driver, "judi.test1g.trialAdmin.users.role")
+					.sendKeys(Keys.TAB);
 
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog("Issue on Identifying drop down : "
-					+ strUserRole + ", Exception : " + e.getMessage());
-			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Email")
-					.click();
+			CommonFunctions.getInstance().funLog(
+					"Issue on Identifying drop down : " + strUserRole
+							+ ", Exception : " + e.getMessage());
 			test.log(LogStatus.FAIL, strUserRole
-					+ " is NOT present in the drop down ",
-					test.addScreenCapture(CommonFunctions.getInstance()
-							.funTakeScreenshot(Thread.currentThread()
-									.getStackTrace()[1].getMethodName())));
+					+ " is NOT present in the drop down ", test
+					.addScreenCapture(CommonFunctions.getInstance()
+							.funTakeScreenshot(
+									Thread.currentThread().getStackTrace()[1]
+											.getMethodName())));
 		}
 		try {
-			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Invite")
-					.click();
 			CommonFunctions.getInstance()
-					.funLog("Invite button is clicked successfully on Users page");
+					.getElement(driver, "judi.test1g.trialAdmin.users.addUser")
+					.click();
+			CommonFunctions.getInstance().funLog(
+					"Invite button is clicked successfully on Users page");
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog("Issue identifying the object - Invite "
-					+ e.getMessage());
+			CommonFunctions.getInstance().funLog(
+					"Issue identifying the object - Invite " + e.getMessage());
 		}
-		driver.switchTo().defaultContent();
 		CommonFunctions.getInstance().funWait(1);
 		// LogOut from Applications
 		funLogOutApplication();
