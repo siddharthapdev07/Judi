@@ -8,7 +8,7 @@ import org.testng.annotations.AfterMethod;
 import com.agm.framework.FunctionLibraries.CommonFunctions;
 import com.agm.framework.FunctionLibraries.TestScripts;
 
-public class DemoTest {
+public class Validate_TrialAdmin_TrialsSitesSubjectsUsers {
 
 	public ITestResult result;
 	
