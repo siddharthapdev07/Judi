@@ -22,7 +22,7 @@ public class TestScripts {
 		this.test = test;
 	}
 
-	public void DemoTest() {
+	public void Validate_TrialAdmin_TrialsSitesSubjectsUsers() {
 		strTrial  = "Judi_Demo";
 		Stage.getInstance().setTrial(strTrial);
 		Random rand = new Random();

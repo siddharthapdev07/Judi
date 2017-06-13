@@ -23,7 +23,7 @@ public class Validate_TrialAdmin_TrialsSitesSubjectsUsers {
 	@Test
 	public void Test() {	
 		//Test Script
-		testScripts.DemoTest();	
+		testScripts.Validate_TrialAdmin_TrialsSitesSubjectsUsers();	
 	
 		//Finalizing the reports
 		commonFunctions.funFinalizeResults();
