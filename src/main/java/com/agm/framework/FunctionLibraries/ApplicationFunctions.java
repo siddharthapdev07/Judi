@@ -1161,11 +1161,10 @@ public class ApplicationFunctions {
 			CommonFunctions.getInstance()
 					.getElement(driver, "judi.test1g.trialAdmin.users.addUser")
 					.click();
-			CommonFunctions.getInstance().funLog(
-					"Invite button is clicked successfully on Users page");
+			funSuccessCall("User is added successfully on Users page");
 		} catch (Exception e) {
 			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Invite " + e.getMessage());
+					"Issue identifying the object - Add User " + e.getMessage());
 		}
 		CommonFunctions.getInstance().funWait(1);
 		// LogOut from Applications
