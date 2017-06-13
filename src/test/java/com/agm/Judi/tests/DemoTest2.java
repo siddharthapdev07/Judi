@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -15,6 +16,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 import junit.framework.TestResult;
 
@@ -41,6 +43,7 @@ import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
 import com.jacob.com.LibraryLoader;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 
@@ -54,28 +57,63 @@ public class DemoTest2 {
 	public WebDriver driver;
 	public AutoItX objAutoIT = null;
     public Object[][] tabArray=null;
-//	static {
-//	    System.loadLibrary("jacob-1.18-M3-x86");
-//	}
 	@Test
-	public void Demo() throws IOException {
-		
-		
-		
-		CSVReader reader = new CSVReader(new FileReader(
-				System.getProperty("user.dir")
-						+ Initializer.getInstance().GetValue(
-								"file.csvSitesFilePath")));
-		List<String[]> li = reader.readAll();
-		Iterator<String[]> i1 = li.iterator();
-
-		while (i1.hasNext()) {
-			String[] str = i1.next();
-			System.out.println(str[0].toString());
-			Stage.getInstance().setSite(
-					str[0].toString() + "-" + str[0].toString());
-			CommonFunctions.getInstance().funWait(1);
+	public void Demo() {	
+		int j=0;
+		for (j = 0; j < 10; j++) {
+			Random rand = new Random();
+			int selected = rand.nextInt(100);
+			System.out.println(selected);
 		}
+
+		
+		
+//		CSVWriter writer;
+//		try {
+//			writer = new CSVWriter(new FileWriter(
+//					System.getProperty("user.dir")
+//							+ Initializer.getInstance().GetValue(
+//									"file.csvSubjectsFilePath")));
+//			for (int j = 0; j < 3; j++) {
+//				String str1 = "AutoSite8";
+//				String str2 = "AutoSite8"
+//						+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
+//								.getInstance().getTime());
+//				CommonFunctions.getInstance().funWait(1);
+//				String str3 = "AutoSite8"
+//						+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
+//								.getInstance().getTime());
+//				String[] country = (str1 + "#" + str2 + j + "#" + str3 + j)
+//						.toString().split("#");
+//				writer.writeNext(country);
+//			}
+//			writer.close();
+//		} catch (IOException e) {
+//			ApplicationFunctions.getInstance().funFailureCall("Issue in creating subjects data", e);
+//			
+//		}
+		
+	}
+		
+		
+		
+		
+		
+//		CSVReader reader = new CSVReader(new FileReader(
+//				System.getProperty("user.dir")
+//						+ Initializer.getInstance().GetValue(
+//								"file.csvSubjectsFilePath")));
+//		
+//		List<String[]> li = reader.readAll();
+//		Iterator<String[]> i1 = li.iterator();
+//
+//		while (i1.hasNext()) {
+//			String[] str = i1.next();
+//			System.out.println(str[0].toString());
+//			Stage.getInstance().setSite(
+//					str[0].toString() + "-" + str[0].toString());
+//			CommonFunctions.getInstance().funWait(1);
+//		}
 	}
 		
 		
@@ -228,4 +266,4 @@ public class DemoTest2 {
 //		CommonFunctions.getInstance().funWaitAndAction("File Upload", "Button1", "CLICK", "");
 //	}
 
-}
+//}

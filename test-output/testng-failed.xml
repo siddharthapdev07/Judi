@@ -3,13 +3,11 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test name="Default test(failed)">
     <classes>
-      <class name="com.agm.Judi.tests.DemoTest">
+      <class name="com.agm.Judi.tests.DemoTest2">
         <methods>
-          <include name="afterMethod"/>
-          <include name="beforeMethod"/>
-          <include name="Test"/>
+          <include name="Demo"/>
         </methods>
-      </class> <!-- com.agm.Judi.tests.DemoTest -->
+      </class> <!-- com.agm.Judi.tests.DemoTest2 -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

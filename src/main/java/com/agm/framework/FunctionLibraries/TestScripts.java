@@ -1,5 +1,9 @@
 package com.agm.framework.FunctionLibraries;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Random;
+
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
 import com.relevantcodes.extentreports.ExtentTest;
@@ -21,7 +25,14 @@ public class TestScripts {
 	public void DemoTest() {
 		strTrial  = "Judi_Demo";
 		Stage.getInstance().setTrial(strTrial);
-		String strSiteID = "AutoSite8";
+		Random rand = new Random();
+		int selected = rand.nextInt(1000);
+		String strSiteID = "AutoSite"
+				+ selected
+				+ new SimpleDateFormat("yyMMdd_HHmmss").format(Calendar
+						.getInstance().getTime());
+		//Creating subjects csv file
+		ApplicationFunctions.getInstance().funCreateSubjects(strSiteID);
 		// Login Application
 		ApplicationFunctions.getInstance().funLoginApplication();	
 		// Navigate to Trial Administration page and Select Trial
@@ -32,6 +43,8 @@ public class TestScripts {
 		ApplicationFunctions.getInstance().funTrialAdmin_Sites("ADDSITE", strSiteID);
 		//add subject
 		ApplicationFunctions.getInstance().funTrialAdmin_Subjects("ADDSUBJECT", "");
+		//add multiple sites
+		ApplicationFunctions.getInstance().funTrialAdmin_Subjects("ADDMULTIPLESUBJECTS", "");
 		//add multiple sites
 		ApplicationFunctions.getInstance().funTrialAdmin_Sites("ADDMULTIPLESITES", "");
 		

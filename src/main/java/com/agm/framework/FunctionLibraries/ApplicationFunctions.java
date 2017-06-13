@@ -1,7 +1,11 @@
 package com.agm.framework.FunctionLibraries;
 
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,6 +21,7 @@ import org.openqa.selenium.support.ui.Select;
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
@@ -240,7 +245,7 @@ public class ApplicationFunctions {
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funTrialAdmin_Trials() Description : This function will
-	 * select the test Trial in Trail drop down and validate Trial tab Author :
+	 * validate Trial tab Author :
 	 * Suresh Kumar,Mylam Date :06 Jun 2017 Parameter : NA
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
@@ -847,9 +852,6 @@ public class ApplicationFunctions {
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
 	public void funTrialAdmin_Subjects(String strFun, String strSite) {
-		if (strSite.isEmpty()){
-			strSite= Stage.getInstance().getSite();
-		}
 		CommonFunctions.getInstance().funWait(1);
 		// Select Subjects Tab
 		CommonFunctions.getInstance()
@@ -858,9 +860,12 @@ public class ApplicationFunctions {
 		try {
 			switch (strFun.toUpperCase().trim()) {
 			case "ADDSUBJECT":
+//				if (strSite.isEmpty()){
+					strSite= Stage.getInstance().getSite();
+//				}
 				// Check and Delete Site Id if exist
 				funDeleteSubjectIfExist(strSite);
-				// Navigate to Add Sites tab
+				// Navigate to Add Subjects tab
 				CommonFunctions
 						.getInstance()
 						.getElement(driver,
@@ -956,30 +961,31 @@ public class ApplicationFunctions {
 					CommonFunctions.getInstance().funFinalizeResults();
 				}
 				break;
-			case "ADDMULTIPLESITES":
-				CSVReader reader = new CSVReader(new FileReader(
-						System.getProperty("user.dir")
-								+ Initializer.getInstance().GetValue(
-										"file.csvSitesFilePath")));
-				List<String[]> li = reader.readAll();
-				Iterator<String[]> i1 = li.iterator();
-
-				while (i1.hasNext()) {
-					String[] str = i1.next();
-					// Check and Delete Site Id if exist
-					funDeleteSiteIfExist(str[0].toString());
-					//Add this siteid as primary site to validate Subjects tab
-					Stage.getInstance().setSite(str[0].toString()+"-"+ str[0].toString());
-					CommonFunctions.getInstance().funWait(2);
-				}
+			case "ADDMULTIPLESUBJECTS":
+				// Check and Delete Site Id if exist
+				funDeleteSubjectOnSite(strSite);
+				
+//				CSVReader reader = new CSVReader(new FileReader(
+//						System.getProperty("user.dir")
+//								+ Initializer.getInstance().GetValue(
+//										"file.csvSubjectsFilePath")));
+//				List<String[]> li = reader.readAll();
+//				Iterator<String[]> i1 = li.iterator();
+//
+//				while (i1.hasNext()) {
+//					String[] str = i1.next();
+//					// Check and Delete Site Id if exist
+//					funDeleteSubjectIfExist(strSite);
+//					//Add this siteid as primary site to validate Subjects tab
+//					Stage.getInstance().setSite(str[0].toString()+"-"+ str[0].toString());
+//					CommonFunctions.getInstance().funWait(2);
+//				}
 
 				// Navigate to Add Sites tab
 				CommonFunctions
 						.getInstance()
-						.getElement(driver,
-								"judi.test1g.trialAdmin.sites.addSites")
+						.getElement(driver, "judi.test1g.trialAdmin.sub.addSub")
 						.click();
-
 				try {
 					CommonFunctions
 							.getInstance()
@@ -991,23 +997,23 @@ public class ApplicationFunctions {
 							"SETTEXT",
 							System.getProperty("user.dir")
 									+ Initializer.getInstance().GetValue(
-											"file.csvSitesFilePath"));
+											"file.csvSubjectsFilePath"));
 					CommonFunctions.getInstance().funWaitAndAction(
 							"File Upload", "Button1", "CLICK", "");
 					CommonFunctions.getInstance().funWait(2);
 					CommonFunctions
 							.getInstance()
 							.getElement(driver,
-									"judi.test1g.trialAdmin.sites.confirm")
+									"judi.test1g.trialAdmin.sub.confirm")
 							.click();
 					CommonFunctions.getInstance().funWait(2);
-					// Verify the sites added successfully
-					CommonFunctions
-							.getInstance()
-							.getElement(driver,
-									"judi.test1g.trialAdmin.sites.viewSites")
-							.click();
-					CommonFunctions.getInstance().funWait(2);
+//					// Verify the sites added successfully
+//					CommonFunctions
+//							.getInstance()
+//							.getElement(driver,
+//									"judi.test1g.trialAdmin.sites.viewSites")
+//							.click();
+//					CommonFunctions.getInstance().funWait(2);
 
 				} catch (Exception e) {
 					CommonFunctions.getInstance().funLog(
@@ -1545,6 +1551,39 @@ public class ApplicationFunctions {
 										.getMethodName())));
 		Stage.getInstance().setStatus(false);
 	}
-	
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funCreateSubjects() Description : This function
+	 * will write data in Subjects sheet Author : Suresh Kumar,Mylam
+	 * Date : 13 jun 2017 Parameter : strDescription,Exception
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+	public void funCreateSubjects(String strSite) {	
+		CSVWriter writer;
+		try {
+			writer = new CSVWriter(new FileWriter(
+					System.getProperty("user.dir")
+							+ Initializer.getInstance().GetValue(
+									"file.csvSubjectsFilePath")));
+			for (int j = 0; j < 3; j++) {
+				String str1 = strSite;
+				String str2 = strSite
+						+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
+								.getInstance().getTime());
+				CommonFunctions.getInstance().funWait(1);
+				String str3 = strSite
+						+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
+								.getInstance().getTime());
+				String[] country = (str1 + "#" + str2 + j + "#" + str3 + j)
+						.toString().split("#");
+				writer.writeNext(country);
+			}
+			writer.close();
+		} catch (IOException e) {
+			ApplicationFunctions.getInstance().funFailureCall("Issue in creating subjects data", e);
+			
+		}
+		
+	}
 
 }
