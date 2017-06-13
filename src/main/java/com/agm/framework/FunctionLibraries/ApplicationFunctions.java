@@ -342,16 +342,11 @@ public class ApplicationFunctions {
 							"judi.test1g.trialAdmin.Trials.saveChanges")
 					.click();
 			CommonFunctions.getInstance().funWait(4);
-	//==================================================================================		
 			strActual = CommonFunctions.getInstance()
 					.getElement(driver, "judi.test1g.result").getText();
 			strExpected = "The trial "+ strTrial +" has been updated.";
 			CommonFunctions.getInstance().funStepValidate("TEXT", strActual, strExpected, "Validating the trial description Update message after update", true, false);
-			
-			
-			
-			
-	//==================================================================================			
+		
 			// Verify the description after update
 			strQuery = "select description from trial where name = '"
 					+ strTrial + "'";
