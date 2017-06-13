@@ -32,9 +32,11 @@ public class ApplicationFunctions {
 	public WebDriver driver = null;
 	public ExtentTest test = null;
 	WebElement element;
-	String strQuery = null;
-	String strField = null;
+	public String strQuery = null;
+	public String strField = null;
 //	public String[] str= null;
+	public String strActual= null;
+	public String strExpected= null;
 	private ApplicationFunctions() {
 
 	}
@@ -140,7 +142,7 @@ public class ApplicationFunctions {
 					.sendKeys(
 							Initializer.getInstance().GetValue(
 									"app.test.test1g.password"));
-			test.log(LogStatus.PASS, "Password field verification", "");
+			test.log(LogStatus.PASS, "Password entered successfully", "");
 		} catch (Exception e) {
 			CommonFunctions.getInstance().funLog("Issue identifying the object - Password"
 					+ e.getMessage());
@@ -161,7 +163,7 @@ public class ApplicationFunctions {
 		}
 		CommonFunctions.getInstance().funElementValidate(
 				CommonFunctions.getInstance().getElement(driver, "judi.test1g.home.logout"),
-				"ISPRESENT", "Validating LogOut element : ", true, true);
+				"ISPRESENT", "Validating LogIn status : ", true, true);
 
 	}
 	
@@ -340,8 +342,16 @@ public class ApplicationFunctions {
 							"judi.test1g.trialAdmin.Trials.saveChanges")
 					.click();
 			CommonFunctions.getInstance().funWait(4);
-			System.out.println(CommonFunctions.getInstance()
-					.getElement(driver, "judi.test1g.result").getText());
+	//==================================================================================		
+			strActual = CommonFunctions.getInstance()
+					.getElement(driver, "judi.test1g.result").getText();
+			strExpected = "The trial "+ strTrial +" has been updated.";
+			CommonFunctions.getInstance().funStepValidate("TEXT", strActual, strExpected, "Validating the trial description Update message after update", true, false);
+			
+			
+			
+			
+	//==================================================================================			
 			// Verify the description after update
 			strQuery = "select description from trial where name = '"
 					+ strTrial + "'";
@@ -962,24 +972,6 @@ public class ApplicationFunctions {
 				}
 				break;
 			case "ADDMULTIPLESUBJECTS":
-				// Check and Delete Site Id if exist
-				funDeleteSubjectOnSite(strSite);
-				
-//				CSVReader reader = new CSVReader(new FileReader(
-//						System.getProperty("user.dir")
-//								+ Initializer.getInstance().GetValue(
-//										"file.csvSubjectsFilePath")));
-//				List<String[]> li = reader.readAll();
-//				Iterator<String[]> i1 = li.iterator();
-//
-//				while (i1.hasNext()) {
-//					String[] str = i1.next();
-//					// Check and Delete Site Id if exist
-//					funDeleteSubjectIfExist(strSite);
-//					//Add this siteid as primary site to validate Subjects tab
-//					Stage.getInstance().setSite(str[0].toString()+"-"+ str[0].toString());
-//					CommonFunctions.getInstance().funWait(2);
-//				}
 
 				// Navigate to Add Sites tab
 				CommonFunctions
@@ -1007,7 +999,7 @@ public class ApplicationFunctions {
 									"judi.test1g.trialAdmin.sub.confirm")
 							.click();
 					CommonFunctions.getInstance().funWait(2);
-//					// Verify the sites added successfully
+//					// Verify the Subject added successfully
 //					CommonFunctions
 //							.getInstance()
 //							.getElement(driver,
@@ -1029,10 +1021,13 @@ public class ApplicationFunctions {
 					Stage.getInstance().setStatus(false);
 					CommonFunctions.getInstance().funFinalizeResults();
 				}
-				System.out.println("success");
 				break;
 			default:
-				System.out.println("vtgchdasbf");
+				CommonFunctions.getInstance().funLog(
+						"No case is identified for the given input ");
+				test.log(LogStatus.FAIL, "No case is identified for the given input ","");
+				Stage.getInstance().setStatus(false);
+				CommonFunctions.getInstance().funFinalizeResults();
 			}
 		} catch (Exception e) {
 			CommonFunctions.getInstance().funLog(
@@ -1145,18 +1140,6 @@ public class ApplicationFunctions {
 			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Role")
 					.click();
 			CommonFunctions.getInstance().funWait(3);
-			// Select oE = new Select(CommonFunctions.getInstance().getElement(
-			// driver, "judi.test.trialAdmin.Role"));
-			// List<WebElement> allOptions = oE.getOptions();
-			// for (WebElement oelement : allOptions) {
-			// if (oelement.getText().toLowerCase().trim()
-			// .equalsIgnoreCase(strUserRole.toLowerCase().trim())) {
-			// oelement.click();
-			// CommonFunctions.getInstance().funLog(
-			// strUserRole + " is present and selected");
-			// break;
-			// }
-			// }
 			CommonFunctions.getInstance().getElement(driver, "judi.test1g.trialAdmin.Role")
 					.sendKeys(strUserRole);
 
