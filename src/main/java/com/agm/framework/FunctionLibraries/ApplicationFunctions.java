@@ -994,6 +994,7 @@ public class ApplicationFunctions {
 									"judi.test1g.trialAdmin.sub.confirm")
 							.click();
 					CommonFunctions.getInstance().funWait(2);
+					funSuccessCall("Multiple subjects are added successfully");
 //					// Verify the Subject added successfully
 //					CommonFunctions
 //							.getInstance()
