@@ -24,7 +24,7 @@ public class Validate_TrialAdmin_TrialsSitesSubjectsUsers {
 	public void Test() {	
 		//Test Script
 		testScripts.Validate_TrialAdmin_TrialsSitesSubjectsUsers();	
-	
+		
 		//Finalizing the reports
 		commonFunctions.funFinalizeResults();
 		
