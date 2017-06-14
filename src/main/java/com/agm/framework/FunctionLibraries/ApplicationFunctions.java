@@ -1182,6 +1182,7 @@ public class ApplicationFunctions {
 						.getInstance()
 						.getElement(driver,
 								"judi.test1g.trialAdmin.users.addUser").click();
+				CommonFunctions.getInstance().funWait(3);
 				funSuccessCall("New User is added and User is : " + strEmail);
 			}
 		} catch (Exception e) {
