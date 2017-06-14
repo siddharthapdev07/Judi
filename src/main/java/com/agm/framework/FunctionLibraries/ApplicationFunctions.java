@@ -587,6 +587,7 @@ public class ApplicationFunctions {
 						funFailureCall(
 								"Issue in adding new site, please check 'Add Site' button is enabled or NOT",
 								e);
+						CommonFunctions.getInstance().funFinalizeResults();
 					}
 
 					CommonFunctions.getInstance().funWait(1);
@@ -1145,6 +1146,9 @@ public class ApplicationFunctions {
 			CommonFunctions.getInstance()
 					.getElement(driver, "judi.test1g.trialAdmin.users.role")
 					.sendKeys(Keys.TAB);
+			CommonFunctions.getInstance()
+			.getElement(driver, "judi.test1g.trialAdmin.users.role")
+			.click();
 
 		} catch (Exception e) {
 			CommonFunctions.getInstance().funLog(
@@ -1158,14 +1162,35 @@ public class ApplicationFunctions {
 											.getMethodName())));
 		}
 		try {
-			CommonFunctions.getInstance()
+			if (CommonFunctions.getInstance()
 					.getElement(driver, "judi.test1g.trialAdmin.users.addUser")
-					.click();
-			funSuccessCall("User is added successfully on Users page");
+					.getAttribute("disabled") != null) {
+				CommonFunctions
+						.getInstance()
+						.funLog("Issue in adding new User, please check 'Add User' button is enabled or NOT");
+				test.log(
+						LogStatus.FAIL,
+						"Issue in adding new User, please check 'Add User' button is enabled or NOT",
+						test.addScreenCapture(CommonFunctions
+								.getInstance()
+								.funTakeScreenshot(
+										Thread.currentThread().getStackTrace()[1]
+												.getMethodName())));
+				Stage.getInstance().setStatus(false);
+			} else {
+				CommonFunctions
+						.getInstance()
+						.getElement(driver,
+								"judi.test1g.trialAdmin.users.addUser").click();
+				funSuccessCall("New User is added and User is : " + strEmail);
+			}
 		} catch (Exception e) {
-			CommonFunctions.getInstance().funLog(
-					"Issue identifying the object - Add User " + e.getMessage());
-		}
+			funFailureCall(
+					"Issue in adding new User, please check 'Add User' button is enabled or NOT",
+					e);
+			CommonFunctions.getInstance().funFinalizeResults();
+		}	
+		
 		CommonFunctions.getInstance().funWait(1);
 		// LogOut from Applications
 		funLogOutApplication();
