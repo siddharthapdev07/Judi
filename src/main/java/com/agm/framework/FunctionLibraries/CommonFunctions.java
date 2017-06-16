@@ -815,7 +815,7 @@ public class CommonFunctions {
 		// Initialize test object in other Libraries
 		ApplicationFunctions.getInstance().init(test);
 		DB.getInstance().init(test);
-		TestData.getInstance().init(test);
+//		TestData.getInstance().init(test);
 		TestScripts.getInstance().init(test);
 	}
 
