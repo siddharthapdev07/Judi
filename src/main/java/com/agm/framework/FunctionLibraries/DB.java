@@ -21,10 +21,11 @@ public class DB {
 	public String strURL;
 	public ResultSet rs;
 	public ExtentTest test = null;
-	public String strQuery=null;
+	public String strQuery = null;
 	public String strField = null;
-	
+
 	private static DB objDB = null;
+
 	private DB() {
 	}
 
@@ -34,26 +35,28 @@ public class DB {
 			objDB = new DB();
 		return objDB;
 	}
-	
+
 	public void init(ExtentTest test) {
 		this.test = test;
 	}
-	
+
 	ApplicationFunctions applicationFunctions = ApplicationFunctions
 			.getInstance();
 	CommonFunctions commonFunctions = CommonFunctions.getInstance();
 	Initializer initializer = Initializer.getInstance();
 	Stage stage = Stage.getInstance();
-	
+
 	public Connection funConnectDB(String strEnv, String dbName) {
 
 		try {
 			switch (strEnv) {
 			case "test05":
-				strURL = "jdbc:postgresql://db.test05.agmednet.net:5432/" + dbName;
+				strURL = "jdbc:postgresql://db.test05.agmednet.net:5432/"
+						+ dbName;
 				break;
 			case "test-1g":
-				strURL = "jdbc:postgresql://db.test-1g.agmednet.net:5432" + dbName;
+				strURL = "jdbc:postgresql://db.test-1g.agmednet.net:5432"
+						+ dbName;
 				break;
 			default:
 				strURL = "jdbc:postgresql://db.test-1g.agmednet.net:5432/portal_db";
@@ -74,7 +77,7 @@ public class DB {
 		}
 		return objConnDB;
 	}
-	
+
 	public String funExecuteQuery(String strSQLQuery, String strField) {
 		String strFieldValue = null;
 		try {
@@ -91,11 +94,11 @@ public class DB {
 			// TODO Auto-generated catch block
 			CommonFunctions.getInstance().funLog(
 					"Exception in Executing Query :  Exception is - "
-							+ e.getMessage() + " Query executed is : "+ strSQLQuery);
+							+ e.getMessage() + " Query executed is : "
+							+ strSQLQuery);
 		}
 		try {
-			while (rs.next())
-			{
+			while (rs.next()) {
 				strFieldValue = rs.getString(strField);
 			}
 		} catch (SQLException e) {
@@ -114,10 +117,10 @@ public class DB {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return strFieldValue;
 	}
-	
+
 	public void funValidateInviteUser(String strEmail, String strRole) {
 
 		funConnectDB(initializer.GetValue("db.env"),
@@ -127,86 +130,87 @@ public class DB {
 		strField = funExecuteQuery(strQuery, "trial_id");
 		if (strField != null) {
 
-		}else{
-			commonFunctions.funLog("User is not invited successfully, please check the invite user functionlaity"	);
-			test.log(LogStatus.FAIL, "User is not invited successfully, please check the invite user functionlaity","");
+		} else {
+			commonFunctions
+					.funLog("User is not invited successfully, please check the invite user functionlaity");
+			test.log(
+					LogStatus.FAIL,
+					"User is not invited successfully, please check the invite user functionlaity",
+					"");
 		}
 	}
-	
-	/*''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	Function Name	: funGetDBValuesArr()
-	Description		: This function will run query and return the result in array format for the total rows
-	Author			: Suresh Kumar Mylam
-	Date			: 09 Jun 2017
-	Parameter		: strQuery = SQL query, strField = Field name in the array
-					If field name has :: then array first position has the first field name value and second position has second field name value etc..
-	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''*/
-	public ArrayList<String> funGetDBValuesArr(String strDBName, String strQuery, String strField)
-	{
-		//Declaring variable		
+
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name : funGetDBValuesArr() Description : This function will run
+	 * query and return the result in array format for the total rows Author :
+	 * Suresh Kumar Mylam Date : 09 Jun 2017 Parameter : strQuery = SQL query,
+	 * strField = Field name in the array If field name has :: then array first
+	 * position has the first field name value and second position has second
+	 * field name value etc..
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+	public ArrayList<String> funGetDBValuesArr(String strDBName,
+			String strQuery, String strField) {
+		// Declaring variable
 		Statement oState = null;
 		ResultSet oRS = null;
 		String strFieldFirst = null;
 		String strFieldSecond = null;
-		
-		//Connecting DB
-		if(strDBName.trim().length() != 0)
-		{
-			funConnectDB(Initializer.getInstance().GetValue("db.env"),strDBName);
+
+		// Connecting DB
+		if (strDBName.trim().length() != 0) {
+			funConnectDB(Initializer.getInstance().GetValue("db.env"),
+					strDBName);
 		}
-		
-		if(strField.contains("::"))
-		{
+
+		if (strField.contains("::")) {
 			String[] strFields = strField.split("::");
-			strFieldFirst = strFields[0] ;
-			strFieldSecond = strFields[1] ;
-			
+			strFieldFirst = strFields[0];
+			strFieldSecond = strFields[1];
+
 		}
-		
-		ArrayList <String>arrDBValues = new ArrayList<String>();
-		
-		try
-		{
+
+		ArrayList<String> arrDBValues = new ArrayList<String>();
+
+		try {
 			oState = objConnDB.createStatement();
 			oRS = oState.executeQuery(strQuery);
-			
-			while(oRS.next())
-			{	
-				if(strField.contains("::"))
-				{
+
+			while (oRS.next()) {
+				if (strField.contains("::")) {
 					arrDBValues.add(oRS.getString(strFieldFirst));
 					arrDBValues.add(oRS.getString(strFieldSecond));
-				}
-				else
-				{
+				} else {
 					arrDBValues.add(oRS.getString(strField));
 				}
 			}
-		}
-		catch(Exception e)
-		{			
-			CommonFunctions.getInstance().funLog("Error on querying the field "+ strField +"\n Query : "+ strQuery +". Exception : "+ e.getMessage());
+		} catch (Exception e) {
+			CommonFunctions.getInstance().funLog(
+					"Error on querying the field " + strField + "\n Query : "
+							+ strQuery + ". Exception : " + e.getMessage());
 
 		}
-		
+
 		return arrDBValues;
 	}
-	
-	
-	public String funCheckSiteID(String strSiteID){
+
+	public String funCheckSiteID(String strSiteID) {
 		strQuery = "select clinicaltrialsiteid from trialsite where trial_id = (SELECT id FROM trial where name = '"
 				+ Stage.getInstance().getTrial()
 				+ "') and clinicaltrialsiteid = '"
 				+ strSiteID
-				+ "' and ctmdeleted = 'f'";		
+				+ "' and ctmdeleted = 'f'";
 		DB.getInstance().funConnectDB(
-		Initializer.getInstance().GetValue("db.env"),
-		Initializer.getInstance().GetValue("db.test1g.dbname.portal"));
-		CommonFunctions.getInstance().funLog("SQL Query used to fetch verify site exist or not is : " + strQuery);
-		String strValue = DB.getInstance().funExecuteQuery(strQuery, "clinicaltrialsiteid");
+				Initializer.getInstance().GetValue("db.env"),
+				Initializer.getInstance().GetValue("db.test1g.dbname.portal"));
+		CommonFunctions.getInstance().funLog(
+				"SQL Query used to fetch verify site exist or not is : "
+						+ strQuery);
+		String strValue = DB.getInstance().funExecuteQuery(strQuery,
+				"clinicaltrialsiteid");
 
 		return strValue;
 	}
-	
 
 }

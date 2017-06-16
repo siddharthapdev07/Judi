@@ -30,6 +30,17 @@ public class Stage {
 		private boolean iStatus;
 		private String strSite;
 		private String strTrial;
+		private String strTestName;
+		
+		public String getTestName()
+		{
+			return strTestName;
+		}
+		
+		public void setTestName(String strTestName)
+		{
+			this.strTestName = strTestName;
+		}
 		
 		public String getTrial()
 		{

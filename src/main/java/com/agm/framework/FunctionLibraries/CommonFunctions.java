@@ -15,10 +15,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
-
-
-
-
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 
 //import javax.mail.Message;
@@ -32,6 +35,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.ITestResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 import autoitx4java.AutoItX;
 
@@ -57,7 +63,7 @@ public class CommonFunctions {
 	public ExtentTest test;
 	public String strTestCaseName = null;
 
-		private CommonFunctions() {
+	private CommonFunctions() {
 
 	}
 
@@ -73,8 +79,7 @@ public class CommonFunctions {
 
 	public void init(AutoItX objAutoIT) {
 		this.objAutoIT = objAutoIT;
-	}	
-
+	}
 
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -397,10 +402,10 @@ public class CommonFunctions {
 	 */
 
 	public void funUpdateResultsToTestRail(String strResultStatus) {
-//		JSONObject r;
+		// JSONObject r;
 		List<Integer> testCases = new ArrayList<Integer>();
-		Map<Integer,Integer> testCasesResults = new HashMap<Integer,Integer>();
-		Map<String,Integer> data = new HashMap<String,Integer>();
+		Map<Integer, Integer> testCasesResults = new HashMap<Integer, Integer>();
+		Map<String, Integer> data = new HashMap<String, Integer>();
 
 		// strResultStatus = "PASS"; //Need to pass from test case
 
@@ -429,9 +434,9 @@ public class CommonFunctions {
 			data.put("status_id",
 					testCasesResults.get(Stage.getInstance().getTestID()));
 			try {
-//				r = (JSONObject) client.sendPost("add_result_for_case/"
-//						+ Stage.getInstance().getRunID() + "/"
-//						+ Stage.getInstance().getCaseID(), data);
+				// r = (JSONObject) client.sendPost("add_result_for_case/"
+				// + Stage.getInstance().getRunID() + "/"
+				// + Stage.getInstance().getCaseID(), data);
 				client.sendPost("add_result_for_case/"
 						+ Stage.getInstance().getRunID() + "/"
 						+ Stage.getInstance().getCaseID(), data);
@@ -520,8 +525,8 @@ public class CommonFunctions {
 				break;
 			case "INTEGER":
 				int strActualValue = Integer.parseInt(strActual);
-				int strExpectedValue = Integer.parseInt(strExpected);				
-				if (strActualValue-strExpectedValue==0) {
+				int strExpectedValue = Integer.parseInt(strExpected);
+				if (strActualValue - strExpectedValue == 0) {
 					if (bTakeScreenShot) {
 						test.log(LogStatus.PASS, strDescription
 								+ " : Actual : " + strActual
@@ -769,6 +774,7 @@ public class CommonFunctions {
 		Stage.getInstance().setStatus(iStatus);
 		strTestCaseName = sun.reflect.Reflection.getCallerClass(2)
 				.getSimpleName();
+		Stage.getInstance().setTestName(strTestCaseName);
 		strLogFileName = strTestCaseName
 				+ "_"
 				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
@@ -799,16 +805,18 @@ public class CommonFunctions {
 		objAutoIT = new AutoItX();
 		// ********************************* TestRail details -Static Data
 		// ***************************
-//		ApplicationFunctions.getInstance() ApplicationFunctions.getInstance() = ApplicationFunctions.getInstance()
-//				.getInstance();
-//		TestData.getInstance() TestData.getInstance() = TestData.getInstance().getInstance();
-//		TestData.getInstance().funLoadTestData.getInstance()(strTestCaseName);
+		// ApplicationFunctions.getInstance() ApplicationFunctions.getInstance()
+		// = ApplicationFunctions.getInstance()
+		// .getInstance();
+		// TestData.getInstance() TestData.getInstance() =
+		// TestData.getInstance().getInstance();
+		// TestData.getInstance().funLoadTestData.getInstance()(strTestCaseName);
 
-		// Initialize test object in other Libraries			
+		// Initialize test object in other Libraries
 		ApplicationFunctions.getInstance().init(test);
 		DB.getInstance().init(test);
 		TestData.getInstance().init(test);
-		TestScripts.getInstance().init(test);		
+		TestScripts.getInstance().init(test);
 	}
 
 	/*
@@ -831,21 +839,71 @@ public class CommonFunctions {
 		extent.endTest(test);
 		// writing everything to document
 		extent.flush();
-//		try {
-//			switch (result.getStatus()) {
-//			case ITestResult.SUCCESS:
-//				funUpdateResultsToTestRail("PASS");
-//				break;
-//			case ITestResult.FAILURE:
-//				funUpdateResultsToTestRail("FAIL");
-//				break;
-//			default:
-//				throw new RuntimeException("Invalid status");
-//			}
-//		} catch (Exception e) {
-//			funLog("Invalid Result status");
-//		}
+		// try {
+		// switch (result.getStatus()) {
+		// case ITestResult.SUCCESS:
+		// funUpdateResultsToTestRail("PASS");
+		// break;
+		// case ITestResult.FAILURE:
+		// funUpdateResultsToTestRail("FAIL");
+		// break;
+		// default:
+		// throw new RuntimeException("Invalid status");
+		// }
+		// } catch (Exception e) {
+		// funLog("Invalid Result status");
+		// }
 		funEndTestCase(strTestCaseName);
 
 	}
+	/*
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 * Function Name  : funGetTestData() 
+	 * Date 		  : June 16, 2017
+	 * Author 		  : Suresh Kumar,Mylam
+	 * Description 	  : This function will retrive data from TestData.xml
+	 * Parameters     : strInput : Key name
+	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	 */
+	public String funGetTestData(String TestName, String strParam) {
+		String testDataParam = null;
+		DocumentBuilder dBuilder = null;
+		Document doc = null;
+		Node node = null;
+		File fXmlFile = new File(System.getProperty("user.dir")
+				+ Initializer.getInstance().GetValue("file.testDataFilePath"));
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		try {
+			dBuilder = dbFactory.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		}
+		try {
+			doc = dBuilder.parse(fXmlFile);
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		XPath xPath = XPathFactory.newInstance().newXPath();
+		String expression = String.format("/TestCases/Test[@Name='" + TestName
+				+ "']/" + strParam);
+		try {
+			node = (Node) xPath.compile(expression).evaluate(doc,
+					XPathConstants.NODE);
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+		}
+		if (node != null) {
+			testDataParam = node.getTextContent();
+		} else {
+			ApplicationFunctions.getInstance().funInfoCall(
+					"cannot read the test Data xml file");
+			test.log(LogStatus.FAIL, "cannot read the test Data xml file", "");
+			Stage.getInstance().setStatus(false);
+			funFinalizeResults();
+		}
+		return testDataParam;
+	}
+
 }
