@@ -243,14 +243,25 @@ public class ApplicationFunctions {
 		CommonFunctions.getInstance().funWait(2);
 		try {
 			// Select Value in drop down
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test1g.trialAdmin.Trail")
-					.sendKeys(strTrial);
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test1g.trialAdmin.Trail")
-					.sendKeys(Keys.TAB);
+//			CommonFunctions.getInstance()
+//					.getElement(driver, "judi.test1g.trialAdmin.Trail")
+//					.sendKeys(strTrial);
+//			CommonFunctions.getInstance()
+//					.getElement(driver, "judi.test1g.trialAdmin.Trail")
+//					.sendKeys(Keys.TAB);
+			
+			Select oE = new Select(CommonFunctions.getInstance()
+					.getElement(driver, "judi.test1g.trialAdmin.Trail"));
+			List<WebElement> allOpt = oE.getOptions();			
+			for (int i = 0; i < allOpt.size(); i++) {
+				String optionName = allOpt.get(i).getText();
+				if (optionName.equalsIgnoreCase(strTrial)) {
+					allOpt.get(i).click();
+					break;
+				}
+			}		
 			CommonFunctions.getInstance().funWait(1);
-			Select oE = new Select(CommonFunctions.getInstance().getElement(
+			oE = new Select(CommonFunctions.getInstance().getElement(
 					driver, "judi.test1g.trialAdmin.Trail"));
 			WebElement oSelected = oE.getFirstSelectedOption();
 			String strSelected = oSelected.getText();
@@ -1022,6 +1033,7 @@ public class ApplicationFunctions {
 							.getInstance()
 							.getElement(driver,
 									"judi.test1g.trialAdmin.sites.add").click();
+					CommonFunctions.getInstance().funWait(3);
 					CommonFunctions.getInstance().funWaitAndAction(
 							"File Upload",
 							"Edit1",
@@ -1029,6 +1041,7 @@ public class ApplicationFunctions {
 							System.getProperty("user.dir")
 									+ Initializer.getInstance().GetValue(
 											"file.csvSubjectsFilePath"));
+					CommonFunctions.getInstance().funWait(2);
 					CommonFunctions.getInstance().funWaitAndAction(
 							"File Upload", "Button1", "CLICK", "");
 					CommonFunctions.getInstance().funWait(2);
@@ -1049,10 +1062,10 @@ public class ApplicationFunctions {
 
 				} catch (Exception e) {
 					CommonFunctions.getInstance().funLog(
-							"Issue on Adding multiple sites in Sites tab : "
+							"Issue on Adding multiple Subjects in subjects tab : "
 									+ ", Exception : " + e.getMessage());
 					test.log(LogStatus.FAIL,
-							" Issue on Adding multiple sites in sites tab",
+							" Issue on Adding multiple Subjects in Subjects tab",
 							test.addScreenCapture(CommonFunctions.getInstance()
 									.funTakeScreenshot(
 											Thread.currentThread()
