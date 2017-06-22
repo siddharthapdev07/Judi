@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<TestCases>
-  <Test Name="Validate_TrialAdmin_TrialsSitesSubjectsUsers">
-    <TrialName>Judi_Demo</TrialName>
-    <SiteId>AutoSite1</SiteId>
-  </Test>
-</TestCases>
