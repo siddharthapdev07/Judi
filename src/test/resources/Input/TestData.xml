@@ -4,4 +4,8 @@
     <TrialName>Judi_Demo</TrialName>
     <SiteId>AutoSite1</SiteId>
   </Test>
+   <Test Name="DemoTest2">
+    <TrialName>Judi_Demo</TrialName>
+    <SiteId>AutoSite1</SiteId>
+  </Test>
 </TestCases>
