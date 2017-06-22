@@ -25,8 +25,10 @@ public class TestScripts {
 	public void init(ExtentTest test) {
 		this.test = test;
 	}
+
 	public void Validate_TrialAdmin_TrialsSitesSubjectsUsers() {
-		strTrial = CommonFunctions.getInstance().funGetTestData(Stage.getInstance().getTestName(), "TrialName");
+		strTrial = CommonFunctions.getInstance().funGetTestData(
+				Stage.getInstance().getTestName(), "TrialName");
 		Stage.getInstance().setTrial(strTrial);
 		Random rand = new Random();
 		int selected = rand.nextInt(1000);
@@ -58,11 +60,12 @@ public class TestScripts {
 		ApplicationFunctions.getInstance().funInviteUser(
 				"autotest_freetodelete3@mx-intr.agmednet.net",
 				"Event Coordinator");
-		// //Register users
-		// ApplicationFunctions.getInstance().funRegistration("autotest_freetodelete3@mx-intr.agmednet.net");
+//		// Register users
+//		ApplicationFunctions.getInstance().funRegistration(
+//				"autotest_freetodelete3@mx-intr.agmednet.net");
 
 	}
-	
+
 	public void Test_DemoTest2(String strTrial) {
 		System.out.println(strTrial);
 

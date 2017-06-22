@@ -243,26 +243,26 @@ public class ApplicationFunctions {
 		CommonFunctions.getInstance().funWait(2);
 		try {
 			// Select Value in drop down
-//			CommonFunctions.getInstance()
-//					.getElement(driver, "judi.test1g.trialAdmin.Trail")
-//					.sendKeys(strTrial);
-//			CommonFunctions.getInstance()
-//					.getElement(driver, "judi.test1g.trialAdmin.Trail")
-//					.sendKeys(Keys.TAB);
-			
-			Select oE = new Select(CommonFunctions.getInstance()
-					.getElement(driver, "judi.test1g.trialAdmin.Trail"));
-			List<WebElement> allOpt = oE.getOptions();			
+			// CommonFunctions.getInstance()
+			// .getElement(driver, "judi.test1g.trialAdmin.Trail")
+			// .sendKeys(strTrial);
+			// CommonFunctions.getInstance()
+			// .getElement(driver, "judi.test1g.trialAdmin.Trail")
+			// .sendKeys(Keys.TAB);
+
+			Select oE = new Select(CommonFunctions.getInstance().getElement(
+					driver, "judi.test1g.trialAdmin.Trail"));
+			List<WebElement> allOpt = oE.getOptions();
 			for (int i = 0; i < allOpt.size(); i++) {
 				String optionName = allOpt.get(i).getText();
 				if (optionName.equalsIgnoreCase(strTrial)) {
 					allOpt.get(i).click();
 					break;
 				}
-			}		
+			}
 			CommonFunctions.getInstance().funWait(1);
-			oE = new Select(CommonFunctions.getInstance().getElement(
-					driver, "judi.test1g.trialAdmin.Trail"));
+			oE = new Select(CommonFunctions.getInstance().getElement(driver,
+					"judi.test1g.trialAdmin.Trail"));
 			WebElement oSelected = oE.getFirstSelectedOption();
 			String strSelected = oSelected.getText();
 			CommonFunctions.getInstance().funStepValidate("TEXT",
@@ -592,17 +592,18 @@ public class ApplicationFunctions {
 									"judi.test1g.trialAdmin.sites.siteName")
 							.sendKeys(Keys.TAB);
 					CommonFunctions.getInstance().funWait(1);
-					CommonFunctions
-							.getInstance()
+					Select oE = new Select(CommonFunctions.getInstance()
 							.getElement(driver,
-									"judi.test1g.trialAdmin.sites.country")
-							.sendKeys("United States");
-					CommonFunctions
-							.getInstance()
-							.getElement(driver,
-									"judi.test1g.trialAdmin.sites.country")
-							.click();
-
+									"judi.test1g.trialAdmin.sites.country"));
+					List<WebElement> allOpt = oE.getOptions();
+					for (int i = 0; i < allOpt.size(); i++) {
+						String optionName = allOpt.get(i).getText();
+						if (optionName.equalsIgnoreCase("United States")) {
+							allOpt.get(i).click();
+							break;
+						}
+					}
+					CommonFunctions.getInstance().funWait(1);
 					CommonFunctions
 							.getInstance()
 							.getElement(driver,
@@ -933,16 +934,17 @@ public class ApplicationFunctions {
 						.click();
 				try {
 					CommonFunctions.getInstance().funWait(2);
-					CommonFunctions
-							.getInstance()
+					Select oE = new Select(CommonFunctions.getInstance()
 							.getElement(driver,
-									"judi.test1g.trialAdmin.sub.site")
-							.sendKeys(strSite);
-					CommonFunctions
-							.getInstance()
-							.getElement(driver,
-									"judi.test1g.trialAdmin.sub.site")
-							.sendKeys(Keys.TAB);
+									"judi.test1g.trialAdmin.sub.site"));
+					List<WebElement> allOpt = oE.getOptions();
+					for (int i = 0; i < allOpt.size(); i++) {
+						String optionName = allOpt.get(i).getText();
+						if (optionName.equalsIgnoreCase(strSite)) {
+							allOpt.get(i).click();
+							break;
+						}
+					}
 					CommonFunctions.getInstance().funWait(1);
 					CommonFunctions
 							.getInstance()
@@ -1064,7 +1066,8 @@ public class ApplicationFunctions {
 					CommonFunctions.getInstance().funLog(
 							"Issue on Adding multiple Subjects in subjects tab : "
 									+ ", Exception : " + e.getMessage());
-					test.log(LogStatus.FAIL,
+					test.log(
+							LogStatus.FAIL,
 							" Issue on Adding multiple Subjects in Subjects tab",
 							test.addScreenCapture(CommonFunctions.getInstance()
 									.funTakeScreenshot(
@@ -1195,19 +1198,16 @@ public class ApplicationFunctions {
 		}
 		CommonFunctions.getInstance().funWait(1);
 		try {
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test1g.trialAdmin.users.role")
-					.click();
-			CommonFunctions.getInstance().funWait(1);
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test1g.trialAdmin.users.role")
-					.sendKeys(strUserRole);
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test1g.trialAdmin.users.role")
-					.sendKeys(Keys.TAB);
-			CommonFunctions.getInstance()
-					.getElement(driver, "judi.test1g.trialAdmin.users.role")
-					.click();
+			Select oE = new Select(CommonFunctions.getInstance().getElement(
+					driver, "judi.test1g.trialAdmin.users.role"));
+			List<WebElement> allOpt = oE.getOptions();
+			for (int i = 0; i < allOpt.size(); i++) {
+				String optionName = allOpt.get(i).getText();
+				if (optionName.equalsIgnoreCase(strUserRole)) {
+					allOpt.get(i).click();
+					break;
+				}
+			}
 
 		} catch (Exception e) {
 			CommonFunctions.getInstance().funLog(
@@ -1661,7 +1661,7 @@ public class ApplicationFunctions {
 										.getMethodName())));
 		Stage.getInstance().setStatus(false);
 	}
-	
+
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 * Function Name : funInfoCall() Description : This function will update
@@ -1670,7 +1670,7 @@ public class ApplicationFunctions {
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
 	public void funInfoCall(String strDescription) {
-		CommonFunctions.getInstance().funLog(strDescription );
+		CommonFunctions.getInstance().funLog(strDescription);
 		test.log(LogStatus.INFO, strDescription, test
 				.addScreenCapture(CommonFunctions.getInstance()
 						.funTakeScreenshot(
@@ -1712,7 +1712,5 @@ public class ApplicationFunctions {
 
 		}
 
-	}	
+	}
 }
-
-

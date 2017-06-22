@@ -23,8 +23,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-
-
 //import javax.mail.Message;
 //import javax.mail.Session;
 //import javax.mail.Transport;
@@ -816,7 +814,7 @@ public class CommonFunctions {
 		// Initialize test object in other Libraries
 		ApplicationFunctions.getInstance().init(test);
 		DB.getInstance().init(test);
-//		TestData.getInstance().init(test);
+		// TestData.getInstance().init(test);
 		TestScripts.getInstance().init(test);
 	}
 
@@ -857,13 +855,12 @@ public class CommonFunctions {
 		funEndTestCase(strTestCaseName);
 
 	}
+
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	 * Function Name  : funGetTestData() 
-	 * Date 		  : June 16, 2017
-	 * Author 		  : Suresh Kumar,Mylam
-	 * Description 	  : This function will retrive data from TestData.xml
-	 * Parameters     : strInput : Key name
+	 * Function Name : funGetTestData() Date : June 16, 2017 Author : Suresh
+	 * Kumar,Mylam Description : This function will retrive data from
+	 * TestData.xml Parameters : strInput : Key name
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
 	public String funGetTestData(String TestName, String strParam) {
@@ -906,7 +903,5 @@ public class CommonFunctions {
 		}
 		return testDataParam;
 	}
-	
+
 }
-
-
