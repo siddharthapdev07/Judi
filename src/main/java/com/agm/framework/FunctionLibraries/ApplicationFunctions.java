@@ -1701,9 +1701,9 @@ public class ApplicationFunctions {
 				String str3 = strSite
 						+ new SimpleDateFormat("yyyyMMdd_HHmmss")
 								.format(Calendar.getInstance().getTime());
-				String[] country = (str1 + "#" + str2 + j + "#" + str3 + j)
+				String[] subjects = (str1 + "#" + str2 + j + "#" + str3 + j)
 						.toString().split("#");
-				writer.writeNext(country);
+				writer.writeNext(subjects);
 			}
 			writer.close();
 		} catch (IOException e) {
