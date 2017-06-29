@@ -2,8 +2,7 @@
 <suite name="Suite" parallel="false">
   <test name="Test">
     <classes>
-    	<class name="com.agm.Judi.tests.Validate_TrialAdmin_TrialsSitesSubjectsUsers"/>
-<!--       	<class name="com.agm.Judi.tests.DemoTest3"/> -->
+    	<class name="com.agm.smoke.SmokeTestSuite"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
