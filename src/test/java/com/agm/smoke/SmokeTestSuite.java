@@ -84,6 +84,7 @@ public class SmokeTestSuite {
 		CommonFunctions.getInstance().funFinalizeResults();
 	}
 
+	
 	@Test
 	public void functionality1Test2() {
 		CommonFunctions.getInstance().funBeforeTest();
