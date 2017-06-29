@@ -8,7 +8,9 @@ import org.testng.annotations.Parameters;
 
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
-import com.relevantcodes.extentreports.ExtentTest;
+import com.aventstack.extentreports.ExtentTest;
+//import com.relevantcodes.extentreports.ExtentTest;
+//import com.relevantcodes.extentreports.LogStatus;
 
 public class TestScripts {
 
@@ -60,14 +62,10 @@ public class TestScripts {
 		ApplicationFunctions.getInstance().funInviteUser(
 				"autotest_freetodelete3@mx-intr.agmednet.net",
 				"Event Coordinator");
-//		// Register users
-//		ApplicationFunctions.getInstance().funRegistration(
-//				"autotest_freetodelete3@mx-intr.agmednet.net");
+		// // Register users
+		// ApplicationFunctions.getInstance().funRegistration(
+		// "autotest_freetodelete3@mx-intr.agmednet.net");
 
 	}
 
-	public void Test_DemoTest2(String strTrial) {
-		System.out.println(strTrial);
-
-	}
 }

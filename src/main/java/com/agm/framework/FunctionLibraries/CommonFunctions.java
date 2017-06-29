@@ -39,15 +39,18 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import autoitx4java.AutoItX;
+import bsh.This;
 
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
 import com.agm.testrail.APIClient;
 import com.agm.testrail.APIException;
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.markuputils.ExtentColor;
+import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.jacob.com.LibraryLoader;
-import com.relevantcodes.extentreports.ExtentReports;
-import com.relevantcodes.extentreports.ExtentTest;
-import com.relevantcodes.extentreports.LogStatus;
 
 public class CommonFunctions {
 
@@ -486,35 +489,53 @@ public class CommonFunctions {
 				if (strActual.toLowerCase().trim()
 						.contains(strExpected.toLowerCase().trim())) {
 					if (bTakeScreenShot) {
-						test.log(LogStatus.PASS, strDescription
-								+ " : Actual : " + strActual
-								+ " and Expected is : " + strExpected, test
-								.addScreenCapture(CommonFunctions.getInstance()
-										.funTakeScreenshot(
-												Thread.currentThread()
-														.getStackTrace()[1]
-														.getMethodName())));
+						test.log(Status.PASS, MarkupHelper.createLabel(
+								strDescription + " : Actual : " + strActual
+										+ " and Expected is : " + strExpected,
+								ExtentColor.GREEN));
+						try {
+							test.addScreenCaptureFromPath(CommonFunctions
+									.getInstance().funTakeScreenshot(
+											Thread.currentThread()
+													.getStackTrace()[1]
+													.getMethodName()));
+						} catch (IOException e) {
+							CommonFunctions.getInstance().funLog(
+									"Issue in recording snapshot error is : "
+											+ e.getMessage());
+						}
+
 					} else {
-						test.log(LogStatus.PASS, strDescription
-								+ " : Actual : " + strActual
-								+ " and Expected is : " + strExpected, "");
+						test.log(Status.PASS, MarkupHelper.createLabel(
+								strDescription + " : Actual : " + strActual
+										+ " and Expected is : " + strExpected,
+								ExtentColor.GREEN));
 					}
-					funLog(strDescription);
+					funLog(strDescription + " : Actual : " + strActual
+							+ " and Expected is : " + strExpected);
 				} else {
 					Stage.getInstance().setStatus(false);
 					if (bTakeScreenShot) {
-						test.log(LogStatus.FAIL, strDescription
-								+ " : Actual : " + strActual
-								+ " and Expected is : " + strExpected, test
-								.addScreenCapture(CommonFunctions.getInstance()
-										.funTakeScreenshot(
-												Thread.currentThread()
-														.getStackTrace()[1]
-														.getMethodName())));
+						test.log(Status.FAIL, MarkupHelper.createLabel(
+								strDescription + " : Actual : " + strActual
+										+ " and Expected is : " + strExpected,
+								ExtentColor.RED));
+						try {
+							test.addScreenCaptureFromPath(CommonFunctions
+									.getInstance().funTakeScreenshot(
+											Thread.currentThread()
+													.getStackTrace()[1]
+													.getMethodName()));
+						} catch (IOException e) {
+							CommonFunctions.getInstance().funLog(
+									"Issue in recording snapshot error is : "
+											+ e.getMessage());
+						}
 					} else {
-						test.log(LogStatus.FAIL, strDescription
-								+ " : Actual : " + strActual
-								+ " and Expected is : " + strExpected, "");
+						test.log(Status.FAIL, MarkupHelper.createLabel(
+								strDescription + " : Actual : " + strActual
+										+ " and Expected is : " + strExpected,
+								ExtentColor.RED));
 					}
 					funLog(strDescription);
 					if (exitHandler) {
@@ -527,25 +548,52 @@ public class CommonFunctions {
 				int strExpectedValue = Integer.parseInt(strExpected);
 				if (strActualValue - strExpectedValue == 0) {
 					if (bTakeScreenShot) {
-						test.log(LogStatus.PASS, strDescription
-								+ " : Actual : " + strActual
-								+ " and Expected is : " + strExpected, "");
+						test.log(Status.PASS, MarkupHelper.createLabel(
+								strDescription + " : Actual : " + strActual
+										+ " and Expected is : " + strExpected,
+								ExtentColor.GREEN));
+						try {
+							test.addScreenCaptureFromPath(CommonFunctions
+									.getInstance().funTakeScreenshot(
+											Thread.currentThread()
+													.getStackTrace()[1]
+													.getMethodName()));
+						} catch (IOException e) {
+							CommonFunctions.getInstance().funLog(
+									"Issue in recording snapshot error is : "
+											+ e.getMessage());
+						}
 					} else {
-						test.log(LogStatus.PASS, strDescription
-								+ " : Actual : " + strActual
-								+ " and Expected is : " + strExpected, "");
+						test.log(Status.PASS, MarkupHelper.createLabel(
+								strDescription + " : Actual : " + strActual
+										+ " and Expected is : " + strExpected,
+								ExtentColor.GREEN));
 					}
-					funLog(strDescription);
+					funLog(strDescription + " : Actual : " + strActual
+							+ " and Expected is : " + strExpected);
 				} else {
 					Stage.getInstance().setStatus(false);
 					if (bTakeScreenShot) {
-						test.log(LogStatus.FAIL, strDescription
-								+ " : Actual : " + strActual
-								+ " and Expected is : " + strExpected, "");
+						test.log(Status.FAIL, MarkupHelper.createLabel(
+								strDescription + " : Actual : " + strActual
+										+ " and Expected is : " + strExpected,
+								ExtentColor.RED));
+						try {
+							test.addScreenCaptureFromPath(CommonFunctions
+									.getInstance().funTakeScreenshot(
+											Thread.currentThread()
+													.getStackTrace()[1]
+													.getMethodName()));
+						} catch (IOException e) {
+							CommonFunctions.getInstance().funLog(
+									"Issue in recording snapshot error is : "
+											+ e.getMessage());
+						}
 					} else {
-						test.log(LogStatus.FAIL, strDescription
-								+ " : Actual : " + strActual
-								+ " and Expected is : " + strExpected, "");
+						test.log(Status.FAIL, MarkupHelper.createLabel(
+								strDescription + " : Actual : " + strActual
+										+ " and Expected is : " + strExpected,
+								ExtentColor.RED));
 					}
 					funLog(strDescription);
 					if (exitHandler) {
@@ -582,78 +630,92 @@ public class CommonFunctions {
 			case "ISPRESENT":
 				if (oElement != null) {
 					if (bTakeScreenShot) {
-						test.log(LogStatus.PASS, strElementDescription
-								+ " : is present ", test
-								.addScreenCapture(CommonFunctions.getInstance()
-										.funTakeScreenshot(
-												Thread.currentThread()
-														.getStackTrace()[1]
-														.getMethodName())));
+						test.log(Status.PASS, MarkupHelper.createLabel(
+								strElementDescription, ExtentColor.GREEN));
+						try {
+							test.addScreenCaptureFromPath(CommonFunctions
+									.getInstance().funTakeScreenshot(
+											Thread.currentThread()
+													.getStackTrace()[1]
+													.getMethodName()));
+						} catch (IOException e) {
+							CommonFunctions.getInstance().funLog(
+									"Issue in recording snapshot error is : "
+											+ e.getMessage());
+						}
 					} else {
-						test.log(LogStatus.PASS, strElementDescription
-								+ " : is present ", "");
+						test.log(Status.PASS, MarkupHelper.createLabel(
+								strElementDescription, ExtentColor.GREEN));
 					}
 					funLog(strElementDescription + " is present ");
 				} else {
-					test.log(LogStatus.FAIL, strElementDescription
-							+ " : is NOT present ", test
-							.addScreenCapture(CommonFunctions.getInstance()
-									.funTakeScreenshot(
-											Thread.currentThread()
-													.getStackTrace()[1]
-													.getMethodName())));
-				}
-				break;
-			case "ISVISIBLE":
-				if (oElement.isDisplayed()) {
-					if (bTakeScreenShot) {
-						test.log(LogStatus.PASS, strElementDescription
-								+ " : is Displayed ", test
-								.addScreenCapture(CommonFunctions.getInstance()
-										.funTakeScreenshot(
-												Thread.currentThread()
-														.getStackTrace()[1]
-														.getMethodName())));
-					} else {
-						test.log(LogStatus.PASS, strElementDescription
-								+ " : is Displayed ", "");
+					test.log(
+							Status.FAIL,
+							MarkupHelper.createLabel(strElementDescription
+									+ " : is NOT present ", ExtentColor.RED));
+					try {
+						test.addScreenCaptureFromPath(CommonFunctions
+								.getInstance()
+								.funTakeScreenshot(
+										Thread.currentThread().getStackTrace()[1]
+												.getMethodName()));
+					} catch (IOException e) {
+						CommonFunctions.getInstance().funLog(
+								"Issue in recording snapshot error is : "
+										+ e.getMessage());
 					}
-					funLog(strElementDescription + " is present ");
-				} else {
-					test.log(LogStatus.FAIL, strElementDescription
-							+ " : is NOT Displayed ", test
-							.addScreenCapture(CommonFunctions.getInstance()
-									.funTakeScreenshot(
-											Thread.currentThread()
-													.getStackTrace()[1]
-													.getMethodName())));
 				}
 				break;
-			case "ISENABLE":
-				if (oElement.isEnabled()) {
-					if (bTakeScreenShot) {
-						test.log(LogStatus.PASS, strElementDescription
-								+ " : is Enabled ", test
-								.addScreenCapture(CommonFunctions.getInstance()
-										.funTakeScreenshot(
-												Thread.currentThread()
-														.getStackTrace()[1]
-														.getMethodName())));
-					} else {
-						test.log(LogStatus.PASS, strElementDescription
-								+ " : is Enabled ", "");
-					}
-					funLog(strElementDescription + " is present ");
-				} else {
-					test.log(LogStatus.FAIL, strElementDescription
-							+ " : is NOT Enabled ", test
-							.addScreenCapture(CommonFunctions.getInstance()
-									.funTakeScreenshot(
-											Thread.currentThread()
-													.getStackTrace()[1]
-													.getMethodName())));
-				}
-				break;
+			// case "ISVISIBLE":
+			// if (oElement.isDisplayed()) {
+			// if (bTakeScreenShot) {
+			// test.log(LogStatus.PASS, strElementDescription
+			// + " : is Displayed ", test
+			// .addScreenCapture(CommonFunctions.getInstance()
+			// .funTakeScreenshot(
+			// Thread.currentThread()
+			// .getStackTrace()[1]
+			// .getMethodName())));
+			// } else {
+			// test.log(LogStatus.PASS, strElementDescription
+			// + " : is Displayed ", "");
+			// }
+			// funLog(strElementDescription + " is present ");
+			// } else {
+			// test.log(LogStatus.FAIL, strElementDescription
+			// + " : is NOT Displayed ", test
+			// .addScreenCapture(CommonFunctions.getInstance()
+			// .funTakeScreenshot(
+			// Thread.currentThread()
+			// .getStackTrace()[1]
+			// .getMethodName())));
+			// }
+			// break;
+			// case "ISENABLE":
+			// if (oElement.isEnabled()) {
+			// if (bTakeScreenShot) {
+			// test.log(LogStatus.PASS, strElementDescription
+			// + " : is Enabled ", test
+			// .addScreenCapture(CommonFunctions.getInstance()
+			// .funTakeScreenshot(
+			// Thread.currentThread()
+			// .getStackTrace()[1]
+			// .getMethodName())));
+			// } else {
+			// test.log(LogStatus.PASS, strElementDescription
+			// + " : is Enabled ", "");
+			// }
+			// funLog(strElementDescription + " is present ");
+			// } else {
+			// test.log(LogStatus.FAIL, strElementDescription
+			// + " : is NOT Enabled ", test
+			// .addScreenCapture(CommonFunctions.getInstance()
+			// .funTakeScreenshot(
+			// Thread.currentThread()
+			// .getStackTrace()[1]
+			// .getMethodName())));
+			// }
+			// break;
 			default:
 				funLog("No case statement defined for the given validation : "
 						+ strValidation);
@@ -674,47 +736,47 @@ public class CommonFunctions {
 	 * TEXT/ELEMENT,bTakeScreenShot : true/false, exitHandler : true/false
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	 */
-	public void funElementsValidate(List<WebElement> oElement,
-			String strValidation, String strElementDescription,
-			boolean bTakeScreenShot, boolean exitHandler) {
-		try {
-			switch (strValidation.toUpperCase().trim()) {
-			case "ISPRESENT":
-				if (oElement.size() != 0) {
-					if (bTakeScreenShot) {
-						test.log(LogStatus.PASS, strElementDescription
-								+ " : WebElements list is present ", test
-								.addScreenCapture(CommonFunctions.getInstance()
-										.funTakeScreenshot(
-												Thread.currentThread()
-														.getStackTrace()[1]
-														.getMethodName())));
-					} else {
-						test.log(LogStatus.PASS, strElementDescription
-								+ " : WebElements list is present ", "");
-					}
-					funLog(strElementDescription
-							+ " WebElements list is present ");
-				} else {
-					test.log(LogStatus.FAIL, strElementDescription
-							+ " : WebElements list is NOT present ", test
-							.addScreenCapture(CommonFunctions.getInstance()
-									.funTakeScreenshot(
-											Thread.currentThread()
-													.getStackTrace()[1]
-													.getMethodName())));
-				}
-				break;
-			default:
-				funLog("No case statement defined for the given validation : "
-						+ strValidation);
-				break;
-			}
-		} catch (Exception e) {
-			funLog("Issue on validating element : " + strElementDescription
-					+ ", Exception : " + e.getMessage());
-		}
-	}
+	// public void funElementsValidate(List<WebElement> oElement,
+	// String strValidation, String strElementDescription,
+	// boolean bTakeScreenShot, boolean exitHandler) {
+	// try {
+	// switch (strValidation.toUpperCase().trim()) {
+	// case "ISPRESENT":
+	// if (oElement.size() != 0) {
+	// if (bTakeScreenShot) {
+	// test.log(LogStatus.PASS, strElementDescription
+	// + " : WebElements list is present ", test
+	// .addScreenCapture(CommonFunctions.getInstance()
+	// .funTakeScreenshot(
+	// Thread.currentThread()
+	// .getStackTrace()[1]
+	// .getMethodName())));
+	// } else {
+	// test.log(LogStatus.PASS, strElementDescription
+	// + " : WebElements list is present ", "");
+	// }
+	// funLog(strElementDescription
+	// + " WebElements list is present ");
+	// } else {
+	// test.log(LogStatus.FAIL, strElementDescription
+	// + " : WebElements list is NOT present ", test
+	// .addScreenCapture(CommonFunctions.getInstance()
+	// .funTakeScreenshot(
+	// Thread.currentThread()
+	// .getStackTrace()[1]
+	// .getMethodName())));
+	// }
+	// break;
+	// default:
+	// funLog("No case statement defined for the given validation : "
+	// + strValidation);
+	// break;
+	// }
+	// } catch (Exception e) {
+	// funLog("Issue on validating element : " + strElementDescription
+	// + ", Exception : " + e.getMessage());
+	// }
+	// }
 
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -739,22 +801,16 @@ public class CommonFunctions {
 			}
 
 			if (found) {
-				funLog(strElementDescription + " is present ");
-				test.log(
-						LogStatus.PASS,
-						strValue
-								+ " is NOT present in the drop down , field : "
-								+ strElementDescription,
-						test.addScreenCapture(CommonFunctions
-								.getInstance()
-								.funTakeScreenshot(
-										Thread.currentThread().getStackTrace()[1]
-												.getMethodName())));
+				ApplicationFunctions.getInstance().funSuccessCall(
+						strElementDescription + " is present ");
 			}
 
 		} catch (Exception e) {
-			funLog("Issue on Identifying drop down : " + strElementDescription
-					+ ", Exception : " + e.getMessage());
+			ApplicationFunctions.getInstance()
+					.funFailureCall(
+							"Issue on Identifying drop down : "
+									+ strElementDescription, e);
+
 		}
 	}
 
@@ -771,30 +827,13 @@ public class CommonFunctions {
 		// ********************************* INITIAL SETUP
 		// ************************************************
 		Stage.getInstance().setStatus(iStatus);
-		strTestCaseName = sun.reflect.Reflection.getCallerClass(2)
-				.getSimpleName();
-		Stage.getInstance().setTestName(strTestCaseName);
-		strLogFileName = strTestCaseName
-				+ "_"
-				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
-						.getInstance().getTime());
-		// Setting the Log file path in system variables
-		System.setProperty("logFileName", strLogFileName);
-		funStartTestCase(strLogFileName);
+		// strTestCaseName = sun.reflect.Reflection.getCallerClass(2)
+		// .getSimpleName();
 
-		// ********************************* R-E-P-O-R-T-S
-		// **********************************************
-		// new instance for Extent Reports
-		extent = new ExtentReports(Initializer.getInstance().GetValue(
-				"java.results.path")
-				+ strLogFileName + ".html", true);
-		extent.loadConfig(new File(
-				"src/main/resources/Config-ExtentReports.xml"));
-		// starting test
-		test = extent.startTest(strTestCaseName, strTestCaseName);
-		// Set Category and author to report
-		test.assignAuthor("Suresh Kumar Mylam");
-		test.assignCategory("Regression");
+		strTestCaseName = Thread.currentThread().getStackTrace()[2]
+				.getMethodName();
+		Stage.getInstance().setTestName(strTestCaseName);
+		CommonFunctions.getInstance().funStartTestCase(strTestCaseName);
 
 		// ********************************* AUTOIT SETUP
 		// ************************************************
@@ -802,21 +841,26 @@ public class CommonFunctions {
 				"java.autoit.jacob"));
 		System.setProperty(LibraryLoader.JACOB_DLL_PATH, file.getAbsolutePath());
 		objAutoIT = new AutoItX();
-		// ********************************* TestRail details -Static Data
-		// ***************************
-		// ApplicationFunctions.getInstance() ApplicationFunctions.getInstance()
-		// = ApplicationFunctions.getInstance()
-		// .getInstance();
-		// TestData.getInstance() TestData.getInstance() =
-		// TestData.getInstance().getInstance();
-		// TestData.getInstance().funLoadTestData.getInstance()(strTestCaseName);
-
-		// Initialize test object in other Libraries
-		ApplicationFunctions.getInstance().init(test);
-		DB.getInstance().init(test);
-		// TestData.getInstance().init(test);
-		TestScripts.getInstance().init(test);
 	}
+
+	// public void funBeforeSuite(){
+	// // ********************************* R-E-P-O-R-T-S
+	// // **********************************************
+	// // new instance for Extent Reports
+	// extent = new ExtentReports(Initializer.getInstance().GetValue(
+	// "java.results.path")
+	// + strLogFileName + ".html", true);
+	// extent.loadConfig(new File(
+	// "src/main/resources/Config-ExtentReports.xml"));
+	// // Set Category and author to report
+	// test.assignAuthor("Suresh Kumar Mylam");
+	// test.assignCategory("Regression");
+	//
+	// // Initialize test object in other Libraries
+	// ApplicationFunctions.getInstance().init(test);
+	// DB.getInstance().init(test);
+	// TestScripts.getInstance().init(test);
+	// }
 
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -834,27 +878,15 @@ public class CommonFunctions {
 			// TODO Auto-generated catch block
 			funLog("Issue in terminating the browser");
 		}
-		// ending test
-		extent.endTest(test);
-		// writing everything to document
-		extent.flush();
-		// try {
-		// switch (result.getStatus()) {
-		// case ITestResult.SUCCESS:
-		// funUpdateResultsToTestRail("PASS");
-		// break;
-		// case ITestResult.FAILURE:
-		// funUpdateResultsToTestRail("FAIL");
-		// break;
-		// default:
-		// throw new RuntimeException("Invalid status");
-		// }
-		// } catch (Exception e) {
-		// funLog("Invalid Result status");
-		// }
 		funEndTestCase(strTestCaseName);
-
 	}
+
+	// public void funAfterSuite(){
+	// // ending test
+	// extent.endTest(test);
+	// // writing everything to document
+	// extent.flush();
+	// }
 
 	/*
 	 * ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -897,7 +929,8 @@ public class CommonFunctions {
 		} else {
 			ApplicationFunctions.getInstance().funInfoCall(
 					"cannot read the test Data xml file");
-			test.log(LogStatus.FAIL, "cannot read the test Data xml file", "");
+			test.log(Status.FAIL, MarkupHelper.createLabel(
+					"cannot read the test Data xml file", ExtentColor.RED));
 			Stage.getInstance().setStatus(false);
 			funFinalizeResults();
 		}

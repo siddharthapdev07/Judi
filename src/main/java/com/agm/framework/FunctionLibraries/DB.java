@@ -1,5 +1,6 @@
 package com.agm.framework.FunctionLibraries;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -8,11 +9,15 @@ import java.sql.Statement;
 
 import com.agm.framework.helpers.Initializer;
 import com.agm.framework.helpers.Stage;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.markuputils.ExtentColor;
+import com.aventstack.extentreports.markuputils.MarkupHelper;
 
 import java.util.ArrayList;
 
-import com.relevantcodes.extentreports.ExtentTest;
-import com.relevantcodes.extentreports.LogStatus;
+//import com.relevantcodes.extentreports.ExtentTest;
+//import com.relevantcodes.extentreports.LogStatus;
 
 public class DB {
 
@@ -131,12 +136,20 @@ public class DB {
 		if (strField != null) {
 
 		} else {
-			commonFunctions
-					.funLog("User is not invited successfully, please check the invite user functionlaity");
-			test.log(
-					LogStatus.FAIL,
-					"User is not invited successfully, please check the invite user functionlaity",
-					"");
+			
+			CommonFunctions.getInstance().funLog("User is not invited successfully, please check the invite user functionlaity");
+			test.log(Status.FAIL, MarkupHelper.createLabel("User is not invited successfully, please check the invite user functionlaity", ExtentColor.RED));
+			try {
+				test.addScreenCaptureFromPath(CommonFunctions.getInstance()
+						.funTakeScreenshot(
+								Thread.currentThread().getStackTrace()[1]
+										.getMethodName()));
+			} catch (IOException e1) {
+				CommonFunctions.getInstance()
+						.funLog("Issue in recording snapshot error is : "
+								+ e1.getMessage());
+			}
+			Stage.getInstance().setStatus(false);
 		}
 	}
 
@@ -203,7 +216,7 @@ public class DB {
 				+ "' and ctmdeleted = 'f'";
 		DB.getInstance().funConnectDB(
 				Initializer.getInstance().GetValue("db.env"),
-				Initializer.getInstance().GetValue("db.test1g.dbname.portal"));
+				Initializer.getInstance().GetValue("db.dbname.portal"));
 		CommonFunctions.getInstance().funLog(
 				"SQL Query used to fetch verify site exist or not is : "
 						+ strQuery);
