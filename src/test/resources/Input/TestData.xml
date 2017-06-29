@@ -3,6 +3,7 @@
   <Test Name="Validate_TrialAdmin_TrialsSitesSubjectsUsers">
     <TrialName>Judi_Demo</TrialName>
     <SiteId>AutoSite1</SiteId>
+    <SiteId1>ferferg</SiteId1>
   </Test>
    <Test Name="DemoTest2">
     <TrialName>Judi_Demo</TrialName>
