@@ -312,7 +312,7 @@ public class CommonFunctions {
 
 			BufferedImage image = robot.createScreenCapture(new Rectangle(
 					Toolkit.getDefaultToolkit().getScreenSize()));
-			strFileName = "./"+strImgName + formatter.format(now.getTime()) + ".png";
+			strFileName = strImgName + formatter.format(now.getTime()) + ".jpg";
 			strFileName = strFileName.replace(" ", "");
 			ImageIO.write(image, "jpg", new File(Initializer.getInstance()
 					.GetValue("java.error.path") + strFileName));
