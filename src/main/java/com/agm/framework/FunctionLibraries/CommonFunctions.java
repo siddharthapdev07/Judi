@@ -312,16 +312,13 @@ public class CommonFunctions {
 
 			BufferedImage image = robot.createScreenCapture(new Rectangle(
 					Toolkit.getDefaultToolkit().getScreenSize()));
-			strFileName = strImgName + formatter.format(now.getTime()) + ".jpg";
+			strFileName = strImgName + formatter.format(now.getTime()) + ".png";
 			strFileName = strFileName.replace(" ", "");
 			ImageIO.write(image, "jpg", new File(Initializer.getInstance()
 					.GetValue("java.error.path") + strFileName));
-//			strFileName = new File(Initializer.getInstance().GetValue(
-//					"java.error.path")
-//					+ strFileName).getAbsolutePath();
 			strFileName = new File(Initializer.getInstance().GetValue(
 					"java.error.path")
-					+ strFileName).getPath();
+					+ strFileName).getAbsolutePath();
 
 		} catch (Exception e) {
 			funLog("Issue on taking snapshot. Exception : " + e.getMessage());
