@@ -319,7 +319,7 @@ public class CommonFunctions {
 //			strFileName = new File(Initializer.getInstance().GetValue(
 //					"java.error.path")
 //					+ strFileName).getAbsolutePath();
-			strFileName = "../Images/"+strFileName;
+			strFileName = "../Results/Images/"+strFileName;
 
 		} catch (Exception e) {
 			funLog("Issue on taking snapshot. Exception : " + e.getMessage());
