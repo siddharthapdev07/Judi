@@ -316,9 +316,12 @@ public class CommonFunctions {
 			strFileName = strFileName.replace(" ", "");
 			ImageIO.write(image, "jpg", new File(Initializer.getInstance()
 					.GetValue("java.error.path") + strFileName));
+//			strFileName = new File(Initializer.getInstance().GetValue(
+//					"java.error.path")
+//					+ strFileName).getAbsolutePath();
 			strFileName = new File(Initializer.getInstance().GetValue(
 					"java.error.path")
-					+ strFileName).getAbsolutePath();
+					+ strFileName).getPath();
 
 		} catch (Exception e) {
 			funLog("Issue on taking snapshot. Exception : " + e.getMessage());
